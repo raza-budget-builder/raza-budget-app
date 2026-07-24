@@ -208,22 +208,20 @@ export type DriftAlerts = {
 export async function getDriftAlerts(
   supabase: Awaited<ReturnType<typeof createClient>>,
   userId: string,
+  transactions: Transaction[],
 ): Promise<DriftAlerts> {
   const month = new Date().toISOString().slice(0, 7);
-  const historyStart = `${addMonths(month, -12)}-01`;
 
-  const [{ data: transactions }, { data: groups }, { data: memberTx }] = await Promise.all([
-    supabase
-      .from("transactions")
-      .select("date, amount, type, category:categories(name)")
-      .gte("date", historyStart)
-      // Pending recurring predictions aren't real spend yet.
-      .neq("status", "pending")
-      .returns<Transaction[]>(),
+  // Both detectors only ever look at active expense series, so filtering
+  // here (rather than in JS after fetching) means fewer rows over the wire
+  // for the same result.
+  const [{ data: groups }, { data: memberTx }] = await Promise.all([
     supabase
       .from("recurring_groups")
       .select("id, description, amount, type, interval, active, created_at, category:categories(name)")
       .eq("user_id", userId)
+      .eq("active", true)
+      .eq("type", "expense")
       .returns<RecurringGroupRow[]>(),
     supabase
       .from("transactions")
@@ -234,7 +232,13 @@ export async function getDriftAlerts(
       .returns<{ recurring_group_id: string; amount: number }[]>(),
   ]);
 
-  const allTransactions = transactions ?? [];
+  // Callers already have the user's transactions loaded (e.g. the Insights
+  // page fetches them for the net-flow chart and 50/30/20 module) — reusing
+  // that instead of re-querying here avoids a second full round-trip for
+  // overlapping data. The trailing-average math below only ever sums the
+  // months it needs, so handing it more history than strictly necessary is
+  // harmless.
+  const allTransactions = transactions;
   const allGroups = groups ?? [];
 
   // Need at least a couple of months of history for a trailing average to

@@ -23,6 +23,17 @@ export default async function GoalsPage() {
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
+  // Nothing on this page ever looks past the current calendar month, so
+  // scope the query itself instead of fetching the full transaction
+  // history and filtering in JS — this only gets more wasteful as history
+  // grows from CSV imports.
+  const now = new Date();
+  const monthPrefix = now.toISOString().slice(0, 7);
+  const monthStart = `${monthPrefix}-01`;
+  const nextMonthStart = new Date(now.getFullYear(), now.getMonth() + 1, 1)
+    .toISOString()
+    .slice(0, 10);
+
   const [
     { data: categories, error: categoriesError },
     { data: goals, error: goalsError },
@@ -42,6 +53,8 @@ export default async function GoalsPage() {
     supabase
       .from("transactions")
       .select("date, amount, type, category:categories(id)")
+      .gte("date", monthStart)
+      .lt("date", nextMonthStart)
       // Pending recurring predictions aren't real yet — exclude from spend.
       .neq("status", "pending")
       .returns<Transaction[]>(),
@@ -55,11 +68,9 @@ export default async function GoalsPage() {
   const allGoals = goals ?? [];
   const allTransactions = transactions ?? [];
 
-  const monthPrefix = new Date().toISOString().slice(0, 7);
   const spendByCategory = new Map<string, number>();
   let totalIncome = 0;
   for (const t of allTransactions) {
-    if (!t.date.startsWith(monthPrefix)) continue;
     if (t.type === "income") {
       totalIncome += Number(t.amount);
       continue;

@@ -13,7 +13,7 @@ type MonthTransaction = {
   date: string;
   amount: number;
   type: "income" | "expense";
-  category: { budget_group: string | null } | null;
+  category: { name: string; budget_group: string | null } | null;
 };
 
 export default async function InsightsPage() {
@@ -25,16 +25,22 @@ export default async function InsightsPage() {
 
   const { data: transactions, error } = await supabase
     .from("transactions")
-    .select("date, amount, type, category:categories(budget_group)")
+    .select("date, amount, type, category:categories(name, budget_group)")
     // Pending recurring predictions aren't real yet — exclude from the split.
     .neq("status", "pending")
     .returns<MonthTransaction[]>();
 
   if (error) console.error("transactions error", error);
 
-  const narrativeSummary = await getWeeklyNarrativeSummary(supabase, user.id);
-  const driftAlerts = await getDriftAlerts(supabase, user.id);
-  const netFlowPoints = buildCumulativeNetFlow(transactions ?? []);
+  const allTransactions = transactions ?? [];
+
+  // Independent of each other, so run concurrently rather than paying for
+  // two sequential round-trips to Claude when both need to regenerate.
+  const [narrativeSummary, driftAlerts] = await Promise.all([
+    getWeeklyNarrativeSummary(supabase, user.id),
+    getDriftAlerts(supabase, user.id, allTransactions),
+  ]);
+  const netFlowPoints = buildCumulativeNetFlow(allTransactions);
 
   return (
     <div>
@@ -43,7 +49,7 @@ export default async function InsightsPage() {
       <NarrativeSummaryModule data={narrativeSummary} />
       <NetFlowChart points={netFlowPoints} />
       <DriftAlertsModule data={driftAlerts} />
-      <BudgetSplitModule transactions={transactions ?? []} />
+      <BudgetSplitModule transactions={allTransactions} />
     </div>
   );
 }

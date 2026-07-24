@@ -21,13 +21,12 @@ export default async function AppLayout({
 
   // Check-on-open: no backend scheduler exists, so this runs once per
   // request here instead — effectively on every app load/navigation.
-  await generateDueRecurringTransactions(supabase, user.id);
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("tier")
-    .eq("id", user.id)
-    .single();
+  // Independent of the profile lookup below, so they run concurrently
+  // rather than one blocking the other on every single navigation.
+  const [, { data: profile }] = await Promise.all([
+    generateDueRecurringTransactions(supabase, user.id),
+    supabase.from("profiles").select("tier").eq("id", user.id).single(),
+  ]);
 
   const showBusiness = profile?.tier === "entrepreneur";
 
