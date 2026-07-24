@@ -273,7 +273,7 @@ export function TransactionList({
                 aria-pressed={searchOpen}
                 aria-label="Search transactions"
                 title="Search"
-                className={`rounded-full border border-card-border p-2 ${
+                className={`flex h-11 w-11 items-center justify-center rounded-full border border-card-border ${
                   searchOpen || search
                     ? "bg-white text-gray-900"
                     : "text-foreground-muted hover:bg-white/10 hover:text-white"
@@ -408,21 +408,23 @@ export function TransactionList({
             const collapsed = collapsedMonths.has(group.key);
             return (
               <div key={group.key}>
-                <div className="mb-2 flex items-center gap-2">
+                <div className="mb-2 flex items-center gap-1">
                   {selecting && (
-                    <input
-                      type="checkbox"
-                      checked={isMonthFullySelected(group.items)}
-                      onChange={() => toggleMonthSelected(group.items)}
-                      aria-label={`Select all transactions in ${group.label}`}
-                      className="h-4 w-4 rounded border-card-border"
-                    />
+                    <label className="-ml-2.5 flex h-11 w-11 shrink-0 items-center justify-center">
+                      <input
+                        type="checkbox"
+                        checked={isMonthFullySelected(group.items)}
+                        onChange={() => toggleMonthSelected(group.items)}
+                        aria-label={`Select all transactions in ${group.label}`}
+                        className="h-4 w-4 rounded border-card-border"
+                      />
+                    </label>
                   )}
                   <button
                     onClick={() => toggleMonthCollapsed(group.key)}
                     aria-expanded={!collapsed}
                     aria-label={`${collapsed ? "Expand" : "Collapse"} ${group.label}`}
-                    className="flex items-center gap-1.5"
+                    className="-ml-2.5 flex min-h-11 flex-1 items-center gap-1.5 py-1"
                   >
                     <ChevronDownIcon
                       className="h-4 w-4 text-foreground-muted transition-transform duration-200"

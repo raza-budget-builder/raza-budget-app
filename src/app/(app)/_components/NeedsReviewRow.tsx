@@ -116,7 +116,7 @@ export function NeedsReviewRow({
               onClick={() => setConfirmingDismiss(true)}
               aria-label="Dismiss transaction"
               title="Dismiss"
-              className="rounded-2xl p-1.5 text-foreground-muted hover:bg-white/10 hover:text-white"
+              className="flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-white/10 hover:text-white"
             >
               <TrashIcon className="h-4 w-4" />
             </button>

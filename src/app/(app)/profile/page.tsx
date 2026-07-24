@@ -72,7 +72,7 @@ export default async function ProfilePage({
             href="/dashboard"
             aria-label="Close profile"
             title="Close"
-            className="text-foreground-muted hover:text-white"
+            className="flex h-11 w-11 items-center justify-center text-foreground-muted hover:text-white"
           >
             <CloseIcon className="h-5 w-5" />
           </Link>

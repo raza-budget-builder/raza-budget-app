@@ -86,22 +86,22 @@ export function SummaryCard({ transactions }: { transactions: Transaction[] }) {
         </div>
       </div>
       <div className="grid grid-cols-3 gap-4">
-        <div>
+        <div className="min-w-0">
           <p className="text-xs font-medium text-foreground-muted">Income</p>
-          <p className={`mt-1 text-xl font-bold ${AMOUNT_TEXT_CLASS.income}`}>
+          <p className={`mt-1 truncate text-xl font-bold ${AMOUNT_TEXT_CLASS.income}`}>
             {formatSignedAmount(income, "income")}
           </p>
         </div>
-        <div>
+        <div className="min-w-0">
           <p className="text-xs font-medium text-foreground-muted">Expenses</p>
-          <p className={`mt-1 text-xl font-bold ${AMOUNT_TEXT_CLASS.expense}`}>
+          <p className={`mt-1 truncate text-xl font-bold ${AMOUNT_TEXT_CLASS.expense}`}>
             {formatSignedAmount(expense, "expense")}
           </p>
         </div>
-        <div>
+        <div className="min-w-0">
           <p className="text-xs font-medium text-foreground-muted">Net</p>
           <p
-            className={`mt-1 text-xl font-bold ${
+            className={`mt-1 truncate text-xl font-bold ${
               net >= 0 ? AMOUNT_TEXT_CLASS.income : AMOUNT_TEXT_CLASS.expense
             }`}
           >

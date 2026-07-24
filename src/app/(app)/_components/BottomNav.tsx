@@ -31,7 +31,7 @@ export function BottomNav({ showBusiness }: { showBusiness: boolean }) {
   const tabs = showBusiness ? [...BASE_TABS, BUSINESS_TAB] : BASE_TABS;
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-10 border-t border-card-border bg-background">
+    <nav className="fixed bottom-0 left-0 right-0 z-10 border-t border-card-border bg-background pb-[env(safe-area-inset-bottom)]">
       <div
         className="mx-auto grid max-w-2xl"
         style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}

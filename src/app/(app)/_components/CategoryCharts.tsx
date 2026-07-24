@@ -44,7 +44,9 @@ export function CategoryCharts({ transactions }: { transactions: Transaction[] }
             aria-label="Pie chart"
             aria-pressed={chartType === "pie"}
             title="Pie chart"
-            className={`p-1.5 ${chartType === "pie" ? activeClass : inactiveClass}`}
+            className={`flex h-11 w-11 items-center justify-center ${
+              chartType === "pie" ? activeClass : inactiveClass
+            }`}
           >
             <PieChartIcon className="h-4 w-4" />
           </button>
@@ -53,7 +55,7 @@ export function CategoryCharts({ transactions }: { transactions: Transaction[] }
             aria-label="Column chart"
             aria-pressed={chartType === "column"}
             title="Column chart"
-            className={`border-l border-card-border p-1.5 ${
+            className={`flex h-11 w-11 items-center justify-center border-l border-card-border ${
               chartType === "column" ? activeClass : inactiveClass
             }`}
           >
@@ -67,7 +69,7 @@ export function CategoryCharts({ transactions }: { transactions: Transaction[] }
             aria-label="Show dollar amounts"
             aria-pressed={valueMode === "dollar"}
             title="Dollar amounts"
-            className={`w-8 py-1.5 text-sm font-medium ${
+            className={`flex h-11 w-11 items-center justify-center text-sm font-medium ${
               valueMode === "dollar" ? activeClass : inactiveClass
             }`}
           >
@@ -78,7 +80,7 @@ export function CategoryCharts({ transactions }: { transactions: Transaction[] }
             aria-label="Show percentages"
             aria-pressed={valueMode === "percent"}
             title="Percentages"
-            className={`w-8 border-l border-card-border py-1.5 text-sm font-medium ${
+            className={`flex h-11 w-11 items-center justify-center border-l border-card-border text-sm font-medium ${
               valueMode === "percent" ? activeClass : inactiveClass
             }`}
           >
@@ -99,7 +101,7 @@ export function CategoryCharts({ transactions }: { transactions: Transaction[] }
         </select>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-4">
         <div>
           <h3 className="mb-2 text-sm font-bold text-white">Expense</h3>
           <CategoryChart

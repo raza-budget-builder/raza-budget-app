@@ -43,7 +43,7 @@ export function RecurringSeriesList({
       <button
         onClick={() => setExpanded((e) => !e)}
         aria-expanded={expanded}
-        className="flex w-full items-center justify-between"
+        className="-my-2.5 flex w-full items-center justify-between py-2.5"
       >
         <h2 className="font-bold text-white">Recurring series ({series.length})</h2>
         <ChevronDownIcon
@@ -191,7 +191,7 @@ function RecurringSeriesRow({
           onClick={() => setEditing(true)}
           aria-label="Edit series"
           title="Edit"
-          className="rounded-2xl p-1.5 text-foreground-muted hover:bg-white/10 hover:text-white"
+          className="flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-white/10 hover:text-white"
         >
           <PencilIcon className="h-4 w-4" />
         </button>
@@ -200,7 +200,7 @@ function RecurringSeriesRow({
           disabled={isPending}
           aria-label={series.active ? "Stop recurring" : "Reactivate recurring"}
           title={series.active ? "Stop" : "Reactivate"}
-          className={`rounded-2xl p-1.5 hover:bg-white/10 disabled:opacity-50 ${
+          className={`flex h-11 w-11 items-center justify-center rounded-2xl hover:bg-white/10 disabled:opacity-50 ${
             series.active
               ? "text-foreground-muted hover:text-[#fb923c]"
               : "text-[#4ade80] hover:text-[#86efac]"

@@ -32,7 +32,7 @@ export function Modal({
   // transaction row) never ends up as a stray non-<li> child of a <ul>.
   return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+      className="fixed inset-0 z-50 flex items-stretch justify-center bg-black/60 sm:items-center sm:p-4"
       onClick={onClose}
     >
       <div
@@ -40,14 +40,18 @@ export function Modal({
         aria-modal="true"
         aria-label={title}
         onClick={(e) => e.stopPropagation()}
-        className="max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-card-border bg-card p-6"
+        // Full-screen sheet below sm (no rounding/border — it fills the
+        // viewport like a native mobile sheet, with safe-area padding so
+        // content and controls clear the home-indicator/notch), centered
+        // floating card at sm+ same as before.
+        className="flex h-full w-full flex-col overflow-y-auto bg-card p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] sm:h-auto sm:max-h-[85vh] sm:max-w-lg sm:flex-none sm:rounded-2xl sm:border sm:border-card-border sm:pb-6"
       >
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-sm font-bold text-white">{title}</h2>
           <button
             onClick={onClose}
             aria-label="Close"
-            className="rounded-2xl p-1 text-foreground-muted hover:bg-white/10 hover:text-white"
+            className="-mr-2 flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-white/10 hover:text-white"
           >
             <CloseIcon className="h-5 w-5" />
           </button>

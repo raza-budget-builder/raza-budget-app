@@ -337,7 +337,7 @@ export function TransactionRow({
                 onClick={startEditing}
                 aria-label="Edit transaction"
                 title="Edit"
-                className="p-1.5 text-foreground-muted hover:bg-white/10 hover:text-white"
+                className="flex h-11 w-11 items-center justify-center text-foreground-muted hover:bg-white/10 hover:text-white"
               >
                 <PencilIcon className="h-4 w-4" />
               </button>
@@ -346,7 +346,7 @@ export function TransactionRow({
                 disabled={isPending}
                 aria-label="Confirm transaction"
                 title="Confirm"
-                className="border-l border-card-border p-1.5 text-[#4ade80] hover:bg-white/10 disabled:opacity-50"
+                className="flex h-11 w-11 items-center justify-center border-l border-card-border text-[#4ade80] hover:bg-white/10 disabled:opacity-50"
               >
                 <CheckIcon className="h-4 w-4" />
               </button>
@@ -357,7 +357,7 @@ export function TransactionRow({
                 onClick={startEditing}
                 aria-label="Edit transaction"
                 title="Edit"
-                className="rounded-2xl p-1.5 text-foreground-muted hover:bg-white/10 hover:text-white"
+                className="flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-white/10 hover:text-white"
               >
                 <PencilIcon className="h-4 w-4" />
               </button>
@@ -365,7 +365,7 @@ export function TransactionRow({
                 onClick={() => setConfirmingDelete(true)}
                 aria-label="Delete transaction"
                 title="Delete"
-                className="rounded-2xl p-1.5 text-foreground-muted hover:bg-white/10 hover:text-[#fb923c]"
+                className="flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-white/10 hover:text-[#fb923c]"
               >
                 <TrashIcon className="h-4 w-4" />
               </button>

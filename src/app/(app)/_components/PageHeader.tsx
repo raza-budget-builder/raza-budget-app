@@ -12,18 +12,18 @@ export function PageHeader({
   return (
     <div className="mb-8 flex items-center justify-between">
       <h1 className="text-xl font-semibold text-white">{title}</h1>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-1">
         {extra}
         <Link
           href="/profile"
           aria-label="Profile"
           title="Profile"
-          className="text-foreground-muted hover:text-white"
+          className="flex h-11 w-11 items-center justify-center text-foreground-muted hover:text-white"
         >
           <PersonIcon className="h-5 w-5" />
         </Link>
         <form action={logout}>
-          <button className="text-sm text-foreground-muted hover:text-white">
+          <button className="flex h-11 items-center px-2 text-sm text-foreground-muted hover:text-white">
             Log out
           </button>
         </form>

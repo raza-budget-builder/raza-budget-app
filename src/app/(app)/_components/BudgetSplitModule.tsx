@@ -45,7 +45,7 @@ function MeterRow({ row }: { row: BudgetSplitRow }) {
 
   return (
     <div>
-      <div className="mb-1.5 flex items-baseline justify-between text-sm">
+      <div className="mb-1.5 flex flex-wrap items-baseline justify-between gap-x-2 text-sm">
         <span className="font-bold text-white">{row.label}</span>
         <span className="text-foreground-muted">
           ${formatCurrency(row.actual)} of ${formatCurrency(row.targetAmount)} target ·{" "}

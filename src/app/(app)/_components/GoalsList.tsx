@@ -77,7 +77,7 @@ export function GoalsList({
 
         return (
           <li key={c.id} className="px-4 py-3 text-sm">
-            <div className="mb-1.5 flex items-baseline justify-between">
+            <div className="mb-1.5 flex flex-wrap items-baseline justify-between gap-x-2">
               <span className="font-bold text-white">{c.name}</span>
               <span className="text-foreground-muted">
                 ${formatCurrency(spend)} of ${formatCurrency(cap)} ·{" "}

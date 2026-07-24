@@ -33,7 +33,7 @@ export default async function AppLayout({
 
   return (
     <ToastProvider>
-      <div className="min-h-screen w-full bg-background pb-24">
+      <div className="min-h-screen w-full bg-background pb-[calc(6rem+env(safe-area-inset-bottom))]">
         <div className="mx-auto w-full max-w-2xl px-4 py-10">{children}</div>
         <BottomNav showBusiness={showBusiness} />
       </div>
