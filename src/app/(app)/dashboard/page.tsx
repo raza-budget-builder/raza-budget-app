@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { PageHeader } from "../_components/PageHeader";
+import { ThemeToggle } from "../_components/ThemeToggle";
 import { DashboardQuickActions } from "../_components/DashboardQuickActions";
 import { CategoryCharts } from "../_components/CategoryCharts";
 import { SummaryCard } from "../_components/SummaryCard";
@@ -103,7 +104,7 @@ export default async function DashboardPage() {
 
   return (
     <div>
-      <PageHeader title="Dashboard" />
+      <PageHeader title="Dashboard" extra={<ThemeToggle />} />
 
       <DashboardQuickActions
         categories={categories ?? []}
@@ -119,7 +120,7 @@ export default async function DashboardPage() {
       </section>
 
       <section>
-        <h2 className="mb-4 font-bold text-white">Last 7 days</h2>
+        <h2 className="mb-4 font-bold text-foreground">Last 7 days</h2>
         {last7Days.length > 0 ? (
           <ul className="divide-y divide-card-border rounded-2xl border border-card-border bg-card">
             {last7Days.map((t) => (
@@ -130,7 +131,7 @@ export default async function DashboardPage() {
                 <div className="min-w-0">
                   <p
                     className={`truncate font-bold ${
-                      t.status === "pending" ? PENDING_TEXT_CLASS : "text-white"
+                      t.status === "pending" ? PENDING_TEXT_CLASS : "text-foreground"
                     }`}
                   >
                     {t.description}
@@ -155,7 +156,7 @@ export default async function DashboardPage() {
       </section>
 
       <section className="mt-10">
-        <h2 className="mb-4 font-bold text-white">Upcoming</h2>
+        <h2 className="mb-4 font-bold text-foreground">Upcoming</h2>
         {upcomingRecurring.length > 0 ? (
           <ul className="divide-y divide-card-border rounded-2xl border border-card-border bg-card">
             {upcomingRecurring.map((series) => (
@@ -164,7 +165,7 @@ export default async function DashboardPage() {
                 className="flex items-center justify-between gap-4 px-4 py-3 text-sm"
               >
                 <div className="min-w-0">
-                  <p className="truncate font-bold text-white">{series.description}</p>
+                  <p className="truncate font-bold text-foreground">{series.description}</p>
                   <p className="text-foreground-muted">
                     {series.nextDate} · {INTERVAL_LABEL[series.interval]}
                   </p>

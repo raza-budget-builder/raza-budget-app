@@ -39,7 +39,7 @@ export function NeedsReviewRow({
     <li
       onClick={selectionMode ? onToggleSelected : undefined}
       className={`flex items-center justify-between gap-4 px-4 py-3 text-sm ${
-        selectionMode ? "cursor-pointer hover:bg-white/5" : ""
+        selectionMode ? "cursor-pointer hover:bg-foreground/5" : ""
       }`}
     >
       <div className="flex min-w-0 items-center gap-3">
@@ -54,7 +54,7 @@ export function NeedsReviewRow({
           />
         )}
         <div className="min-w-0">
-          <p className="truncate font-bold text-white">{transaction.description}</p>
+          <p className="truncate font-bold text-foreground">{transaction.description}</p>
           <p className="text-foreground-muted">{transaction.date}</p>
         </div>
       </div>
@@ -74,13 +74,13 @@ export function NeedsReviewRow({
                   await deleteTransaction(transaction.id);
                 })
               }
-              className="font-bold text-[#fb923c] hover:text-[#fdba74] disabled:opacity-50"
+              className="font-bold text-attention hover:text-attention-hover disabled:opacity-50"
             >
               Confirm
             </button>
             <button
               onClick={() => setConfirmingDismiss(false)}
-              className="text-foreground-muted hover:text-white"
+              className="text-foreground-muted hover:text-foreground"
             >
               Cancel
             </button>
@@ -97,7 +97,7 @@ export function NeedsReviewRow({
                 name="category"
                 required
                 defaultValue=""
-                className="rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-white"
+                className="rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
               >
                 <option value="" disabled>
                   Select category
@@ -108,7 +108,7 @@ export function NeedsReviewRow({
                   </option>
                 ))}
               </select>
-              <button className="rounded-2xl bg-white px-3 py-1.5 text-sm font-medium text-gray-900 hover:bg-gray-200">
+              <button className="rounded-2xl bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
                 Confirm
               </button>
             </form>
@@ -116,7 +116,7 @@ export function NeedsReviewRow({
               onClick={() => setConfirmingDismiss(true)}
               aria-label="Dismiss transaction"
               title="Dismiss"
-              className="flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-white/10 hover:text-white"
+              className="flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
             >
               <TrashIcon className="h-4 w-4" />
             </button>

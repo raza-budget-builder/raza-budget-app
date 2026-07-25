@@ -11,10 +11,10 @@ import {
 } from "recharts";
 import { formatCurrency } from "@/lib/format";
 import type { MonthlyNetFlowPoint } from "@/lib/net-flow";
+import { useChartTheme } from "./useChartTheme";
 
-const LINE_COLOR = "#ffffff";
 // Same green used for income amounts elsewhere in the app.
-const TOTAL_COLOR = "#4ade80";
+const TOTAL_COLOR = "var(--positive)";
 
 function formatDollarSigned(n: number): string {
   const sign = n < 0 ? "–" : n > 0 ? "+" : "";
@@ -30,33 +30,35 @@ function NetFlowTooltip({
   payload?: { payload: MonthlyNetFlowPoint }[];
   label?: string;
 }) {
+  const colors = useChartTheme();
   if (!active || !payload || payload.length === 0) return null;
   const point = payload[0].payload;
   return (
     <div
       style={{
         fontSize: 13,
-        backgroundColor: "#1a2444",
-        border: "1px solid #333d6c",
+        backgroundColor: colors.tooltipBg,
+        border: `1px solid ${colors.tooltipBorder}`,
         borderRadius: 12,
         padding: "8px 12px",
       }}
     >
-      <p style={{ color: "#99a3c2", marginBottom: 4 }}>{label}</p>
-      <p style={{ color: "#ffffff" }}>Net this month: {formatDollarSigned(point.net)}</p>
-      <p style={{ color: "#ffffff" }}>Cumulative: {formatDollarSigned(point.cumulative)}</p>
+      <p style={{ color: colors.tick, marginBottom: 4 }}>{label}</p>
+      <p style={{ color: colors.ink }}>Net this month: {formatDollarSigned(point.net)}</p>
+      <p style={{ color: colors.ink }}>Cumulative: {formatDollarSigned(point.cumulative)}</p>
     </div>
   );
 }
 
 export function NetFlowChart({ points }: { points: MonthlyNetFlowPoint[] }) {
+  const colors = useChartTheme();
   const total = points.length > 0 ? points[points.length - 1].cumulative : 0;
 
   return (
     <section className="mb-10 rounded-2xl border border-card-border bg-card p-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 className="font-bold text-white">Your Savings Journey</h2>
+          <h2 className="font-bold text-foreground">Your Savings Journey</h2>
           <p className="mt-1 text-sm text-foreground-muted">
             Your running total of income minus spending, month by month.
           </p>
@@ -80,17 +82,17 @@ export function NetFlowChart({ points }: { points: MonthlyNetFlowPoint[] }) {
           <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={points} margin={{ top: 8, right: 8, bottom: 8, left: 4 }}>
-                <CartesianGrid vertical={false} stroke="#333d6c" />
+                <CartesianGrid vertical={false} stroke={colors.grid} />
                 <XAxis
                   dataKey="label"
                   interval="preserveStartEnd"
-                  tick={{ fontSize: 11, fill: "#99a3c2" }}
-                  axisLine={{ stroke: "#333d6c" }}
+                  tick={{ fontSize: 11, fill: colors.tick }}
+                  axisLine={{ stroke: colors.grid }}
                   tickLine={false}
                 />
                 <YAxis
                   tickFormatter={(v) => `$${Math.round(Number(v)).toLocaleString("en-US")}`}
-                  tick={{ fontSize: 11, fill: "#99a3c2" }}
+                  tick={{ fontSize: 11, fill: colors.tick }}
                   axisLine={false}
                   tickLine={false}
                   width={64}
@@ -99,9 +101,9 @@ export function NetFlowChart({ points }: { points: MonthlyNetFlowPoint[] }) {
                 <Line
                   type="monotone"
                   dataKey="cumulative"
-                  stroke={LINE_COLOR}
+                  stroke={colors.ink}
                   strokeWidth={2}
-                  dot={{ r: 3, fill: LINE_COLOR, strokeWidth: 0 }}
+                  dot={{ r: 3, fill: colors.ink, strokeWidth: 0 }}
                   activeDot={{ r: 5 }}
                 />
               </LineChart>

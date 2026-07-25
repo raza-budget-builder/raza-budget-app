@@ -45,7 +45,7 @@ export function RecurringSeriesList({
         aria-expanded={expanded}
         className="-my-2.5 flex w-full items-center justify-between py-2.5"
       >
-        <h2 className="font-bold text-white">Recurring series ({series.length})</h2>
+        <h2 className="font-bold text-foreground">Recurring series ({series.length})</h2>
         <ChevronDownIcon
           className="h-4 w-4 shrink-0 text-foreground-muted transition-transform duration-200"
           style={{ transform: expanded ? "rotate(0deg)" : "rotate(-90deg)" }}
@@ -114,7 +114,7 @@ function RecurringSeriesRow({
             step="0.01"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-white"
+            className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
           />
         </div>
         <div>
@@ -122,7 +122,7 @@ function RecurringSeriesRow({
           <select
             value={frequency}
             onChange={(e) => setFrequency(e.target.value as RecurringInterval)}
-            className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-white"
+            className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
           >
             <option value="weekly">Weekly</option>
             <option value="biweekly">Biweekly</option>
@@ -134,7 +134,7 @@ function RecurringSeriesRow({
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-white"
+            className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
           >
             <option value="">Uncategorized</option>
             {filteredCategories.map((c) => (
@@ -148,13 +148,13 @@ function RecurringSeriesRow({
           <button
             onClick={handleSave}
             disabled={isPending}
-            className="rounded-2xl bg-white px-3 py-1.5 text-sm font-medium text-gray-900 hover:bg-gray-200 disabled:opacity-50"
+            className="rounded-2xl bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50"
           >
             Save
           </button>
           <button
             onClick={() => setEditing(false)}
-            className="rounded-2xl border border-card-border px-3 py-1.5 text-sm font-medium text-foreground-muted hover:bg-white/5 hover:text-white"
+            className="rounded-2xl border border-card-border px-3 py-1.5 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
           >
             Cancel
           </button>
@@ -170,7 +170,7 @@ function RecurringSeriesRow({
       }`}
     >
       <div className="min-w-0">
-        <p className="flex items-center gap-1.5 truncate font-bold text-white">
+        <p className="flex items-center gap-1.5 truncate font-bold text-foreground">
           <span className="truncate">{series.description}</span>
           {!series.active && (
             <span className="shrink-0 rounded-full border border-card-border px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-foreground-muted">
@@ -191,7 +191,7 @@ function RecurringSeriesRow({
           onClick={() => setEditing(true)}
           aria-label="Edit series"
           title="Edit"
-          className="flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-white/10 hover:text-white"
+          className="flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
         >
           <PencilIcon className="h-4 w-4" />
         </button>
@@ -200,10 +200,10 @@ function RecurringSeriesRow({
           disabled={isPending}
           aria-label={series.active ? "Stop recurring" : "Reactivate recurring"}
           title={series.active ? "Stop" : "Reactivate"}
-          className={`flex h-11 w-11 items-center justify-center rounded-2xl hover:bg-white/10 disabled:opacity-50 ${
+          className={`flex h-11 w-11 items-center justify-center rounded-2xl hover:bg-foreground/10 disabled:opacity-50 ${
             series.active
-              ? "text-foreground-muted hover:text-[#fb923c]"
-              : "text-[#4ade80] hover:text-[#86efac]"
+              ? "text-foreground-muted hover:text-attention"
+              : "text-positive hover:text-positive-hover"
           }`}
         >
           <PauseIcon className="h-4 w-4" />

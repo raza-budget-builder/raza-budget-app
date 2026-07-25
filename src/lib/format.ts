@@ -1,18 +1,16 @@
 export type TransactionType = "income" | "expense";
 
-// Bright green/orange, contrast-validated against the dark card surface
-// (#1a2444): income 8.7:1, expense 6.7:1 — both clear WCAG AA. The old
-// #006300/#c2410c pair was tuned for white cards and reads as near-black
-// on a dark surface, so these are new values, not a straight carry-over.
+// Backed by the --positive/--attention CSS vars (globals.css) — same bright
+// pastel values in both themes on purpose; these are meaningful, recognized
+// colors, not surface chrome that should shift with light/dark.
 export const AMOUNT_TEXT_CLASS: Record<TransactionType, string> = {
-  income: "text-[#4ade80]",
-  expense: "text-[#fb923c]",
+  income: "text-positive",
+  expense: "text-attention",
 };
 
-// Pending recurring predictions — 9.9:1 against the dark card surface,
-// distinct hue from the income/expense pair so it reads as "not final yet"
-// rather than as a third amount-sign color.
-export const PENDING_TEXT_CLASS = "text-[#facc15]";
+// Pending recurring predictions — distinct hue from the income/expense pair
+// so it reads as "not final yet" rather than as a third amount-sign color.
+export const PENDING_TEXT_CLASS = "text-pending";
 
 export function formatCurrency(amount: number) {
   return amount.toLocaleString("en-US", {

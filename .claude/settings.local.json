@@ -70,7 +70,11 @@
       "Bash(node -e \"try { require\\('sharp'\\); console.log\\('sharp available'\\); } catch\\(e\\) { console.log\\('no sharp:', e.message\\); }\")",
       "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless --disable-gpu --hide-scrollbars --window-size=600,500 --default-background-color=00000000 --virtual-time-budget=3000 --screenshot=ai-mark-raw.png file://__CMDSUB_OUTPUT__/ai-mark.html)",
       "Bash(node \"/private/tmp/claude-501/-Users-jonathanraza-raza-budget-app/09283e7a-cabe-4ae0-b19d-db75915f2570/scratchpad/trim-mark.js\")",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(git fetch *)",
+      "Bash(git ls-tree *)"
     ]
   }
 }

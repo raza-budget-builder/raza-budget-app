@@ -64,7 +64,7 @@ export function TransactionRow({
 
   const isPendingOccurrence = transaction.status === "pending";
   const amountClass = isPendingOccurrence ? PENDING_TEXT_CLASS : AMOUNT_TEXT_CLASS[transaction.type];
-  const descriptionClass = isPendingOccurrence ? PENDING_TEXT_CLASS : "text-white";
+  const descriptionClass = isPendingOccurrence ? PENDING_TEXT_CLASS : "text-foreground";
 
   function startEditing() {
     setEditType(transaction.type);
@@ -140,7 +140,7 @@ export function TransactionRow({
               name="date"
               required
               defaultValue={transaction.date}
-              className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-white"
+              className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
             />
           </div>
           <div>
@@ -153,7 +153,7 @@ export function TransactionRow({
               name="amount"
               required
               defaultValue={transaction.amount}
-              className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-white"
+              className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
             />
           </div>
           <div className="col-span-2">
@@ -161,7 +161,7 @@ export function TransactionRow({
               Type
             </span>
             <div className="mt-2 flex gap-4">
-              <label className="flex items-center gap-1.5 text-sm text-white">
+              <label className="flex items-center gap-1.5 text-sm text-foreground">
                 <input
                   type="radio"
                   name="type"
@@ -171,7 +171,7 @@ export function TransactionRow({
                 />
                 Expense
               </label>
-              <label className="flex items-center gap-1.5 text-sm text-white">
+              <label className="flex items-center gap-1.5 text-sm text-foreground">
                 <input
                   type="radio"
                   name="type"
@@ -192,7 +192,7 @@ export function TransactionRow({
               required
               value={editCategory}
               onChange={(e) => setEditCategory(e.target.value)}
-              className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-white"
+              className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
             >
               <option value="" disabled>
                 Select a category
@@ -213,7 +213,7 @@ export function TransactionRow({
               name="description"
               required
               defaultValue={transaction.description}
-              className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-white"
+              className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
             />
           </div>
           {inRecurringSeries ? (
@@ -226,7 +226,7 @@ export function TransactionRow({
                   <select
                     name="recurringInterval"
                     defaultValue={transaction.recurring_interval ?? "monthly"}
-                    className="mt-1 rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-white"
+                    className="mt-1 rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
                   >
                     <option value="weekly">Weekly</option>
                     <option value="biweekly">Biweekly</option>
@@ -237,7 +237,7 @@ export function TransactionRow({
                   <button
                     type="button"
                     onClick={() => setConfirmingStop(true)}
-                    className="flex items-center gap-1.5 rounded-2xl border border-card-border px-3 py-1.5 text-sm font-medium text-foreground-muted hover:bg-white/5 hover:text-[#fb923c]"
+                    className="flex items-center gap-1.5 rounded-2xl border border-card-border px-3 py-1.5 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-attention"
                   >
                     <PauseIcon className="h-4 w-4" />
                     Stop recurring
@@ -249,14 +249,14 @@ export function TransactionRow({
                       type="button"
                       disabled={isPending}
                       onClick={handleStopRecurring}
-                      className="font-bold text-[#fb923c] hover:text-[#fdba74] disabled:opacity-50"
+                      className="font-bold text-attention hover:text-attention-hover disabled:opacity-50"
                     >
                       Confirm
                     </button>
                     <button
                       type="button"
                       onClick={() => setConfirmingStop(false)}
-                      className="text-foreground-muted hover:text-white"
+                      className="text-foreground-muted hover:text-foreground"
                     >
                       Cancel
                     </button>
@@ -268,13 +268,13 @@ export function TransactionRow({
             <RecurringToggleFields />
           )}
           <div className="col-span-2 flex gap-2 pt-1">
-            <button className="rounded-2xl bg-white px-3 py-1.5 text-sm font-medium text-gray-900 hover:bg-gray-200">
+            <button className="rounded-2xl bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
               Save
             </button>
             <button
               type="button"
               onClick={() => setEditing(false)}
-              className="rounded-2xl border border-card-border px-3 py-1.5 text-sm font-medium text-foreground-muted hover:bg-white/5 hover:text-white"
+              className="rounded-2xl border border-card-border px-3 py-1.5 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
             >
               Cancel
             </button>
@@ -289,7 +289,7 @@ export function TransactionRow({
       <li
         onClick={selectionMode ? onToggleSelected : undefined}
         className={`flex items-center justify-between gap-4 px-4 py-3 text-sm ${
-          selectionMode ? "cursor-pointer hover:bg-white/5" : ""
+          selectionMode ? "cursor-pointer hover:bg-foreground/5" : ""
         }`}
       >
         <div className="flex min-w-0 items-center gap-3">
@@ -337,7 +337,7 @@ export function TransactionRow({
                 onClick={startEditing}
                 aria-label="Edit transaction"
                 title="Edit"
-                className="flex h-11 w-11 items-center justify-center text-foreground-muted hover:bg-white/10 hover:text-white"
+                className="flex h-11 w-11 items-center justify-center text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
               >
                 <PencilIcon className="h-4 w-4" />
               </button>
@@ -346,7 +346,7 @@ export function TransactionRow({
                 disabled={isPending}
                 aria-label="Confirm transaction"
                 title="Confirm"
-                className="flex h-11 w-11 items-center justify-center border-l border-card-border text-[#4ade80] hover:bg-white/10 disabled:opacity-50"
+                className="flex h-11 w-11 items-center justify-center border-l border-card-border text-positive hover:bg-foreground/10 disabled:opacity-50"
               >
                 <CheckIcon className="h-4 w-4" />
               </button>
@@ -357,7 +357,7 @@ export function TransactionRow({
                 onClick={startEditing}
                 aria-label="Edit transaction"
                 title="Edit"
-                className="flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-white/10 hover:text-white"
+                className="flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
               >
                 <PencilIcon className="h-4 w-4" />
               </button>
@@ -365,7 +365,7 @@ export function TransactionRow({
                 onClick={() => setConfirmingDelete(true)}
                 aria-label="Delete transaction"
                 title="Delete"
-                className="flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-white/10 hover:text-[#fb923c]"
+                className="flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-foreground/10 hover:text-attention"
               >
                 <TrashIcon className="h-4 w-4" />
               </button>
@@ -381,13 +381,13 @@ export function TransactionRow({
                     showToast("Transaction deleted");
                   })
                 }
-                className="font-bold text-[#fb923c] hover:text-[#fdba74] disabled:opacity-50"
+                className="font-bold text-attention hover:text-attention-hover disabled:opacity-50"
               >
                 Confirm
               </button>
               <button
                 onClick={() => setConfirmingDelete(false)}
-                className="text-foreground-muted hover:text-white"
+                className="text-foreground-muted hover:text-foreground"
               >
                 Cancel
               </button>

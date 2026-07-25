@@ -33,7 +33,7 @@ export function RecurringConfirmModal({
     <Modal open={candidate !== null} onClose={onResolved} title="Recurring expense?">
       {candidate && (
         <div className="space-y-4">
-          <p className="text-sm text-white">
+          <p className="text-sm text-foreground">
             It looks like <span className="font-bold">{candidate.description}</span> for{" "}
             <span className="font-bold">${formatCurrency(candidate.amount)}</span> happens{" "}
             {INTERVAL_LABEL[candidate.interval]}. Want to mark it as a recurring transaction?
@@ -42,14 +42,14 @@ export function RecurringConfirmModal({
             <button
               onClick={handleConfirm}
               disabled={isPending}
-              className="rounded-2xl bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200 disabled:opacity-50"
+              className="rounded-2xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50"
             >
               {isPending ? "Saving…" : "Yes, it's recurring"}
             </button>
             <button
               onClick={onResolved}
               disabled={isPending}
-              className="rounded-2xl border border-card-border px-4 py-2 text-sm font-medium text-foreground-muted hover:bg-white/5 hover:text-white"
+              className="rounded-2xl border border-card-border px-4 py-2 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
             >
               No, just this once
             </button>

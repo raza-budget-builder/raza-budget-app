@@ -26,14 +26,14 @@ export function DashboardQuickActions({
       <div className="mb-6 flex gap-2">
         <button
           onClick={() => setOpenModal("add")}
-          className="flex items-center gap-2 rounded-full border border-card-border bg-card px-4 py-2 text-sm font-medium text-white hover:bg-white/5"
+          className="flex items-center gap-2 rounded-full border border-card-border bg-card px-4 py-2 text-sm font-medium text-foreground hover:bg-foreground/5"
         >
           <PlusIcon className="h-4 w-4" />
           <span className="text-sm font-medium">Add manually</span>
         </button>
         <button
           onClick={() => setOpenModal("upload")}
-          className="relative flex items-center gap-2 rounded-full border border-card-border bg-card px-4 py-2 text-sm font-medium text-white hover:bg-white/5"
+          className="relative flex items-center gap-2 rounded-full border border-card-border bg-card px-4 py-2 text-sm font-medium text-foreground hover:bg-foreground/5"
         >
           <ImportIcon className="h-4 w-4" />
           <span className="text-sm font-medium">Upload CSV</span>

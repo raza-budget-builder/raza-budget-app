@@ -56,8 +56,8 @@ export function InsightsCarousel({ slides }: { slides: InsightSlide[] }) {
       onTouchEnd={handleTouchEnd}
     >
       <div className="mb-3 flex items-center gap-2">
-        <AiInsightIcon className="h-6 w-auto" />
-        <h2 className="font-bold text-white">AI Insights</h2>
+        <AiInsightIcon className="h-4 w-auto" />
+        <h2 className="font-bold text-foreground">AI Insights</h2>
       </div>
 
       <div className="flex items-start gap-3">
@@ -75,13 +75,13 @@ export function InsightsCarousel({ slides }: { slides: InsightSlide[] }) {
                 style={{ height: SLIDE_HEIGHT }}
                 className="flex flex-col justify-center"
               >
-                <p className="font-editorial text-[15px] leading-relaxed text-white">
+                <p className="font-editorial text-[15px] leading-relaxed text-foreground">
                   {slide.text}
                 </p>
                 {slide.action && (
                   <Link
                     href={slide.action.href}
-                    className="mt-2 inline-flex w-fit items-center gap-1 rounded-full border border-card-border px-3 py-1.5 text-xs font-medium text-foreground-muted hover:bg-white/5 hover:text-white"
+                    className="mt-2 inline-flex w-fit items-center gap-1 rounded-full border border-card-border px-3 py-1.5 text-xs font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
                   >
                     {slide.action.label} →
                   </Link>
@@ -103,7 +103,7 @@ export function InsightsCarousel({ slides }: { slides: InsightSlide[] }) {
               onClick={goPrev}
               aria-label="Previous insight"
               title="Previous"
-              className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-foreground-muted hover:bg-white/10 hover:text-white"
+              className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
             >
               <ChevronDownIcon className="h-3 w-3" style={{ transform: "rotate(180deg)" }} />
             </button>
@@ -118,7 +118,7 @@ export function InsightsCarousel({ slides }: { slides: InsightSlide[] }) {
                 >
                   <span
                     className={`w-1 rounded-full transition-all duration-[250ms] ease-in-out ${
-                      i === index ? "h-3 bg-white" : "h-1 bg-white/25"
+                      i === index ? "h-3 bg-accent" : "h-1 bg-foreground/25"
                     }`}
                   />
                 </button>
@@ -129,7 +129,7 @@ export function InsightsCarousel({ slides }: { slides: InsightSlide[] }) {
               onClick={goNext}
               aria-label="Next insight"
               title="Next"
-              className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-foreground-muted hover:bg-white/10 hover:text-white"
+              className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
             >
               <ChevronDownIcon className="h-3 w-3" />
             </button>

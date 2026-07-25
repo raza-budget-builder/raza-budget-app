@@ -11,7 +11,7 @@ export default async function LoginPage({
     <div className="flex flex-1 items-center justify-center bg-background px-4 py-16">
       <div className="w-full max-w-sm space-y-6 rounded-2xl border border-card-border bg-card p-8">
         <div>
-          <h1 className="text-xl font-bold text-white">
+          <h1 className="text-xl font-bold text-foreground">
             Personal Budget
           </h1>
           <p className="mt-1 text-sm text-foreground-muted">
@@ -38,7 +38,7 @@ export default async function LoginPage({
               name="email"
               type="email"
               required
-              className="mt-1 block w-full rounded-2xl border border-card-border bg-input-bg px-3 py-2 text-sm text-white focus:border-white/40 focus:outline-none"
+              className="mt-1 block w-full rounded-2xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground focus:border-foreground/40 focus:outline-none"
             />
           </div>
           <div>
@@ -54,20 +54,20 @@ export default async function LoginPage({
               type="password"
               required
               minLength={6}
-              className="mt-1 block w-full rounded-2xl border border-card-border bg-input-bg px-3 py-2 text-sm text-white focus:border-white/40 focus:outline-none"
+              className="mt-1 block w-full rounded-2xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground focus:border-foreground/40 focus:outline-none"
             />
           </div>
 
           <div className="flex gap-3 pt-2">
             <button
               formAction={login}
-              className="flex-1 rounded-2xl bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200"
+              className="flex-1 rounded-2xl bg-accent px-3 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover"
             >
               Log in
             </button>
             <button
               formAction={signup}
-              className="flex-1 rounded-2xl border border-card-border px-3 py-2 text-sm font-medium text-foreground-muted hover:bg-white/5 hover:text-white"
+              className="flex-1 rounded-2xl border border-card-border px-3 py-2 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
             >
               Sign up
             </button>

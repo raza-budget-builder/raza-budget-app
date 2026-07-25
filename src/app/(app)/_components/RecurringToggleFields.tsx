@@ -14,7 +14,7 @@ export function RecurringToggleFields({
 
   return (
     <div className="col-span-2 rounded-2xl border border-card-border px-3 py-2">
-      <label className="flex items-center gap-2 text-sm text-white">
+      <label className="flex items-center gap-2 text-sm text-foreground">
         <input
           type="checkbox"
           name="isRecurring"
@@ -31,7 +31,7 @@ export function RecurringToggleFields({
           <select
             name="recurringInterval"
             defaultValue={defaultInterval}
-            className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-white"
+            className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
           >
             <option value="weekly">Weekly</option>
             <option value="biweekly">Biweekly</option>

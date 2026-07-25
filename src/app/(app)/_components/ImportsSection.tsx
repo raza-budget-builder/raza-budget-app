@@ -58,7 +58,7 @@ function ImportRow({ csvImport }: { csvImport: CsvImportSummary }) {
   return (
     <li className={`flex items-center justify-between gap-4 py-3 text-sm ${reverted ? "opacity-50" : ""}`}>
       <div className="min-w-0">
-        <p className="flex items-center gap-1.5 truncate font-bold text-white">
+        <p className="flex items-center gap-1.5 truncate font-bold text-foreground">
           <span className="truncate">{csvImport.filename}</span>
           {reverted && (
             <span className="shrink-0 rounded-full border border-card-border px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-foreground-muted">
@@ -77,7 +77,7 @@ function ImportRow({ csvImport }: { csvImport: CsvImportSummary }) {
           disabled={isPending}
           aria-label="Download CSV"
           title="Download"
-          className="flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-white/10 hover:text-white disabled:opacity-50"
+          className="flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-foreground/10 hover:text-foreground disabled:opacity-50"
         >
           <DownloadIcon className="h-4 w-4" />
         </button>
@@ -87,7 +87,7 @@ function ImportRow({ csvImport }: { csvImport: CsvImportSummary }) {
               onClick={() => setConfirmingRevert(true)}
               aria-label="Revert import"
               title="Revert"
-              className="flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-white/10 hover:text-[#fb923c]"
+              className="flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-foreground/10 hover:text-attention"
             >
               <UndoIcon className="h-4 w-4" />
             </button>
@@ -97,13 +97,13 @@ function ImportRow({ csvImport }: { csvImport: CsvImportSummary }) {
               <button
                 disabled={isPending}
                 onClick={handleRevert}
-                className="font-bold text-[#fb923c] hover:text-[#fdba74] disabled:opacity-50"
+                className="font-bold text-attention hover:text-attention-hover disabled:opacity-50"
               >
                 Confirm
               </button>
               <button
                 onClick={() => setConfirmingRevert(false)}
-                className="text-foreground-muted hover:text-white"
+                className="text-foreground-muted hover:text-foreground"
               >
                 Cancel
               </button>
@@ -124,7 +124,7 @@ export function ImportsSection({ imports }: { imports: CsvImportSummary[] }) {
         aria-expanded={expanded}
         className="-my-2.5 flex w-full items-center justify-between py-2.5"
       >
-        <h2 className="font-bold text-white">Imports ({imports.length})</h2>
+        <h2 className="font-bold text-foreground">Imports ({imports.length})</h2>
         <ChevronDownIcon
           className="h-4 w-4 shrink-0 text-foreground-muted transition-transform duration-200"
           style={{ transform: expanded ? "rotate(0deg)" : "rotate(-90deg)" }}

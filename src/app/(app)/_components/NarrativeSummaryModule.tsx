@@ -29,7 +29,7 @@ function TypingCursor() {
   return (
     <span
       aria-hidden="true"
-      className="ml-0.5 inline-block h-[1em] w-[2px] animate-[caret-blink_1s_step-end_infinite] translate-y-[3px] bg-white align-middle"
+      className="ml-0.5 inline-block h-[1em] w-[2px] animate-[caret-blink_1s_step-end_infinite] translate-y-[3px] bg-foreground align-middle"
     />
   );
 }
@@ -116,8 +116,8 @@ export function NarrativeSummaryModule({ data }: { data: WeeklyNarrativeSummary 
   return (
     <section className="mb-10 rounded-2xl border border-card-border bg-card px-8 py-7">
       <div className="flex items-center gap-2">
-        <AiInsightIcon className="h-6 w-auto" />
-        <h2 className="font-bold text-white">Your Weekly AI Financial Summary</h2>
+        <AiInsightIcon className="h-4 w-auto" />
+        <h2 className="font-bold text-foreground">Your Weekly AI Financial Summary</h2>
       </div>
       <p className="mt-1 text-xs text-foreground-muted">{rangeLabel}</p>
 
@@ -135,7 +135,7 @@ export function NarrativeSummaryModule({ data }: { data: WeeklyNarrativeSummary 
             onClick={handleSkip}
             className={phase === "typing" ? "cursor-pointer" : ""}
           >
-            <p className="font-editorial mt-3 text-[15px] leading-relaxed text-white">
+            <p className="font-editorial mt-3 text-[15px] leading-relaxed text-foreground">
               {summaryText.slice(0, summaryShown)}
               {typingSummary && <TypingCursor />}
             </p>
@@ -144,7 +144,7 @@ export function NarrativeSummaryModule({ data }: { data: WeeklyNarrativeSummary 
               <p className="text-xs font-medium tracking-wide text-foreground-muted uppercase">
                 This week&apos;s tip
               </p>
-              <p className="font-editorial mt-2 text-[15px] leading-relaxed text-white">
+              <p className="font-editorial mt-2 text-[15px] leading-relaxed text-foreground">
                 {tipText.slice(0, tipShown)}
                 {typingTip && <TypingCursor />}
               </p>

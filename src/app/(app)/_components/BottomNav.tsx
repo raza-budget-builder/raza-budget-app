@@ -43,7 +43,7 @@ export function BottomNav({ showBusiness }: { showBusiness: boolean }) {
               key={tab.href}
               href={tab.href}
               className={`flex flex-col items-center gap-1 py-2.5 text-xs font-medium ${
-                active ? "text-white" : "text-foreground-muted hover:text-white"
+                active ? "text-foreground" : "text-foreground-muted hover:text-foreground"
               }`}
             >
               <tab.Icon className="h-5 w-5" />

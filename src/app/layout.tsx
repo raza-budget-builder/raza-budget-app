@@ -1,6 +1,17 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Source_Serif_4 } from "next/font/google";
+import { ThemeProvider } from "./(app)/_components/ThemeProvider";
 import "./globals.css";
+
+// Runs before hydration so the correct palette is already applied by first
+// paint — without this, a returning light-theme user would flash dark on
+// every load until ThemeProvider's effect catches up.
+const THEME_INIT_SCRIPT = `
+try {
+  var t = localStorage.getItem("theme");
+  if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+} catch (e) {}
+`;
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,8 +45,18 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${editorialSerif.variable} h-full antialiased`}
+      // The blocking script below sets data-theme on this element before
+      // React hydrates, so the server-rendered markup will never match it —
+      // an expected, harmless mismatch (React docs' documented escape hatch
+      // for exactly this pattern), not a real bug.
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
+      <body className="min-h-full flex flex-col">
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }

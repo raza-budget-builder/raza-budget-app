@@ -12,8 +12,8 @@ type Transaction = {
 
 type SummaryPeriod = "monthly" | "this-year" | "all-time";
 
-const activeClass = "bg-white text-gray-900";
-const inactiveClass = "text-foreground-muted hover:text-white";
+const activeClass = "bg-accent text-accent-foreground";
+const inactiveClass = "text-foreground-muted hover:text-foreground";
 
 export function SummaryCard({ transactions }: { transactions: Transaction[] }) {
   const [summaryPeriod, setSummaryPeriod] = useState<SummaryPeriod>("monthly");
@@ -54,7 +54,7 @@ export function SummaryCard({ transactions }: { transactions: Transaction[] }) {
   return (
     <section className="mb-10 rounded-2xl border border-card-border bg-card p-6">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-sm font-bold text-white">{label}</h2>
+        <h2 className="text-sm font-bold text-foreground">{label}</h2>
         <div className="flex overflow-hidden rounded-2xl border border-card-border">
           <button
             onClick={() => setSummaryPeriod("monthly")}

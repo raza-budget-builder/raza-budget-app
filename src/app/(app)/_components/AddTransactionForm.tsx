@@ -53,7 +53,7 @@ export function AddTransactionForm({ categories }: { categories: Category[] }) {
             name="date"
             required
             defaultValue={new Date().toISOString().slice(0, 10)}
-            className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-3 py-2 text-sm text-white"
+            className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
           />
         </div>
         <div>
@@ -64,13 +64,13 @@ export function AddTransactionForm({ categories }: { categories: Category[] }) {
             name="amount"
             required
             placeholder="0.00"
-            className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-3 py-2 text-sm text-white"
+            className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
           />
         </div>
         <div className="col-span-2">
           <span className="block text-xs font-medium text-foreground-muted">Type</span>
           <div className="mt-2 flex gap-4">
-            <label className="flex items-center gap-1.5 text-sm text-white">
+            <label className="flex items-center gap-1.5 text-sm text-foreground">
               <input
                 type="radio"
                 name="type"
@@ -80,7 +80,7 @@ export function AddTransactionForm({ categories }: { categories: Category[] }) {
               />
               Expense
             </label>
-            <label className="flex items-center gap-1.5 text-sm text-white">
+            <label className="flex items-center gap-1.5 text-sm text-foreground">
               <input
                 type="radio"
                 name="type"
@@ -99,7 +99,7 @@ export function AddTransactionForm({ categories }: { categories: Category[] }) {
             required
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-3 py-2 text-sm text-white"
+            className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
           >
             <option value="" disabled>
               Select a category
@@ -119,12 +119,12 @@ export function AddTransactionForm({ categories }: { categories: Category[] }) {
             type="text"
             name="description"
             required
-            className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-3 py-2 text-sm text-white"
+            className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
           />
         </div>
         <RecurringToggleFields />
         <div className="col-span-2">
-          <button className="rounded-2xl bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200">
+          <button className="rounded-2xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
             Add transaction
           </button>
         </div>

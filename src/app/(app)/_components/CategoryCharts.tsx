@@ -18,8 +18,8 @@ type Transaction = {
   category: { name: string } | null;
 };
 
-const activeClass = "bg-white text-gray-900";
-const inactiveClass = "text-foreground-muted hover:text-white";
+const activeClass = "bg-accent text-accent-foreground";
+const inactiveClass = "text-foreground-muted hover:text-foreground";
 
 export function CategoryCharts({ transactions }: { transactions: Transaction[] }) {
   const [period, setPeriod] = useState<PeriodKey>(DEFAULT_PERIOD);
@@ -91,7 +91,7 @@ export function CategoryCharts({ transactions }: { transactions: Transaction[] }
         <select
           value={period}
           onChange={(e) => setPeriod(e.target.value as PeriodKey)}
-          className="rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-white"
+          className="rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
         >
           {PERIOD_OPTIONS.map((option) => (
             <option key={option.value} value={option.value}>
@@ -103,7 +103,7 @@ export function CategoryCharts({ transactions }: { transactions: Transaction[] }
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-4">
         <div>
-          <h3 className="mb-2 text-sm font-bold text-white">Expense</h3>
+          <h3 className="mb-2 text-sm font-bold text-foreground">Expense</h3>
           <CategoryChart
             data={expenseData}
             type="expense"
@@ -113,7 +113,7 @@ export function CategoryCharts({ transactions }: { transactions: Transaction[] }
           />
         </div>
         <div>
-          <h3 className="mb-2 text-sm font-bold text-white">Income</h3>
+          <h3 className="mb-2 text-sm font-bold text-foreground">Income</h3>
           <CategoryChart
             data={incomeData}
             type="income"

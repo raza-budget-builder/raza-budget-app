@@ -18,20 +18,20 @@ export function BudgetVsIncomeCheck({
   return (
     <section
       className={`mb-6 rounded-2xl border px-5 py-4 text-sm ${
-        isOverBudget ? "border-[#f87171]/40 bg-[#f87171]/10" : "border-card-border bg-card"
+        isOverBudget ? "border-critical/40 bg-critical/10" : "border-card-border bg-card"
       }`}
     >
       {totalIncome <= 0 ? (
         <p className="text-foreground-muted">
-          Your budget goals total <span className="font-bold text-white">
+          Your budget goals total <span className="font-bold text-foreground">
             ${formatCurrency(totalGoals)}
           </span>{" "}
           a month. Add income transactions this month to see how that compares to what you&apos;re
           bringing in.
         </p>
       ) : isOverBudget ? (
-        <p className="text-white">
-          <span className="font-bold text-[#f87171]">Your goals don&apos;t add up:</span> you&apos;ve
+        <p className="text-foreground">
+          <span className="font-bold text-critical">Your goals don&apos;t add up:</span> you&apos;ve
           set ${formatCurrency(totalGoals)} in monthly goals, but earned $
           {formatCurrency(totalIncome)} this month — that&apos;s{" "}
           <span className="font-bold">${formatCurrency(overBy)}</span> more than you&apos;re
@@ -39,7 +39,7 @@ export function BudgetVsIncomeCheck({
         </p>
       ) : (
         <p className="text-foreground-muted">
-          Your goals total <span className="font-bold text-white">${formatCurrency(totalGoals)}</span>{" "}
+          Your goals total <span className="font-bold text-foreground">${formatCurrency(totalGoals)}</span>{" "}
           a month, within your ${formatCurrency(totalIncome)} income this month.
         </p>
       )}

@@ -16,6 +16,7 @@ import {
 import type { CategorySpend } from "@/lib/category-spend";
 import { formatCurrency } from "@/lib/format";
 import { categoryColor } from "@/lib/category-color";
+import { useChartTheme } from "./useChartTheme";
 
 export type ChartType = "pie" | "column";
 export type ValueMode = "dollar" | "percent";
@@ -33,6 +34,8 @@ export function CategoryChart({
   valueMode: ValueMode;
   emptyMessage: string;
 }) {
+  const colors = useChartTheme();
+
   if (data.length === 0) {
     return <p className="text-sm text-foreground-muted">{emptyMessage}</p>;
   }
@@ -58,20 +61,20 @@ export function CategoryChart({
       <div className="h-64 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} margin={{ top: 8, right: 8, bottom: 48, left: 4 }}>
-            <CartesianGrid vertical={false} stroke="#333d6c" />
+            <CartesianGrid vertical={false} stroke={colors.grid} />
             <XAxis
               dataKey="name"
               interval={0}
               angle={-40}
               textAnchor="end"
               height={60}
-              tick={{ fontSize: 11, fill: "#99a3c2" }}
-              axisLine={{ stroke: "#333d6c" }}
+              tick={{ fontSize: 11, fill: colors.tick }}
+              axisLine={{ stroke: colors.grid }}
               tickLine={false}
             />
             <YAxis
               tickFormatter={(v) => formatAxisValue(v)}
-              tick={{ fontSize: 11, fill: "#99a3c2" }}
+              tick={{ fontSize: 11, fill: colors.tick }}
               axisLine={false}
               tickLine={false}
               width={56}
@@ -80,12 +83,12 @@ export function CategoryChart({
               formatter={(value) => formatValue(value)}
               contentStyle={{
                 fontSize: 13,
-                backgroundColor: "#1a2444",
-                border: "1px solid #333d6c",
+                backgroundColor: colors.tooltipBg,
+                border: `1px solid ${colors.tooltipBorder}`,
                 borderRadius: 12,
               }}
-              itemStyle={{ color: "#ffffff" }}
-              labelStyle={{ color: "#99a3c2" }}
+              itemStyle={{ color: colors.ink }}
+              labelStyle={{ color: colors.tick }}
             />
             <Bar dataKey="value" radius={[4, 4, 0, 0]} maxBarSize={24}>
               {data.map((entry) => (
@@ -114,7 +117,7 @@ export function CategoryChart({
               <Cell
                 key={entry.name}
                 fill={categoryColor(entry.name, type)}
-                stroke="#1a2444"
+                stroke={colors.cardStroke}
                 strokeWidth={2}
               />
             ))}
@@ -123,12 +126,12 @@ export function CategoryChart({
             formatter={(value) => formatValue(value)}
             contentStyle={{
               fontSize: 13,
-              backgroundColor: "#1a2444",
-              border: "1px solid #333d6c",
+              backgroundColor: colors.tooltipBg,
+              border: `1px solid ${colors.tooltipBorder}`,
               borderRadius: 12,
             }}
-            itemStyle={{ color: "#ffffff" }}
-            labelStyle={{ color: "#99a3c2" }}
+            itemStyle={{ color: colors.ink }}
+            labelStyle={{ color: colors.tick }}
           />
           <Legend
             verticalAlign="bottom"
@@ -138,9 +141,9 @@ export function CategoryChart({
             // which fails as text (light hues like yellow are illegible on
             // a dark surface) and breaks the rule that identity lives in the
             // swatch, not the text. Force every label to the same muted
-            // light ink instead.
+            // ink instead.
             formatter={(value: string) => (
-              <span style={{ color: "#99a3c2" }}>{value}</span>
+              <span style={{ color: colors.tick }}>{value}</span>
             )}
           />
         </PieChart>

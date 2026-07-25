@@ -1,14 +1,21 @@
 @import "tailwindcss";
 
-:root {
+/*
+ * Two named palettes, selected via a `data-theme` attribute on <html> (set
+ * by ThemeProvider, persisted to localStorage) — not OS-driven
+ * prefers-color-scheme, which previously caused invisible-text bugs when it
+ * disagreed with the app's Tailwind classes. `:root` mirrors the dark block
+ * so the page still renders correctly before the theme script/attribute
+ * apply (JS disabled, etc).
+ */
+:root,
+[data-theme="dark"] {
   /* Declare that this page IS dark, so browsers render native form-control
      chrome (date pickers, select dropdowns, scrollbars) in dark style and
-     skip any "force dark" re-inversion heuristics — we're already dark, on
-     purpose, so there's nothing for the browser to "helpfully" adapt. */
+     skip any "force dark" re-inversion heuristics. */
   color-scheme: dark;
 
-  /* Fixed dark theme — a single static palette, not an OS-driven toggle.
-     Two-tier elevation: --background is the page material; --card is a
+  /* Two-tier elevation: --background is the page material; --card is a
      lighter, layered surface on top of it (no white surfaces anywhere). */
   --background: #0a0e1a;
   --card: #1a2444;
@@ -24,6 +31,46 @@
      "Log out" links. One value used against both --background (7.7:1) and
      --card (6.1:1); both clear WCAG AA with room to spare. */
   --foreground-muted: #99a3c2;
+
+  /* Primary CTA / active-toggle fill. Dark theme keeps the app's original
+     high-contrast white-on-navy look — no color, just max contrast. */
+  --accent: #ffffff;
+  --accent-foreground: #111827;
+  --accent-hover: #e5e7eb;
+}
+
+/* Semantic feedback colors — income/expense amounts, goal status, drift-alert
+   sentiment, destructive actions. Deliberately the SAME in both themes (not
+   part of the light/dark swap): these are meaningful, recognized colors in
+   their own right, not surface chrome. */
+:root {
+  --positive: #4ade80;
+  --positive-hover: #86efac;
+  --attention: #fb923c;
+  --attention-hover: #fdba74;
+  --critical: #f87171;
+  --pending: #facc15;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* Ivory page + a near-white card, both outlined in a thin near-black
+     border rather than a shadow — sections read as "drawn," not "lifted." */
+  --background: #f6f1e4;
+  --card: #fffdf7;
+  --card-border: #17150f;
+  --input-bg: #efe8d4;
+
+  --foreground: #16150f;
+  --foreground-muted: #5c5646;
+
+  /* Turquoise accent for buttons/active-toggles/highlights. Dark ink on the
+     bright fill (rather than white) keeps contrast comfortably AA even at
+     button-text sizes. */
+  --accent: #2dd4bf;
+  --accent-foreground: #062b26;
+  --accent-hover: #14b8a6;
 }
 
 @theme inline {
@@ -33,16 +80,20 @@
   --color-input-bg: var(--input-bg);
   --color-foreground: var(--foreground);
   --color-foreground-muted: var(--foreground-muted);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-hover: var(--accent-hover);
+  --color-positive: var(--positive);
+  --color-positive-hover: var(--positive-hover);
+  --color-attention: var(--attention);
+  --color-attention-hover: var(--attention-hover);
+  --color-critical: var(--critical);
+  --color-pending: var(--pending);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-editorial: var(--font-serif-editorial);
 }
 
-/*
- * Intentionally a single fixed dark palette (not OS-driven dark mode): the
- * app's Tailwind classes assume this exact set of surfaces, and letting it
- * vary with prefers-color-scheme previously caused invisible-text bugs.
- */
 body {
   background: var(--background);
   color: var(--foreground);

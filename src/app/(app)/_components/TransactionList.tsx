@@ -247,8 +247,8 @@ export function TransactionList({
               aria-pressed={typeFilter === "expense"}
               className={`px-3 py-1.5 ${
                 typeFilter === "expense"
-                  ? "bg-white text-gray-900"
-                  : "text-foreground-muted hover:bg-white/10 hover:text-white"
+                  ? "bg-accent text-accent-foreground"
+                  : "text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
               }`}
             >
               Expense
@@ -258,8 +258,8 @@ export function TransactionList({
               aria-pressed={typeFilter === "income"}
               className={`border-l border-card-border px-3 py-1.5 ${
                 typeFilter === "income"
-                  ? "bg-white text-gray-900"
-                  : "text-foreground-muted hover:bg-white/10 hover:text-white"
+                  ? "bg-accent text-accent-foreground"
+                  : "text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
               }`}
             >
               Income
@@ -275,8 +275,8 @@ export function TransactionList({
                 title="Search"
                 className={`flex h-11 w-11 items-center justify-center rounded-full border border-card-border ${
                   searchOpen || search
-                    ? "bg-white text-gray-900"
-                    : "text-foreground-muted hover:bg-white/10 hover:text-white"
+                    ? "bg-accent text-accent-foreground"
+                    : "text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
                 }`}
               >
                 <SearchIcon className="h-4 w-4" />
@@ -289,7 +289,7 @@ export function TransactionList({
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search description…"
                   aria-label="Search transactions by description"
-                  className="w-40 rounded-2xl border border-card-border bg-input-bg px-3 py-1.5 text-sm text-white placeholder:text-foreground-muted"
+                  className="w-40 rounded-2xl border border-card-border bg-input-bg px-3 py-1.5 text-sm text-foreground placeholder:text-foreground-muted"
                 />
               )}
             </div>
@@ -298,7 +298,7 @@ export function TransactionList({
               value={sortMode}
               onChange={(e) => setSortMode(e.target.value as SortMode)}
               aria-label="Sort transactions by"
-              className="rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-white"
+              className="rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
             >
               {SORT_CYCLE.map((mode) => (
                 <option key={mode} value={mode}>
@@ -309,7 +309,7 @@ export function TransactionList({
 
             <button
               onClick={toggleSelecting}
-              className="rounded-full border border-card-border px-3 py-1.5 text-sm font-medium text-foreground-muted hover:bg-white/10 hover:text-white"
+              className="rounded-full border border-card-border px-3 py-1.5 text-sm font-medium text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
             >
               {selecting ? "Cancel" : "Select"}
             </button>
@@ -317,7 +317,7 @@ export function TransactionList({
             {filtersActive && (
               <button
                 onClick={clearFilters}
-                className="text-sm font-medium text-foreground-muted underline-offset-2 hover:text-white hover:underline"
+                className="text-sm font-medium text-foreground-muted underline-offset-2 hover:text-foreground hover:underline"
               >
                 Clear filters
               </button>
@@ -334,7 +334,7 @@ export function TransactionList({
               <button
                 disabled={selectedIds.size === 0}
                 onClick={() => setConfirmingDelete(true)}
-                className="font-bold text-[#fb923c] hover:text-[#fdba74] disabled:cursor-not-allowed disabled:opacity-40"
+                className="font-bold text-attention hover:text-attention-hover disabled:cursor-not-allowed disabled:opacity-40"
               >
                 Delete selected
               </button>
@@ -347,13 +347,13 @@ export function TransactionList({
                 <button
                   disabled={isPending}
                   onClick={handleDeleteSelected}
-                  className="font-bold text-[#fb923c] hover:text-[#fdba74] disabled:opacity-50"
+                  className="font-bold text-attention hover:text-attention-hover disabled:opacity-50"
                 >
                   Confirm
                 </button>
                 <button
                   onClick={() => setConfirmingDelete(false)}
-                  className="text-foreground-muted hover:text-white"
+                  className="text-foreground-muted hover:text-foreground"
                 >
                   Cancel
                 </button>
@@ -368,7 +368,7 @@ export function TransactionList({
                 onChange={(e) =>
                   handleBulkTypeChange(e.target.value as "" | "income" | "expense")
                 }
-                className="rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-white"
+                className="rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
               >
                 <option value="">Set type…</option>
                 <option value="expense">Expense</option>
@@ -377,7 +377,7 @@ export function TransactionList({
               <select
                 value={bulkCategory}
                 onChange={(e) => setBulkCategory(e.target.value)}
-                className="rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-white"
+                className="rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
               >
                 <option value="">Set category…</option>
                 {bulkCategoryOptions.map((c) => (
@@ -393,7 +393,7 @@ export function TransactionList({
                   isPending
                 }
                 onClick={handleApplyBulkEdit}
-                className="rounded-2xl bg-white px-3 py-1.5 text-sm font-medium text-gray-900 hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-40"
+                className="rounded-2xl bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-40"
               >
                 Apply to selected
               </button>
@@ -430,7 +430,7 @@ export function TransactionList({
                       className="h-4 w-4 text-foreground-muted transition-transform duration-200"
                       style={{ transform: collapsed ? "rotate(-90deg)" : "rotate(0deg)" }}
                     />
-                    <h3 className="text-sm font-bold text-white">{group.label}</h3>
+                    <h3 className="text-sm font-bold text-foreground">{group.label}</h3>
                   </button>
                 </div>
                 <div
@@ -442,7 +442,7 @@ export function TransactionList({
                       {sortMode === "date"
                         ? groupByDay(group.items).map((day) => (
                             <li key={day.key}>
-                              <p className="bg-white/[0.03] px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-foreground-muted">
+                              <p className="bg-foreground/[0.03] px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-foreground-muted">
                                 {day.label}
                               </p>
                               <ul className="divide-y divide-card-border">

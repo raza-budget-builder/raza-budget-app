@@ -8,8 +8,8 @@ import { formatCurrency } from "@/lib/format";
 // consistently with the green/orange used everywhere else (transaction
 // amounts, category charts), rather than a third color pair. Same bright
 // values as AMOUNT_TEXT_CLASS, validated against the dark card surface.
-const GOOD_COLOR = "#4ade80";
-const OFF_TARGET_COLOR = "#fb923c";
+const GOOD_COLOR = "var(--positive)";
+const OFF_TARGET_COLOR = "var(--attention)";
 
 const MONTH_OPTIONS_COUNT = 25; // this month + 24 back
 
@@ -46,13 +46,13 @@ function MeterRow({ row }: { row: BudgetSplitRow }) {
   return (
     <div>
       <div className="mb-1.5 flex flex-wrap items-baseline justify-between gap-x-2 text-sm">
-        <span className="font-bold text-white">{row.label}</span>
+        <span className="font-bold text-foreground">{row.label}</span>
         <span className="text-foreground-muted">
           ${formatCurrency(row.actual)} of ${formatCurrency(row.targetAmount)} target ·{" "}
           {Math.round(row.actualPercent)}%
         </span>
       </div>
-      <div className="relative h-2.5 w-full rounded-full bg-white/10">
+      <div className="relative h-2.5 w-full rounded-full bg-foreground/10">
         <div
           className="h-2.5 rounded-full"
           style={{ width: `${fillWidth}%`, backgroundColor: color }}
@@ -64,7 +64,7 @@ function MeterRow({ row }: { row: BudgetSplitRow }) {
           style={{ left: `${row.targetPercent}%` }}
         />
         <div
-          className="absolute top-1/2 h-[14px] w-px -translate-x-1/2 -translate-y-1/2 rounded-full bg-white"
+          className="absolute top-1/2 h-[14px] w-px -translate-x-1/2 -translate-y-1/2 rounded-full bg-foreground"
           style={{ left: `${row.targetPercent}%` }}
         />
       </div>
@@ -86,7 +86,7 @@ export function BudgetSplitModule({ transactions }: { transactions: Transaction[
     <section className="mb-10 rounded-2xl border border-card-border bg-card p-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 className="font-bold text-white">The 50-30-20 rule</h2>
+          <h2 className="font-bold text-foreground">The 50-30-20 rule</h2>
           <p className="mt-1 text-sm text-foreground-muted">
             See how you compare to this popular split.
           </p>
@@ -94,7 +94,7 @@ export function BudgetSplitModule({ transactions }: { transactions: Transaction[
         <select
           value={selectedMonth}
           onChange={(e) => setSelectedMonth(e.target.value)}
-          className="shrink-0 rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-white"
+          className="shrink-0 rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
         >
           {monthOptions.map((option) => (
             <option key={option.value} value={option.value}>
@@ -133,7 +133,7 @@ export function BudgetSplitModule({ transactions }: { transactions: Transaction[
                 Off target
               </span>
               <span className="flex items-center gap-1.5">
-                <span className="inline-block h-2.5 w-px bg-white" />
+                <span className="inline-block h-2.5 w-px bg-foreground" />
                 Target
               </span>
             </div>

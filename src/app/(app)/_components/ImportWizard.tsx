@@ -150,12 +150,12 @@ export function ImportWizard() {
                   name="file"
                   accept=".csv,text/csv"
                   required
-                  className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-3 py-2 text-sm text-white"
+                  className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
                 />
               </div>
               <button
                 disabled={isPending}
-                className="rounded-2xl bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200 disabled:opacity-50"
+                className="rounded-2xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50"
               >
                 {isPending ? "Reading file…" : "Upload & continue"}
               </button>
@@ -192,7 +192,7 @@ export function ImportWizard() {
                   setAccountType("checking");
                   setStep("mapping");
                 }}
-                className="rounded-2xl border border-card-border px-4 py-3 text-left text-sm font-medium text-white hover:bg-white/5"
+                className="rounded-2xl border border-card-border px-4 py-3 text-left text-sm font-medium text-foreground hover:bg-foreground/5"
               >
                 Debit / Checking account
               </button>
@@ -201,7 +201,7 @@ export function ImportWizard() {
                   setAccountType("credit");
                   setStep("mapping");
                 }}
-                className="rounded-2xl border border-card-border px-4 py-3 text-left text-sm font-medium text-white hover:bg-white/5"
+                className="rounded-2xl border border-card-border px-4 py-3 text-left text-sm font-medium text-foreground hover:bg-foreground/5"
               >
                 Credit card account
               </button>
@@ -209,7 +209,7 @@ export function ImportWizard() {
             <button
               type="button"
               onClick={() => setStep("upload")}
-              className="text-sm text-foreground-muted hover:text-white"
+              className="text-sm text-foreground-muted hover:text-foreground"
             >
               ← Back
             </button>
@@ -232,7 +232,7 @@ export function ImportWizard() {
                   onChange={(e) =>
                     setMapping((m) => ({ ...m, [field.key]: e.target.value }))
                   }
-                  className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-3 py-2 text-sm text-white"
+                  className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
                 >
                   <option value="" disabled>
                     Select a column
@@ -256,7 +256,7 @@ export function ImportWizard() {
                 onChange={(e) =>
                   setMapping((m) => ({ ...m, type: e.target.value || null }))
                 }
-                className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-3 py-2 text-sm text-white"
+                className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
               >
                 <option value="">None — infer from amount sign</option>
                 {parsed.headers.map((h) => (
@@ -273,7 +273,7 @@ export function ImportWizard() {
               <button
                 onClick={handleConfirmMapping}
                 disabled={isPending}
-                className="rounded-2xl bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200 disabled:opacity-50"
+                className="rounded-2xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50"
               >
                 {isPending ? "Categorizing…" : "Confirm & import"}
               </button>
@@ -284,7 +284,7 @@ export function ImportWizard() {
                   setStep("upload");
                 }}
                 disabled={isPending}
-                className="rounded-2xl border border-card-border px-4 py-2 text-sm font-medium text-foreground-muted hover:bg-white/5 hover:text-white"
+                className="rounded-2xl border border-card-border px-4 py-2 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
               >
                 Start over
               </button>
@@ -311,7 +311,7 @@ export function ImportWizard() {
                     className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 text-sm"
                   >
                     <div className="min-w-0">
-                      <p className="truncate font-bold text-white">{c.description}</p>
+                      <p className="truncate font-bold text-foreground">{c.description}</p>
                       <p className="text-foreground-muted">
                         {c.date} ·{" "}
                         <span className={AMOUNT_TEXT_CLASS[c.type]}>
@@ -325,8 +325,8 @@ export function ImportWizard() {
                         aria-pressed={decision === "transfer"}
                         className={`rounded-2xl px-3 py-1.5 text-sm font-medium ${
                           decision === "transfer"
-                            ? "bg-white text-gray-900"
-                            : "border border-card-border text-foreground-muted hover:bg-white/5 hover:text-white"
+                            ? "bg-accent text-accent-foreground"
+                            : "border border-card-border text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
                         }`}
                       >
                         It&apos;s a transfer
@@ -336,8 +336,8 @@ export function ImportWizard() {
                         aria-pressed={decision === "keep"}
                         className={`rounded-2xl px-3 py-1.5 text-sm font-medium ${
                           decision === "keep"
-                            ? "bg-white text-gray-900"
-                            : "border border-card-border text-foreground-muted hover:bg-white/5 hover:text-white"
+                            ? "bg-accent text-accent-foreground"
+                            : "border border-card-border text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
                         }`}
                       >
                         Not a transfer
@@ -351,7 +351,7 @@ export function ImportWizard() {
             <button
               onClick={handleContinueAfterTransfers}
               disabled={!allTransfersDecided || isPending}
-              className="rounded-2xl bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-2xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-40"
             >
               {isPending ? "Importing…" : "Continue"}
             </button>
@@ -365,7 +365,7 @@ export function ImportWizard() {
   
         {step === "done" && result && (
           <div className="space-y-3">
-            <p className="text-sm text-white">
+            <p className="text-sm text-foreground">
               {`Imported ${result.imported} ${
                 result.imported === 1 ? "transaction" : "transactions"
               }.`}
@@ -376,7 +376,7 @@ export function ImportWizard() {
             </p>
             <a
               href="/transactions"
-              className="inline-block rounded-2xl bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200"
+              className="inline-block rounded-2xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover"
             >
               Go to Transactions
             </a>

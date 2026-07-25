@@ -47,11 +47,11 @@ export function Modal({
         className="flex h-full w-full flex-col overflow-y-auto bg-card p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] sm:h-auto sm:max-h-[85vh] sm:max-w-lg sm:flex-none sm:rounded-2xl sm:border sm:border-card-border sm:pb-6"
       >
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-sm font-bold text-white">{title}</h2>
+          <h2 className="text-sm font-bold text-foreground">{title}</h2>
           <button
             onClick={onClose}
             aria-label="Close"
-            className="-mr-2 flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-white/10 hover:text-white"
+            className="-mr-2 flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
           >
             <CloseIcon className="h-5 w-5" />
           </button>

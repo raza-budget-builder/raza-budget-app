@@ -47,15 +47,15 @@ const ICONS: Record<CategoryIconKey, (props: { className?: string }) => React.Re
 // attention" (transaction amounts, the 50/30/20 meters) — negative here
 // means a concerning change (spending up, new subscription, price
 // increase), positive means the opposite.
-const POSITIVE_COLOR = "#4ade80";
-const NEGATIVE_COLOR = "#fb923c";
+const POSITIVE_COLOR = "var(--positive)";
+const NEGATIVE_COLOR = "var(--attention)";
 
 export function DriftAlertsModule({ data }: { data: DriftAlerts }) {
   return (
     <section className="mb-10 rounded-2xl border border-card-border bg-card p-6">
       <div className="flex items-center gap-2">
-        <AiInsightIcon className="h-6 w-auto" />
-        <h2 className="font-bold text-white">Drift alerts</h2>
+        <AiInsightIcon className="h-4 w-auto" />
+        <h2 className="font-bold text-foreground">Drift alerts</h2>
       </div>
       <p className="mt-1 text-sm text-foreground-muted">
         Categories spending notably more or less than usual, new subscriptions, and price
@@ -72,15 +72,15 @@ export function DriftAlertsModule({ data }: { data: DriftAlerts }) {
                   <span
                     aria-hidden="true"
                     className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
-                    style={{ backgroundColor: `${color}1a` }}
+                    style={{ backgroundColor: `color-mix(in srgb, ${color} 10%, transparent)` }}
                   >
                     <Icon
                       className={`h-4 w-4 ${
-                        alert.sentiment === "positive" ? "text-[#4ade80]" : "text-[#fb923c]"
+                        alert.sentiment === "positive" ? "text-positive" : "text-attention"
                       }`}
                     />
                   </span>
-                  <span className="pt-1 text-sm text-white">{alert.text}</span>
+                  <span className="pt-1 text-sm text-foreground">{alert.text}</span>
                 </li>
               );
             })}

@@ -72,7 +72,7 @@ export default async function ProfilePage({
             href="/dashboard"
             aria-label="Close profile"
             title="Close"
-            className="flex h-11 w-11 items-center justify-center text-foreground-muted hover:text-white"
+            className="flex h-11 w-11 items-center justify-center text-foreground-muted hover:text-foreground"
           >
             <CloseIcon className="h-5 w-5" />
           </Link>
@@ -86,7 +86,7 @@ export default async function ProfilePage({
       )}
 
       <section className="mb-10 rounded-2xl border border-card-border bg-card p-6">
-        <h2 className="font-bold text-white">Your info</h2>
+        <h2 className="font-bold text-foreground">Your info</h2>
         <form action={updateProfileInfo} className="mt-4 space-y-4">
           <div>
             <label className="block text-xs font-medium text-foreground-muted">
@@ -96,7 +96,7 @@ export default async function ProfilePage({
               type="text"
               name="name"
               defaultValue={profile?.name ?? ""}
-              className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-3 py-2 text-sm text-white"
+              className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
             />
           </div>
           <div>
@@ -108,10 +108,10 @@ export default async function ProfilePage({
               name="main_goal"
               placeholder="e.g. Save for a house, Pay off debt"
               defaultValue={profile?.main_goal ?? ""}
-              className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-3 py-2 text-sm text-white"
+              className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
             />
           </div>
-          <button className="rounded-2xl bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200">
+          <button className="rounded-2xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
             Save
           </button>
         </form>
@@ -125,7 +125,7 @@ export default async function ProfilePage({
         id="budget-goals"
         className="mb-10 scroll-mt-6 rounded-2xl border border-card-border bg-card p-6"
       >
-        <h2 className="font-bold text-white">Budget Goals</h2>
+        <h2 className="font-bold text-foreground">Budget Goals</h2>
         <p className="mt-1 text-sm text-foreground-muted">
           Set a monthly spending cap for any category — leave a field blank to remove
           its goal.
@@ -133,7 +133,7 @@ export default async function ProfilePage({
         <form action={updateBudgetGoals} className="mt-4 space-y-3">
           {(expenseCategories ?? []).map((category) => (
             <div key={category.id} className="flex items-center justify-between gap-4">
-              <label htmlFor={`budget_goal_${category.id}`} className="text-sm text-white">
+              <label htmlFor={`budget_goal_${category.id}`} className="text-sm text-foreground">
                 {category.name}
               </label>
               <div className="flex shrink-0 items-center gap-1.5">
@@ -146,12 +146,12 @@ export default async function ProfilePage({
                   name={`budget_goal_${category.id}`}
                   defaultValue={capByCategory.get(category.id) ?? ""}
                   placeholder="No cap"
-                  className="w-28 rounded-2xl border border-card-border bg-input-bg px-3 py-1.5 text-right text-sm text-white"
+                  className="w-28 rounded-2xl border border-card-border bg-input-bg px-3 py-1.5 text-right text-sm text-foreground"
                 />
               </div>
             </div>
           ))}
-          <button className="rounded-2xl bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200">
+          <button className="rounded-2xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
             Save budget goals
           </button>
         </form>

@@ -3,9 +3,9 @@ import { formatCurrency } from "@/lib/format";
 // Same green/orange used for income/expense text and the 50-30-20 meters,
 // plus a genuine red for "well over budget" — a third tier those two don't
 // need. All three contrast-validated (≥5.5:1) against the dark card surface.
-const GOOD_COLOR = "#4ade80";
-const WARNING_COLOR = "#fb923c";
-const OVER_COLOR = "#f87171";
+const GOOD_COLOR = "var(--positive)";
+const WARNING_COLOR = "var(--attention)";
+const OVER_COLOR = "var(--critical)";
 
 // Below this fraction of the goal is "good"; from here up to 100% is the
 // "approaching" warning band; anything past 100% is "over".
@@ -78,13 +78,13 @@ export function GoalsList({
         return (
           <li key={c.id} className="px-4 py-3 text-sm">
             <div className="mb-1.5 flex flex-wrap items-baseline justify-between gap-x-2">
-              <span className="font-bold text-white">{c.name}</span>
+              <span className="font-bold text-foreground">{c.name}</span>
               <span className="text-foreground-muted">
                 ${formatCurrency(spend)} of ${formatCurrency(cap)} ·{" "}
                 {Math.round(ratio * 100)}%
               </span>
             </div>
-            <div className="h-2.5 w-full rounded-full bg-white/10">
+            <div className="h-2.5 w-full rounded-full bg-foreground/10">
               <div
                 className="h-2.5 rounded-full"
                 style={{ width: `${fillWidth}%`, backgroundColor: color }}
@@ -96,7 +96,7 @@ export function GoalsList({
       })}
       {withoutGoal.map((c) => (
         <li key={c.id} className="flex items-center justify-between px-4 py-3 text-sm">
-          <span className="font-bold text-white">{c.name}</span>
+          <span className="font-bold text-foreground">{c.name}</span>
           <span className="text-foreground-muted">Not set</span>
         </li>
       ))}
