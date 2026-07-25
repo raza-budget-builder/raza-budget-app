@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { generateDueRecurringTransactions } from "@/lib/recurring-generation";
 import { BottomNav } from "./_components/BottomNav";
 import { ToastProvider } from "./_components/ToastProvider";
+import { ChatProvider } from "./_components/ChatProvider";
 
 export default async function AppLayout({
   children,
@@ -32,10 +33,12 @@ export default async function AppLayout({
 
   return (
     <ToastProvider>
-      <div className="min-h-screen w-full bg-background pb-[calc(6rem+env(safe-area-inset-bottom))]">
-        <div className="mx-auto w-full max-w-2xl px-4 py-10">{children}</div>
-        <BottomNav showBusiness={showBusiness} />
-      </div>
+      <ChatProvider>
+        <div className="min-h-screen w-full bg-background pb-[calc(6rem+env(safe-area-inset-bottom))]">
+          <div className="mx-auto w-full max-w-2xl px-4 py-10">{children}</div>
+          <BottomNav showBusiness={showBusiness} />
+        </div>
+      </ChatProvider>
     </ToastProvider>
   );
 }

@@ -51,7 +51,7 @@ create table if not exists public.transactions (
   amount numeric(12, 2) not null,
   category uuid references public.categories(id) on delete set null,
   type text not null default 'expense' check (type in ('income', 'expense')),
-  source text not null default 'manual' check (source in ('manual', 'csv')),
+  source text not null default 'manual' check (source in ('manual', 'csv', 'ai_chat')),
   confirmed boolean not null default true,
   -- Passive recurring-transaction detection — a shared group id links
   -- matched transactions together, with the detected cadence alongside.
@@ -60,7 +60,8 @@ create table if not exists public.transactions (
   recurring_interval text check (recurring_interval in ('weekly', 'biweekly', 'monthly')),
   -- 'pending' = an auto-generated prediction of a recurring group's next
   -- occurrence, awaiting the user's confirmation. Independent of `confirmed`
-  -- above, which is about category-confirmation for ambiguous CSV imports.
+  -- above, which is about category-confirmation for ambiguous CSV imports
+  -- and unsure AI-chat-recorded transactions.
   status text not null default 'confirmed' check (status in ('confirmed', 'pending')),
   -- Which CSV import batch created this row, if any — lets a revert find
   -- and delete exactly the rows that batch created. Null for manual entries.

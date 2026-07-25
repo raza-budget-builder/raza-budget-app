@@ -1,4 +1,6 @@
 import { login, signup } from "./actions";
+import { AiWelcomeMessage } from "./AiWelcomeMessage";
+import { ThemeToggle } from "../(app)/_components/ThemeToggle";
 
 export default async function LoginPage({
   searchParams,
@@ -8,16 +10,19 @@ export default async function LoginPage({
   const { error } = await searchParams;
 
   return (
-    <div className="flex flex-1 items-center justify-center bg-background px-4 py-16">
-      <div className="w-full max-w-sm space-y-6 rounded-2xl border border-card-border bg-card p-8">
-        <div>
-          <h1 className="text-xl font-bold text-foreground">
-            Personal Budget
-          </h1>
-          <p className="mt-1 text-sm text-foreground-muted">
-            Enter your email and password to sign in, or create an account.
-          </p>
-        </div>
+    <div className="relative flex flex-1 flex-col items-center justify-center gap-4 bg-background px-4 py-16">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
+
+      <div className="mb-6 w-full max-w-sm sm:max-w-lg md:max-w-xl">
+        <AiWelcomeMessage />
+      </div>
+
+      <div className="w-full max-w-sm space-y-6 rounded-2xl border border-card-border bg-card p-8 sm:max-w-md">
+        <p className="text-sm text-foreground-muted">
+          Enter your email and password to sign in, or create an account.
+        </p>
 
         {error && (
           <p className="rounded-2xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
@@ -74,6 +79,12 @@ export default async function LoginPage({
           </div>
         </form>
       </div>
+
+      <p className="max-w-sm text-center text-xs text-foreground-muted sm:max-w-lg md:max-w-xl">
+        *All advice generated from the analysis of your personal finances is not to be taken as
+        financial advice — always seek professional help before investing or buying financial
+        products.
+      </p>
     </div>
   );
 }

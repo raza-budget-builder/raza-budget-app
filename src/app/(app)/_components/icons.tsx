@@ -824,3 +824,38 @@ export function MoonIcon({ className }: { className?: string }) {
     </svg>
   );
 }
+
+export function ChatIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M21 12a8.5 8.5 0 0 1-8.5 8.5c-1.3 0-2.53-.3-3.62-.83L3 21l1.35-4.05A8.5 8.5 0 1 1 21 12Z" />
+    </svg>
+  );
+}
+
+export function SendIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="m3 3 18 9-18 9 4-9-4-9Z" />
+      <path d="M7 12h14" />
+    </svg>
+  );
+}

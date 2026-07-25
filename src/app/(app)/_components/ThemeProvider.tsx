@@ -14,16 +14,16 @@ export function useTheme() {
   return ctx;
 }
 
-// Starts at "dark" to match the server-rendered markup exactly (a lazy
-// initializer that reads localStorage would return a different value during
-// the client's hydration pass than the server produced, causing a real
-// hydration mismatch — not just a lint complaint). The blocking script in
-// the root layout already applies the correct data-theme attribute before
-// paint, so the page never visibly flashes; this effect only brings React's
-// own state in sync with it, which is a deliberate one-time exception to
-// "don't setState in an effect."
+// Starts at "light" (the app's default theme) to match the server-rendered
+// markup exactly (a lazy initializer that reads localStorage would return a
+// different value during the client's hydration pass than the server
+// produced, causing a real hydration mismatch — not just a lint complaint).
+// The blocking script in the root layout already applies the correct
+// data-theme attribute before paint, so the page never visibly flashes;
+// this effect only brings React's own state in sync with it, which is a
+// deliberate one-time exception to "don't setState in an effect."
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
     try {

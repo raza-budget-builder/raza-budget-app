@@ -4,11 +4,45 @@
  * Two named palettes, selected via a `data-theme` attribute on <html> (set
  * by ThemeProvider, persisted to localStorage) — not OS-driven
  * prefers-color-scheme, which previously caused invisible-text bugs when it
- * disagreed with the app's Tailwind classes. `:root` mirrors the dark block
- * so the page still renders correctly before the theme script/attribute
- * apply (JS disabled, etc).
+ * disagreed with the app's Tailwind classes. `:root` mirrors the light block
+ * (the app's default theme) so the page still renders correctly before the
+ * theme script/attribute apply (JS disabled, first paint, etc).
  */
 :root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* Ivory page + a near-white card, both outlined in a thin near-black
+     border rather than a shadow — sections read as "drawn," not "lifted." */
+  --background: #f6f1e4;
+  --card: #fffdf7;
+  --card-border: #17150f;
+  --input-bg: #efe8d4;
+
+  --foreground: #16150f;
+  --foreground-muted: #5c5646;
+
+  /* Turquoise accent for buttons/active-toggles/highlights. Dark ink on the
+     bright fill (rather than white) keeps contrast comfortably AA even at
+     button-text sizes. */
+  --accent: #2dd4bf;
+  --accent-foreground: #062b26;
+  --accent-hover: #14b8a6;
+}
+
+/* Semantic feedback colors — income/expense amounts, goal status, drift-alert
+   sentiment, destructive actions. Deliberately the SAME in both themes (not
+   part of the light/dark swap): these are meaningful, recognized colors in
+   their own right, not surface chrome. */
+:root {
+  --positive: #4ade80;
+  --positive-hover: #86efac;
+  --attention: #fb923c;
+  --attention-hover: #fdba74;
+  --critical: #f87171;
+  --pending: #facc15;
+}
+
 [data-theme="dark"] {
   /* Declare that this page IS dark, so browsers render native form-control
      chrome (date pickers, select dropdowns, scrollbars) in dark style and
@@ -37,40 +71,6 @@
   --accent: #ffffff;
   --accent-foreground: #111827;
   --accent-hover: #e5e7eb;
-}
-
-/* Semantic feedback colors — income/expense amounts, goal status, drift-alert
-   sentiment, destructive actions. Deliberately the SAME in both themes (not
-   part of the light/dark swap): these are meaningful, recognized colors in
-   their own right, not surface chrome. */
-:root {
-  --positive: #4ade80;
-  --positive-hover: #86efac;
-  --attention: #fb923c;
-  --attention-hover: #fdba74;
-  --critical: #f87171;
-  --pending: #facc15;
-}
-
-[data-theme="light"] {
-  color-scheme: light;
-
-  /* Ivory page + a near-white card, both outlined in a thin near-black
-     border rather than a shadow — sections read as "drawn," not "lifted." */
-  --background: #f6f1e4;
-  --card: #fffdf7;
-  --card-border: #17150f;
-  --input-bg: #efe8d4;
-
-  --foreground: #16150f;
-  --foreground-muted: #5c5646;
-
-  /* Turquoise accent for buttons/active-toggles/highlights. Dark ink on the
-     bright fill (rather than white) keeps contrast comfortably AA even at
-     button-text sizes. */
-  --accent: #2dd4bf;
-  --accent-foreground: #062b26;
-  --accent-hover: #14b8a6;
 }
 
 @theme inline {
