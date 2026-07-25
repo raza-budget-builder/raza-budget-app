@@ -1,4 +1,5 @@
 import type { MonthlyGoalSummary } from "@/lib/goal-summary";
+import { AiInsightIcon } from "./icons";
 
 function formatMonthLabel(month: string) {
   return new Date(`${month}-01T00:00:00`).toLocaleDateString("en-US", {
@@ -10,7 +11,10 @@ function formatMonthLabel(month: string) {
 export function GoalsSummaryCard({ data }: { data: MonthlyGoalSummary }) {
   return (
     <section className="mb-10 rounded-2xl border border-card-border bg-card px-8 py-7">
-      <p className="text-xs text-foreground-muted">{formatMonthLabel(data.month)}</p>
+      <div className="flex items-center gap-2">
+        <AiInsightIcon className="h-6 w-auto" />
+        <p className="text-xs text-foreground-muted">{formatMonthLabel(data.month)}</p>
+      </div>
 
       {data.summary ? (
         <p className="font-editorial mt-3 text-[15px] leading-relaxed text-white">

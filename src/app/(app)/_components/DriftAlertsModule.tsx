@@ -1,6 +1,7 @@
 import type { DriftAlerts } from "@/lib/drift-alerts";
 import { categoryIconKey, type CategoryIconKey } from "@/lib/category-icon";
 import {
+  AiInsightIcon,
   BagIcon,
   BasketIcon,
   BoltIcon,
@@ -52,7 +53,10 @@ const NEGATIVE_COLOR = "#fb923c";
 export function DriftAlertsModule({ data }: { data: DriftAlerts }) {
   return (
     <section className="mb-10 rounded-2xl border border-card-border bg-card p-6">
-      <h2 className="font-bold text-white">Drift alerts</h2>
+      <div className="flex items-center gap-2">
+        <AiInsightIcon className="h-6 w-auto" />
+        <h2 className="font-bold text-white">Drift alerts</h2>
+      </div>
       <p className="mt-1 text-sm text-foreground-muted">
         Categories spending notably more or less than usual, new subscriptions, and price
         increases we spotted.

@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import Image from "next/image";
 
 export function PencilIcon({ className }: { className?: string }) {
   return (
@@ -699,6 +700,62 @@ export function ReceiptIcon({ className }: { className?: string }) {
       <path d="M9 8h6" />
       <path d="M9 12h6" />
     </svg>
+  );
+}
+
+export function DollarSignIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M12 2v20" />
+      <path d="M17 6.5c0-1.9-2.2-3.5-5-3.5s-5 1.4-5 3.5c0 4.5 10 2.5 10 7.5 0 2.1-2.2 3.5-5 3.5s-5-1.6-5-3.5" />
+    </svg>
+  );
+}
+
+// A four-point "sparkle" — the compact twinkle shape used by most AI-branded
+// marks (Gemini, Copilot, etc.) — curved concave waists between the points
+// rather than straight diamond edges, so it reads as soft/organic instead
+// of a hard geometric shape. Filled rather than outline, so it sits as a
+// badge/accent rather than another line icon.
+export function SparkleIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+      <path
+        d="M12 3c0 0 .8 6.2 3 7 .8.3 6 2 6 2s-5.2 1.7-6 2c-2.2.8-3 7-3 7s-.8-6.2-3-7
+           c-.8-.3-6-2-6-2s5.2-1.7 6-2c2.2-.8 3-7 3-7Z"
+      />
+    </svg>
+  );
+}
+
+// The "this is AI-synthesized" mark used across every AI-generated content
+// surface (Dashboard insight carousel, the Insights weekly narrative, the
+// Goals AI summary, Drift alerts). Renders /public/ai-mark.png — the "1b —
+// small mark, no frame" direction from the AI Budget Logo design file,
+// rendered via headless Chrome from that direction's exact markup/colors
+// and trimmed to its true (transparent) bounding box with sharp, rather
+// than hand-redrawn — so it's pixel-faithful to the design, not an
+// approximation. Deliberately frameless/backgroundless per that direction's
+// own caption ("sized for a section/header, not an app icon"), unlike the
+// earlier badge-style 1a mark this replaced.
+export function AiInsightIcon({ className }: { className?: string }) {
+  return (
+    <Image
+      src="/ai-mark.png"
+      alt=""
+      width={79}
+      height={94}
+      className={`inline-block shrink-0 object-contain ${className ?? ""}`}
+    />
   );
 }
 

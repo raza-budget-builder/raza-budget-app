@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { WeeklyNarrativeSummary } from "@/lib/weekly-summary";
+import { AiInsightIcon } from "./icons";
 
 // Fast enough to feel brisk rather than sluggish, slow enough to read as a
 // deliberate "typing" reveal rather than a flicker.
@@ -114,7 +115,11 @@ export function NarrativeSummaryModule({ data }: { data: WeeklyNarrativeSummary 
 
   return (
     <section className="mb-10 rounded-2xl border border-card-border bg-card px-8 py-7">
-      <p className="text-xs text-foreground-muted">{rangeLabel}</p>
+      <div className="flex items-center gap-2">
+        <AiInsightIcon className="h-6 w-auto" />
+        <h2 className="font-bold text-white">Your Weekly AI Financial Summary</h2>
+      </div>
+      <p className="mt-1 text-xs text-foreground-muted">{rangeLabel}</p>
 
       {hasContent ? (
         <>

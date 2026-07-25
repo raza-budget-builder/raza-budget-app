@@ -6,6 +6,8 @@ import { CategoryCharts } from "../_components/CategoryCharts";
 import { SummaryCard } from "../_components/SummaryCard";
 import { AMOUNT_TEXT_CLASS, PENDING_TEXT_CLASS, formatSignedAmount } from "@/lib/format";
 import { computeUpcomingRecurring } from "@/lib/recurring-generation";
+import { buildDashboardInsightSlides } from "@/lib/dashboard-insights";
+import { InsightsCarousel } from "../_components/InsightsCarousel";
 
 const INTERVAL_LABEL: Record<"weekly" | "biweekly" | "monthly", string> = {
   weekly: "Weekly",
@@ -20,7 +22,7 @@ type TransactionRowData = {
   amount: number;
   type: "income" | "expense";
   status: "confirmed" | "pending";
-  category: { name: string } | null;
+  category: { id: string; name: string } | null;
 };
 
 type Category = {
@@ -28,6 +30,8 @@ type Category = {
   name: string;
   type: "income" | "expense";
 };
+
+type Goal = { category_id: string; monthly_cap: number };
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -43,12 +47,13 @@ export default async function DashboardPage() {
   const [
     { data: transactions, error: transactionsError },
     { data: categories, error: categoriesError },
+    { data: goals, error: goalsError },
     { count: needsReviewCount, error: needsReviewError },
     upcomingRecurring,
   ] = await Promise.all([
     supabase
       .from("transactions")
-      .select("id, date, description, amount, type, status, category:categories(name)")
+      .select("id, date, description, amount, type, status, category:categories(id, name)")
       .order("date", { ascending: false })
       .returns<TransactionRowData[]>(),
     supabase
@@ -58,6 +63,11 @@ export default async function DashboardPage() {
       .order("name")
       .returns<Category[]>(),
     supabase
+      .from("budget_goals")
+      .select("category_id, monthly_cap")
+      .eq("user_id", user.id)
+      .returns<Goal[]>(),
+    supabase
       .from("transactions")
       .select("id", { count: "exact", head: true })
       .eq("confirmed", false),
@@ -66,6 +76,7 @@ export default async function DashboardPage() {
 
   if (transactionsError) console.error("transactions error", transactionsError);
   if (categoriesError) console.error("categories error", categoriesError);
+  if (goalsError) console.error("goals error", goalsError);
   if (needsReviewError) console.error("needs review count error", needsReviewError);
 
   const allTransactions = transactions ?? [];
@@ -83,6 +94,13 @@ export default async function DashboardPage() {
     (t) => t.date >= rangeStart && t.date <= rangeEnd,
   );
 
+  const insightSlides = buildDashboardInsightSlides(
+    confirmedTransactions,
+    goals ?? [],
+    categories ?? [],
+    today,
+  );
+
   return (
     <div>
       <PageHeader title="Dashboard" />
@@ -93,6 +111,8 @@ export default async function DashboardPage() {
       />
 
       <SummaryCard transactions={confirmedTransactions} />
+
+      <InsightsCarousel slides={insightSlides} />
 
       <section className="mb-10 rounded-2xl border border-card-border bg-card p-6">
         <CategoryCharts transactions={confirmedTransactions} />
