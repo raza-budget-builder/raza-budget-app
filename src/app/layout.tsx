@@ -32,7 +32,7 @@ const editorialSerif = Source_Serif_4({
 });
 
 export const metadata: Metadata = {
-  title: "Personal Budget",
+  title: "Steward",
   description: "A personal budgeting app",
 };
 
