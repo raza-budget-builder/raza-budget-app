@@ -36,7 +36,14 @@ function systemPrompt(today: Date): string {
     `logged it dated today and they say "it was yesterday", or "actually that was $45"), use ` +
     `update_transaction to fix that same transaction — never call record_transaction again for ` +
     `it, that would create a duplicate. Only treat a message as a new purchase to record if it ` +
-    `clearly describes a different transaction than the one you just logged.`
+    `clearly describes a different transaction than the one you just logged.\n\n` +
+    `You can also delete a transaction or recategorize a whole batch at once. Deleting is ` +
+    `permanent: always state exactly which transaction you found (date, amount, description) ` +
+    `and get an explicit yes from the user in this conversation before calling ` +
+    `delete_transaction — never delete on the first mention. Bulk recategorizing (e.g. "make ` +
+    `all Walmart transactions this month a Grocery expense") is not destructive — no data is ` +
+    `lost, just the category tag — so you can call bulk_recategorize directly once the request ` +
+    `is clear, then tell the user how many transactions were updated.`
   );
 }
 

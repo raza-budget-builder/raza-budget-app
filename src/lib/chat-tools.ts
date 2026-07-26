@@ -210,6 +210,7 @@ export function buildChatTools(ctx: ChatToolContext) {
         .sort((a, b) => (a.date < b.date ? 1 : -1))
         .slice(0, cap)
         .map((t) => ({
+          id: t.id,
           date: t.date,
           description: t.description,
           amount: t.amount,
@@ -409,6 +410,154 @@ export function buildChatTools(ctx: ChatToolContext) {
     },
   });
 
+  const deleteTransaction = betaZodTool({
+    name: "delete_transaction",
+    description:
+      "Permanently delete a transaction. This is destructive — always tell the user which " +
+      "specific transaction you found (date, amount, description) and get an explicit yes from " +
+      "them in the conversation before calling this tool. Narrow the match with date and/or " +
+      "amount if the description alone could match more than one transaction.",
+    inputSchema: z.object({
+      descriptionContains: z
+        .string()
+        .describe("Vendor/description substring to find it by, e.g. 'Walmart'."),
+      date: z
+        .string()
+        .optional()
+        .describe("ISO date YYYY-MM-DD, if known — narrows the match."),
+      amount: z.number().positive().optional().describe("Exact amount, if known — narrows the match."),
+    }),
+    run: async ({ descriptionContains, date, amount }) => {
+      const needle = descriptionContains.toLowerCase();
+      const matches = ctx.transactions.filter((t) => {
+        if (!t.description.toLowerCase().includes(needle)) return false;
+        if (date && t.date !== date) return false;
+        if (amount !== undefined && t.amount !== amount) return false;
+        return true;
+      });
+
+      if (matches.length === 0) {
+        return JSON.stringify({ ok: false, error: "No matching transaction found." });
+      }
+      if (matches.length > 1) {
+        return JSON.stringify({
+          ok: false,
+          error:
+            "More than one matching transaction found — ask the user for the exact date or " +
+            "amount to identify the right one.",
+          candidates: matches.map((m) => ({
+            id: m.id,
+            date: m.date,
+            description: m.description,
+            amount: m.amount,
+          })),
+        });
+      }
+
+      const match = matches[0];
+      const { error } = await ctx.supabase.from("transactions").delete().eq("id", match.id);
+      if (error) {
+        return JSON.stringify({ ok: false, error: error.message });
+      }
+
+      const idx = ctx.transactions.findIndex((t) => t.id === match.id);
+      if (idx !== -1) ctx.transactions.splice(idx, 1);
+
+      return JSON.stringify({
+        ok: true,
+        deleted: {
+          date: match.date,
+          description: match.description,
+          amount: match.amount,
+          category: match.category?.name ?? "Uncategorized",
+        },
+      });
+    },
+  });
+
+  const bulkRecategorize = betaZodTool({
+    name: "bulk_recategorize",
+    description:
+      "Change the category for every transaction matching the given filters at once — e.g. " +
+      "'make all Walmart transactions this month a Grocery expense'. At least one of " +
+      "descriptionContains, currentCategoryName, or period must be given, so this can never " +
+      "accidentally sweep the user's entire history. Tell the user how many transactions were " +
+      "updated afterward.",
+    inputSchema: z.object({
+      descriptionContains: z
+        .string()
+        .optional()
+        .describe("Vendor/description substring to match, e.g. 'Walmart'."),
+      currentCategoryName: z
+        .string()
+        .optional()
+        .describe("Only affect transactions currently in this category."),
+      period: PeriodOrRangeSchema.optional().describe("Only affect transactions in this period."),
+      type: z.enum(["income", "expense"]).optional(),
+      newCategoryName: z
+        .enum(categoryEnumValues)
+        .describe("The category to assign to every matching transaction."),
+    }),
+    run: async ({ descriptionContains, currentCategoryName, period, type, newCategoryName }) => {
+      if (!descriptionContains && !currentCategoryName && !period) {
+        return JSON.stringify({
+          ok: false,
+          error:
+            "At least one filter (description, current category, or period) is required — " +
+            "refusing to recategorize the user's entire transaction history at once.",
+        });
+      }
+
+      const range = period ? resolvePeriod(period, ctx.today) : null;
+      const needle = descriptionContains?.toLowerCase();
+
+      const matches = ctx.transactions.filter((t) => {
+        if (range && !inRange(t, range)) return false;
+        if (type && t.type !== type) return false;
+        if (needle && !t.description.toLowerCase().includes(needle)) return false;
+        if (
+          currentCategoryName &&
+          t.category?.name.toLowerCase() !== currentCategoryName.toLowerCase()
+        ) {
+          return false;
+        }
+        return true;
+      });
+
+      if (matches.length === 0) {
+        return JSON.stringify({ ok: false, error: "No matching transactions found." });
+      }
+
+      const newCategory = ctx.categories.find(
+        (c) => c.name.toLowerCase() === newCategoryName.toLowerCase(),
+      );
+      const ids = matches.map((t) => t.id);
+
+      const { error } = await ctx.supabase
+        .from("transactions")
+        .update({ category: newCategory?.id ?? null, confirmed: true })
+        .in("id", ids);
+      if (error) {
+        return JSON.stringify({ ok: false, error: error.message });
+      }
+
+      const idSet = new Set(ids);
+      for (const t of ctx.transactions) {
+        if (idSet.has(t.id)) {
+          t.category = newCategory
+            ? { id: newCategory.id, name: newCategory.name, budget_group: null }
+            : null;
+        }
+      }
+
+      return JSON.stringify({
+        ok: true,
+        updatedCount: matches.length,
+        newCategory: newCategory?.name ?? "Uncategorized",
+      });
+    },
+  });
+
   const getGoalPerformanceTool = betaZodTool({
     name: "get_goal_performance",
     description:
@@ -437,5 +586,7 @@ export function buildChatTools(ctx: ChatToolContext) {
     getGoalPerformanceTool,
     recordTransaction,
     updateTransaction,
+    deleteTransaction,
+    bulkRecategorize,
   ];
 }
