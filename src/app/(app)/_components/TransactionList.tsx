@@ -107,7 +107,6 @@ export function TransactionList({
   const [bulkType, setBulkType] = useState<"" | "income" | "expense">("");
   const [collapsedMonths, setCollapsedMonths] = useState<Set<string>>(new Set());
   const [isPending, startTransition] = useTransition();
-  const [searchOpen, setSearchOpen] = useState(false);
   const { showToast } = useToast();
 
   // Persisted (not just local) so search/filter/sort survive navigating to
@@ -125,7 +124,6 @@ export function TransactionList({
     setSearch("");
     setTypeFilter("all");
     setSortMode("date");
-    setSearchOpen(false);
   }
 
   const visibleTransactions = useMemo(() => {
@@ -240,94 +238,84 @@ export function TransactionList({
   return (
     <section>
       {transactions.length > 0 && (
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex overflow-hidden rounded-full border border-card-border text-sm font-medium">
-            <button
-              onClick={() => toggleTypeFilter("expense")}
-              aria-pressed={typeFilter === "expense"}
-              className={`px-3 py-1.5 ${
-                typeFilter === "expense"
-                  ? "bg-accent text-accent-foreground"
-                  : "text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
-              }`}
-            >
-              Expense
-            </button>
-            <button
-              onClick={() => toggleTypeFilter("income")}
-              aria-pressed={typeFilter === "income"}
-              className={`border-l border-card-border px-3 py-1.5 ${
-                typeFilter === "income"
-                  ? "bg-accent text-accent-foreground"
-                  : "text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
-              }`}
-            >
-              Income
-            </button>
+        <div className="mb-4">
+          {/* Dominant row: search gets the width, since it's the control
+              most likely to be reached for first. */}
+          <div className="relative">
+            <SearchIcon className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-foreground-muted" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search transactions…"
+              aria-label="Search transactions by description"
+              className="w-full rounded-xl bg-input-bg py-2.5 pr-3 pl-10 text-sm text-foreground placeholder:text-foreground-muted"
+            />
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-2">
+          {/* Secondary row: everything else, tighter and condensed. */}
+          <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
+            <div className="flex gap-1">
               <button
-                onClick={() => setSearchOpen((o) => !o)}
-                aria-pressed={searchOpen}
-                aria-label="Search transactions"
-                title="Search"
-                className={`flex h-11 w-11 items-center justify-center rounded-full border border-card-border ${
-                  searchOpen || search
+                onClick={() => toggleTypeFilter("expense")}
+                aria-pressed={typeFilter === "expense"}
+                className={`rounded-full px-3 py-1.5 text-xs font-medium ${
+                  typeFilter === "expense"
                     ? "bg-accent text-accent-foreground"
-                    : "text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
+                    : "text-foreground-muted hover:text-foreground"
                 }`}
               >
-                <SearchIcon className="h-4 w-4" />
+                Expense
               </button>
-              {searchOpen && (
-                <input
-                  type="text"
-                  autoFocus
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search description…"
-                  aria-label="Search transactions by description"
-                  className="w-40 rounded-xl border border-card-border bg-input-bg px-3 py-1.5 text-sm text-foreground placeholder:text-foreground-muted"
-                />
-              )}
+              <button
+                onClick={() => toggleTypeFilter("income")}
+                aria-pressed={typeFilter === "income"}
+                className={`rounded-full px-3 py-1.5 text-xs font-medium ${
+                  typeFilter === "income"
+                    ? "bg-accent text-accent-foreground"
+                    : "text-foreground-muted hover:text-foreground"
+                }`}
+              >
+                Income
+              </button>
             </div>
 
-            <select
-              value={sortMode}
-              onChange={(e) => setSortMode(e.target.value as SortMode)}
-              aria-label="Sort transactions by"
-              className="rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
-            >
-              {SORT_CYCLE.map((mode) => (
-                <option key={mode} value={mode}>
-                  {SORT_LABEL[mode]}
-                </option>
-              ))}
-            </select>
-
-            <button
-              onClick={toggleSelecting}
-              className="rounded-full border border-card-border px-3 py-1.5 text-sm font-medium text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
-            >
-              {selecting ? "Cancel" : "Select"}
-            </button>
-
-            {filtersActive && (
-              <button
-                onClick={clearFilters}
-                className="text-sm font-medium text-foreground-muted underline-offset-2 hover:text-foreground hover:underline"
+            <div className="flex flex-wrap items-center gap-2">
+              <select
+                value={sortMode}
+                onChange={(e) => setSortMode(e.target.value as SortMode)}
+                aria-label="Sort transactions by"
+                className="rounded-xl bg-input-bg px-2 py-1 text-xs text-foreground"
               >
-                Clear filters
+                {SORT_CYCLE.map((mode) => (
+                  <option key={mode} value={mode}>
+                    {SORT_LABEL[mode]}
+                  </option>
+                ))}
+              </select>
+
+              <button
+                onClick={toggleSelecting}
+                className="rounded-full bg-card px-3 py-1.5 text-xs font-medium text-foreground-muted hover:text-foreground"
+              >
+                {selecting ? "Cancel" : "Select"}
               </button>
-            )}
+
+              {filtersActive && (
+                <button
+                  onClick={clearFilters}
+                  className="text-xs font-medium text-foreground-muted underline-offset-2 hover:text-foreground hover:underline"
+                >
+                  Clear filters
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}
 
       {selecting && (
-        <div className="mb-3 space-y-3 rounded-xl border border-card-border bg-card px-4 py-3 text-sm">
+        <div className="mb-3 space-y-3 rounded-xl bg-card px-4 py-3 text-sm">
           <div className="flex items-center justify-between">
             <span className="text-foreground-muted">{selectedIds.size} selected</span>
             {!confirmingDelete ? (
@@ -438,11 +426,11 @@ export function TransactionList({
                   style={{ gridTemplateRows: collapsed ? "0fr" : "1fr" }}
                 >
                   <div className="overflow-hidden">
-                    <ul className="divide-y divide-card-border rounded-xl border border-card-border bg-card">
+                    <ul className="divide-y divide-card-border rounded-xl bg-card">
                       {sortMode === "date"
                         ? groupByDay(group.items).map((day) => (
                             <li key={day.key}>
-                              <p className="bg-foreground/[0.03] px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-foreground-muted">
+                              <p className="px-4 pt-2.5 pb-1 text-xs text-foreground-muted">
                                 {day.label}
                               </p>
                               <ul className="divide-y divide-card-border">

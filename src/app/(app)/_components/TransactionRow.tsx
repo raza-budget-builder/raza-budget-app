@@ -308,7 +308,7 @@ export function TransactionRow({
               <span
                 aria-hidden="true"
                 title={transaction.category?.name ?? "Uncategorized"}
-                className="h-2 w-2 shrink-0 rounded-full"
+                className="h-2.5 w-2.5 shrink-0 rounded-full"
                 style={{
                   backgroundColor: categoryColor(transaction.category?.name, transaction.type),
                 }}

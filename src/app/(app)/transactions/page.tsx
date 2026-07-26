@@ -66,9 +66,7 @@ export default async function TransactionsPage({
       <PageHeader title="Transactions" />
 
       {error && (
-        <p className="mb-6 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
-          {error}
-        </p>
+        <p className="mb-4 rounded-xl bg-critical/10 px-3 py-2 text-sm text-critical">{error}</p>
       )}
 
       <DashboardQuickActions

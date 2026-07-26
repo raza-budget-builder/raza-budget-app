@@ -76,9 +76,9 @@ export function NeedsReviewList({
   }
 
   return (
-    <section className="mb-10 rounded-xl border border-amber-500/30 bg-amber-500/10 p-6">
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-sm font-bold text-amber-300">
+    <section className="mb-4 rounded-xl bg-attention/10 p-5">
+      <div className="mb-3 flex items-center justify-between">
+        <h2 className="text-sm font-bold text-attention">
           Needs review ({transactions.length})
         </h2>
         <button
@@ -90,7 +90,7 @@ export function NeedsReviewList({
       </div>
 
       {selecting && (
-        <div className="mb-3 space-y-3 rounded-xl border border-card-border bg-card px-4 py-3 text-sm">
+        <div className="mb-3 space-y-3 rounded-xl bg-card px-4 py-3 text-sm">
           <div className="flex items-center justify-between">
             <label className="flex items-center gap-2 text-foreground-muted">
               <input
@@ -162,7 +162,7 @@ export function NeedsReviewList({
         </div>
       )}
 
-      <ul className="divide-y divide-amber-500/20 rounded-xl border border-amber-500/30 bg-card">
+      <ul className="divide-y divide-attention/20 rounded-xl bg-card">
         {transactions.map((t) => (
           <NeedsReviewRow
             key={t.id}
