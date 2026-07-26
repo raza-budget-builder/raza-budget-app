@@ -51,7 +51,7 @@ create table if not exists public.transactions (
   amount numeric(12, 2) not null,
   category uuid references public.categories(id) on delete set null,
   type text not null default 'expense' check (type in ('income', 'expense')),
-  source text not null default 'manual' check (source in ('manual', 'csv', 'ai_chat')),
+  source text not null default 'manual' check (source in ('manual', 'csv', 'ai_chat', 'screenshot')),
   confirmed boolean not null default true,
   -- Passive recurring-transaction detection — a shared group id links
   -- matched transactions together, with the detected cadence alongside.

@@ -9,10 +9,19 @@ import { createClient } from "@/lib/supabase/server";
 import {
   ColumnMappingSchema,
   buildCategorizationSchema,
+  cleanDescription,
+  isSuspectedTransfer,
   matchHardcodedMerchant,
+  normalizeDate,
   parseCandidateRows,
   type AccountType,
 } from "@/lib/csv-import";
+import {
+  ACCEPTED_IMAGE_TYPES,
+  MAX_IMAGE_BYTES,
+  ScreenshotExtractionSchema,
+  type AcceptedImageType,
+} from "@/lib/screenshot-import";
 import { detectRecurringTransactions, type PendingRecurringCandidate } from "@/lib/recurring";
 
 const anthropic = new Anthropic();
@@ -122,62 +131,35 @@ export async function parseCsvAndGuessMapping(
   };
 }
 
-// Parses rows, applies the hardcoded Canadian-merchant lookup, and runs AI
-// categorization (with Canadian retail context) for whatever's left. Stops
-// short of inserting anything — the import wizard reviews suspected
-// transfers against this result set before anything is committed.
-export async function categorizeCandidates(
-  rows: string[][],
-  headers: string[],
-  mapping: MappingInput,
-  accountType: AccountType,
-): Promise<{ candidates: CategorizedCandidate[] } | { error: string }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+type CategoryResolved = {
+  categoryId: string | null;
+  categoryName: string | null;
+  type: "income" | "expense";
+  confident: boolean;
+};
 
-  const dateIdx = headers.indexOf(mapping.date);
-  const descIdx = headers.indexOf(mapping.description);
-  const amountIdx = headers.indexOf(mapping.amount);
-  if (dateIdx === -1 || descIdx === -1 || amountIdx === -1) {
-    return { error: "Column mapping is invalid." };
-  }
-  const typeIdx = mapping.type ? headers.indexOf(mapping.type) : -1;
+type CategorizableCandidate = {
+  index: number;
+  description: string;
+  amount: number;
+  placeholderType: "income" | "expense";
+};
 
-  const { data: categories, error: categoriesError } = await supabase
-    .from("categories")
-    .select("id, name, type");
-  if (categoriesError) return { error: categoriesError.message };
-  if (!categories || categories.length === 0) {
-    return { error: "No categories found for this account." };
-  }
+// Shared by both the CSV and screenshot import paths: applies the
+// hardcoded Canadian-merchant lookup first, then runs AI categorization
+// (with Canadian retail context) for whatever's left. Keeping this in one
+// place means categorization behaves identically regardless of where the
+// candidates came from.
+async function categorizeByDescription(
+  candidates: CategorizableCandidate[],
+  categories: { id: string; name: string; type: "income" | "expense" }[],
+): Promise<Map<number, CategoryResolved>> {
   const categoryNames = categories.map((c) => c.name) as [string, ...string[]];
   const categoryByName = new Map(categories.map((c) => [c.name, c]));
 
-  const candidates = parseCandidateRows(
-    rows,
-    dateIdx,
-    descIdx,
-    amountIdx,
-    accountType,
-    typeIdx === -1 ? null : typeIdx,
-  );
-  if (candidates.length === 0) {
-    return { error: "No valid rows found with the selected columns." };
-  }
-
-  type Resolved = {
-    categoryId: string | null;
-    categoryName: string | null;
-    type: "income" | "expense";
-    confident: boolean;
-  };
-  const resultByIndex = new Map<number, Resolved>();
+  const resultByIndex = new Map<number, CategoryResolved>();
   const needsAi: typeof candidates = [];
 
-  // Hardcoded, unambiguous Canadian merchants skip the AI call entirely.
   for (const c of candidates) {
     const hardcodedName = matchHardcodedMerchant(c.description);
     const hardcodedCategory = hardcodedName ? categoryByName.get(hardcodedName) : undefined;
@@ -244,6 +226,55 @@ export async function categorizeCandidates(
     }
   }
 
+  return resultByIndex;
+}
+
+// Parses rows, applies the hardcoded Canadian-merchant lookup, and runs AI
+// categorization (with Canadian retail context) for whatever's left. Stops
+// short of inserting anything — the import wizard reviews suspected
+// transfers against this result set before anything is committed.
+export async function categorizeCandidates(
+  rows: string[][],
+  headers: string[],
+  mapping: MappingInput,
+  accountType: AccountType,
+): Promise<{ candidates: CategorizedCandidate[] } | { error: string }> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
+  const dateIdx = headers.indexOf(mapping.date);
+  const descIdx = headers.indexOf(mapping.description);
+  const amountIdx = headers.indexOf(mapping.amount);
+  if (dateIdx === -1 || descIdx === -1 || amountIdx === -1) {
+    return { error: "Column mapping is invalid." };
+  }
+  const typeIdx = mapping.type ? headers.indexOf(mapping.type) : -1;
+
+  const { data: categories, error: categoriesError } = await supabase
+    .from("categories")
+    .select("id, name, type");
+  if (categoriesError) return { error: categoriesError.message };
+  if (!categories || categories.length === 0) {
+    return { error: "No categories found for this account." };
+  }
+
+  const candidates = parseCandidateRows(
+    rows,
+    dateIdx,
+    descIdx,
+    amountIdx,
+    accountType,
+    typeIdx === -1 ? null : typeIdx,
+  );
+  if (candidates.length === 0) {
+    return { error: "No valid rows found with the selected columns." };
+  }
+
+  const resultByIndex = await categorizeByDescription(candidates, categories);
+
   const result: CategorizedCandidate[] = candidates.map((c) => {
     const resolved = resultByIndex.get(c.index);
     return {
@@ -266,6 +297,134 @@ export async function categorizeCandidates(
   return { candidates: result };
 }
 
+export type ScreenshotImportResult = {
+  candidates: CategorizedCandidate[];
+  sourceLabel: string;
+  rawTransactionsJson: string;
+};
+
+// Vision equivalent of parseCsvAndGuessMapping + categorizeCandidates
+// combined into one step: there's no column mapping to confirm for an
+// image, so Claude extracts already-typed (date/description/amount/type)
+// rows directly, then those rows run through the exact same
+// categorizeByDescription helper the CSV path uses, so categorization
+// behaves identically regardless of source.
+export async function parseScreenshotAndCategorize(
+  formData: FormData,
+): Promise<ScreenshotImportResult | { error: string }> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
+  const file = formData.get("file");
+  if (!(file instanceof File) || file.size === 0) {
+    return { error: "Please choose an image." };
+  }
+  if (!ACCEPTED_IMAGE_TYPES.includes(file.type as AcceptedImageType)) {
+    return { error: "Please upload a PNG, JPEG, WebP, or GIF screenshot." };
+  }
+  if (file.size > MAX_IMAGE_BYTES) {
+    return { error: "That image is too large — please upload a screenshot under 10MB." };
+  }
+
+  const imageData = Buffer.from(await file.arrayBuffer()).toString("base64");
+
+  const response = await anthropic.messages.parse({
+    model: "claude-opus-4-8",
+    max_tokens: 4096,
+    output_config: {
+      effort: "low",
+      format: zodOutputFormat(ScreenshotExtractionSchema),
+    },
+    messages: [
+      {
+        role: "user",
+        content: [
+          {
+            type: "image",
+            source: { type: "base64", media_type: file.type as AcceptedImageType, data: imageData },
+          },
+          {
+            type: "text",
+            text:
+              `Is this a screenshot of digital transaction data (an email receipt, a ` +
+              `payment app's transaction list, a bank/credit card app or website, or a ` +
+              `spreadsheet) — not a photo of a physical printed receipt? If so, extract ` +
+              `every transaction confidently readable in it: its date (if visible), ` +
+              `description/merchant, amount (as a positive number), and whether it's ` +
+              `income (money in) or an expense (money out). Don't invent anything not ` +
+              `actually shown in the image.`,
+          },
+        ],
+      },
+    ],
+  });
+
+  const parsed = response.parsed_output;
+  if (!parsed) return { error: "Couldn't read that image. Please try again." };
+
+  if (!parsed.isScreenshot) {
+    return {
+      error:
+        parsed.rejectionReason ||
+        "That looks like a photo of a printed receipt rather than a screenshot — only " +
+          "screenshots of digital transaction data are supported for now.",
+    };
+  }
+  if (parsed.transactions.length === 0) {
+    return { error: "No transactions were readable in that screenshot. Please try another." };
+  }
+
+  const { data: categories, error: categoriesError } = await supabase
+    .from("categories")
+    .select("id, name, type");
+  if (categoriesError) return { error: categoriesError.message };
+  if (!categories || categories.length === 0) {
+    return { error: "No categories found for this account." };
+  }
+
+  const candidates = parsed.transactions.map((t, index) => {
+    const description = t.description.trim();
+    return {
+      index,
+      date: normalizeDate(t.date ?? ""),
+      description,
+      cleanedDescription: cleanDescription(description),
+      amount: Math.abs(t.amount),
+      placeholderType: t.type,
+      isRefund: false,
+      suspectedTransfer: isSuspectedTransfer(description),
+    };
+  });
+
+  const resultByIndex = await categorizeByDescription(candidates, categories);
+
+  const result: CategorizedCandidate[] = candidates.map((c) => {
+    const resolved = resultByIndex.get(c.index);
+    return {
+      index: c.index,
+      date: c.date,
+      description: c.description,
+      cleanedDescription: c.cleanedDescription,
+      amount: c.amount,
+      type: resolved?.type ?? c.placeholderType,
+      categoryId: resolved?.categoryId ?? null,
+      categoryName: resolved?.categoryName ?? null,
+      confident: resolved?.confident ?? false,
+      suspectedTransfer: c.suspectedTransfer,
+      isRefund: c.isRefund,
+    };
+  });
+
+  return {
+    candidates: result,
+    sourceLabel: parsed.sourceLabel || "Screenshot",
+    rawTransactionsJson: JSON.stringify(parsed.transactions, null, 2),
+  };
+}
+
 // Commits an already-categorized, already-decided candidate list — the
 // import wizard calls this after the suspected-transfer review (if any),
 // having already dropped the rows confirmed as transfers. Also records the
@@ -274,6 +433,7 @@ export async function categorizeCandidates(
 export async function finalizeImport(
   candidates: CategorizedCandidate[],
   csvMeta: { filename: string; rawText: string },
+  source: "csv" | "screenshot" = "csv",
 ): Promise<
   | { imported: number; needsReview: number; pendingRecurring: PendingRecurringCandidate[] }
   | { error: string }
@@ -310,7 +470,7 @@ export async function finalizeImport(
     amount: c.amount,
     type: c.type,
     category: c.categoryId,
-    source: "csv" as const,
+    source,
     confirmed: c.confident,
     import_id: importRow.id,
   }));
