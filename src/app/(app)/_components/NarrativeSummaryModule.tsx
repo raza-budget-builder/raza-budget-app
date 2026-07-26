@@ -114,7 +114,7 @@ export function NarrativeSummaryModule({ data }: { data: WeeklyNarrativeSummary 
   const typingTip = phase === "typing" && !typingSummary && tipShown < tipText.length;
 
   return (
-    <section className="mb-10 rounded-xl border border-card-border bg-card px-8 py-7">
+    <section className="mb-4 rounded-xl bg-card p-5">
       <div className="flex items-center gap-2">
         <AiInsightIcon className="h-4 w-auto" />
         <h2 className="font-bold text-foreground">Your Weekly AI Financial Summary</h2>

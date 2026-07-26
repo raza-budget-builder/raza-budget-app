@@ -39,7 +39,7 @@ export function RecurringSeriesList({
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <section className="mb-10 rounded-xl border border-card-border bg-card p-6">
+    <section className="mb-4 rounded-xl bg-card p-5">
       <button
         onClick={() => setExpanded((e) => !e)}
         aria-expanded={expanded}
@@ -165,7 +165,7 @@ function RecurringSeriesRow({
 
   return (
     <li
-      className={`flex items-center justify-between gap-4 py-3 text-sm ${
+      className={`flex items-center justify-between gap-4 py-2.5 text-sm ${
         series.active ? "" : "opacity-50"
       }`}
     >

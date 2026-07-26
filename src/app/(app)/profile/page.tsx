@@ -80,12 +80,22 @@ export default async function ProfilePage({
       />
 
       {error && (
-        <p className="mb-6 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
-          {error}
-        </p>
+        <p className="mb-4 rounded-xl bg-critical/10 px-3 py-2 text-sm text-critical">{error}</p>
       )}
 
-      <section className="mb-10 rounded-xl border border-card-border bg-card p-6">
+      {/* Hero: the one thing on this page that's about the user's actual
+          objective, not settings/data plumbing — large and prominent like
+          the Net/headroom heroes on Dashboard and Goals, just text instead
+          of a dollar figure so no sign-tinting applies. Skipped entirely
+          (not shown empty) if no goal has been set yet. */}
+      {profile?.main_goal && (
+        <section className="mb-4 rounded-xl bg-card p-6">
+          <p className="text-xs font-medium text-foreground-muted">Your goal</p>
+          <p className="mt-1 text-2xl font-bold text-foreground">{profile.main_goal}</p>
+        </section>
+      )}
+
+      <section className="mb-4 rounded-xl bg-card p-5">
         <h2 className="font-bold text-foreground">Your info</h2>
         <form action={updateProfileInfo} className="mt-4 space-y-4">
           <div>
@@ -121,39 +131,40 @@ export default async function ProfilePage({
 
       <ImportsSection imports={csvImports} />
 
-      <section
-        id="budget-goals"
-        className="mb-10 scroll-mt-6 rounded-xl border border-card-border bg-card p-6"
-      >
+      <section id="budget-goals" className="mb-10 scroll-mt-6">
         <h2 className="font-bold text-foreground">Budget Goals</h2>
-        <p className="mt-1 text-sm text-foreground-muted">
+        <p className="mt-1 mb-3 text-sm text-foreground-muted">
           Set a monthly spending cap for any category — leave a field blank to remove
           its goal.
         </p>
-        <form action={updateBudgetGoals} className="mt-4 space-y-3">
-          {(expenseCategories ?? []).map((category) => (
-            <div key={category.id} className="flex items-center justify-between gap-4">
-              <label htmlFor={`budget_goal_${category.id}`} className="text-sm text-foreground">
-                {category.name}
-              </label>
-              <div className="flex shrink-0 items-center gap-1.5">
-                <span className="text-sm text-foreground-muted">$</span>
-                <input
-                  id={`budget_goal_${category.id}`}
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  name={`budget_goal_${category.id}`}
-                  defaultValue={capByCategory.get(category.id) ?? ""}
-                  placeholder="No cap"
-                  className="w-28 rounded-xl border border-card-border bg-input-bg px-3 py-1.5 text-right text-sm text-foreground"
-                />
+        <form action={updateBudgetGoals} className="rounded-xl bg-card">
+          <div className="divide-y divide-card-border">
+            {(expenseCategories ?? []).map((category) => (
+              <div key={category.id} className="flex items-center justify-between gap-4 px-4 py-2.5">
+                <label htmlFor={`budget_goal_${category.id}`} className="text-sm text-foreground">
+                  {category.name}
+                </label>
+                <div className="flex shrink-0 items-center gap-1.5">
+                  <span className="text-sm text-foreground-muted">$</span>
+                  <input
+                    id={`budget_goal_${category.id}`}
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    name={`budget_goal_${category.id}`}
+                    defaultValue={capByCategory.get(category.id) ?? ""}
+                    placeholder="No cap"
+                    className="w-28 rounded-xl border border-card-border bg-input-bg px-3 py-1.5 text-right text-sm text-foreground"
+                  />
+                </div>
               </div>
-            </div>
-          ))}
-          <button className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
-            Save budget goals
-          </button>
+            ))}
+          </div>
+          <div className="p-4">
+            <button className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
+              Save budget goals
+            </button>
+          </div>
         </form>
       </section>
     </div>

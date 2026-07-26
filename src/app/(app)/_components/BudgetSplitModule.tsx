@@ -83,7 +83,7 @@ export function BudgetSplitModule({ transactions }: { transactions: Transaction[
   }, [transactions, selectedMonth]);
 
   return (
-    <section className="mb-10 rounded-xl border border-card-border bg-card p-6">
+    <section className="mb-4 rounded-xl bg-card p-5">
       <div className="flex items-start justify-between gap-4">
         <div>
           <h2 className="font-bold text-foreground">The 50-30-20 rule</h2>
