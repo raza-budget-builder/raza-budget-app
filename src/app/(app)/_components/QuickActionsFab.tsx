@@ -68,12 +68,18 @@ export function QuickActionsFab({
             explicit max-content width the menu (and everything in it) got
             squeezed into that width and overflow-hidden clipped the rest. */}
         <div
-          className="absolute top-full left-0 z-40 mt-2 grid w-max transition-[grid-template-rows] duration-300 ease-in-out"
+          className="absolute top-full -left-3 z-40 grid w-max transition-[grid-template-rows] duration-300 ease-in-out"
           style={{ gridTemplateRows: expanded ? "1fr" : "0fr" }}
         >
           <div className="overflow-hidden">
+            {/* p-3 gives shadow-lg's ~12px blur room to render fully on
+                every side instead of getting hard-clipped in a straight
+                line by the overflow-hidden above (needed for the
+                grid-template-rows collapse animation) — -left-3 on the
+                outer box above offsets this same 12px so the pills still
+                line up visually where they did before. */}
             <div
-              className={`flex flex-col items-start gap-2 transition-opacity duration-300 ${
+              className={`flex flex-col items-start gap-2 p-3 transition-opacity duration-300 ${
                 expanded ? "opacity-100" : "opacity-0"
               }`}
             >
