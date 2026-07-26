@@ -119,6 +119,20 @@ body {
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
+/* iOS Safari auto-zooms the whole page on focus of any text input/select
+   whose computed font-size is under 16px — every form field in this app
+   uses text-sm (14px). Bumping to 16px only below the sm breakpoint (where
+   this is a real iPhone, not a desktop window) stops the zoom without
+   touching the 14px design on larger screens. !important is required since
+   a plain type selector loses specificity to Tailwind's .text-sm class. */
+@media (max-width: 640px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
 /* Hard on/off blink for the narrative summary's typewriter cursor — a
    terminal-style caret, not Tailwind's built-in fade (animate-pulse). */
 @keyframes caret-blink {
