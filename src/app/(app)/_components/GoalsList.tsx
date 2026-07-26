@@ -9,7 +9,7 @@ const OVER_COLOR = "var(--critical)";
 
 // Below this fraction of the goal is "good"; from here up to 100% is the
 // "approaching" warning band; anything past 100% is "over".
-const WARNING_FLOOR = 0.95;
+const WARNING_FLOOR = 0.7;
 
 type Category = { id: string; name: string };
 
@@ -67,7 +67,7 @@ export function GoalsList({
     .sort((a, b) => a.name.localeCompare(b.name));
 
   return (
-    <ul className="divide-y divide-card-border rounded-2xl border border-card-border bg-card">
+    <ul className="divide-y divide-card-border rounded-xl border border-card-border bg-card">
       {withGoal.map((c) => {
         const cap = capByCategory.get(c.id)!;
         const spend = spendByCategory.get(c.id) ?? 0;

@@ -55,7 +55,7 @@ export function NetFlowChart({ points }: { points: MonthlyNetFlowPoint[] }) {
   const total = points.length > 0 ? points[points.length - 1].cumulative : 0;
 
   return (
-    <section className="mb-10 rounded-2xl border border-card-border bg-card p-6">
+    <section className="mb-10 rounded-xl border border-card-border bg-card p-6">
       <div className="flex items-start justify-between gap-4">
         <div>
           <h2 className="font-bold text-foreground">Your Savings Journey</h2>

@@ -82,14 +82,14 @@ export function ChatPanel() {
         aria-modal="true"
         aria-label="Ask your budget"
         onClick={(e) => e.stopPropagation()}
-        className="flex h-full w-full flex-col bg-card sm:h-[min(700px,85vh)] sm:max-w-md sm:rounded-2xl sm:border sm:border-card-border"
+        className="flex h-full w-full flex-col bg-card sm:h-[min(700px,85vh)] sm:max-w-md sm:rounded-xl sm:border sm:border-card-border"
       >
         <div className="flex items-center justify-between border-b border-card-border px-6 py-4">
           <h2 className="text-sm font-bold text-foreground">Ask your budget</h2>
           <button
             onClick={close}
             aria-label="Close"
-            className="-mr-2 flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
+            className="-mr-2 flex h-11 w-11 items-center justify-center rounded-xl text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
           >
             <CloseIcon className="h-5 w-5" />
           </button>
@@ -106,7 +106,7 @@ export function ChatPanel() {
                   <button
                     key={s}
                     onClick={() => askSuggestion(s)}
-                    className="rounded-2xl border border-card-border px-4 py-2.5 text-left text-sm text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
+                    className="rounded-xl border border-card-border px-4 py-2.5 text-left text-sm text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
                   >
                     {s}
                   </button>
@@ -118,7 +118,7 @@ export function ChatPanel() {
               {messages.map((m, i) => (
                 <li key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                   <p
-                    className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm whitespace-pre-wrap ${
+                    className={`max-w-[85%] rounded-xl px-4 py-2.5 text-sm whitespace-pre-wrap ${
                       m.role === "user"
                         ? "bg-accent text-accent-foreground"
                         : "border border-card-border text-foreground"
@@ -130,7 +130,7 @@ export function ChatPanel() {
               ))}
               {isPending && (
                 <li className="flex justify-start">
-                  <p className="max-w-[85%] rounded-2xl border border-card-border px-4 py-2.5 text-sm text-foreground-muted">
+                  <p className="max-w-[85%] rounded-xl border border-card-border px-4 py-2.5 text-sm text-foreground-muted">
                     Thinking…
                   </p>
                 </li>
@@ -154,7 +154,7 @@ export function ChatPanel() {
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask about your spending…"
                 disabled={isPending}
-                className="min-w-0 flex-1 rounded-2xl border border-card-border bg-input-bg px-4 py-2.5 text-sm text-foreground placeholder:text-foreground-muted disabled:opacity-50"
+                className="min-w-0 flex-1 rounded-xl border border-card-border bg-input-bg px-4 py-2.5 text-sm text-foreground placeholder:text-foreground-muted disabled:opacity-50"
               />
               <button
                 type="submit"

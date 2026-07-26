@@ -17,7 +17,7 @@ export function BudgetVsIncomeCheck({
 
   return (
     <section
-      className={`mb-6 rounded-2xl border px-5 py-4 text-sm ${
+      className={`mb-6 rounded-xl border px-5 py-4 text-sm ${
         isOverBudget ? "border-critical/40 bg-critical/10" : "border-card-border bg-card"
       }`}
     >

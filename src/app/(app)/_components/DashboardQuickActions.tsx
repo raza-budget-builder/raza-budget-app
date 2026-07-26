@@ -40,7 +40,7 @@ export function DashboardQuickActions({
           {needsReviewCount > 0 && (
             <span
               aria-label={`${needsReviewCount} needs review`}
-              className="absolute -top-1.5 -right-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-500 px-1 text-[10px] font-bold text-gray-900"
+              className="absolute -top-1.5 -right-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-attention px-1 text-[10px] font-bold text-gray-900"
             >
               {needsReviewCount}
             </span>

@@ -10,7 +10,7 @@ function formatMonthLabel(month: string) {
 
 export function GoalsSummaryCard({ data }: { data: MonthlyGoalSummary }) {
   return (
-    <section className="mb-10 rounded-2xl border border-card-border bg-card px-8 py-7">
+    <section className="mb-10 rounded-xl border border-card-border bg-card px-8 py-7">
       <div className="flex items-center gap-2">
         <AiInsightIcon className="h-4 w-auto" />
         <p className="text-xs text-foreground-muted">{formatMonthLabel(data.month)}</p>

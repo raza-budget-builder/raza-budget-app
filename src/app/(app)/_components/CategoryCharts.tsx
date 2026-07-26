@@ -38,7 +38,7 @@ export function CategoryCharts({ transactions }: { transactions: Transaction[] }
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-center justify-end gap-2">
-        <div className="flex overflow-hidden rounded-2xl border border-card-border">
+        <div className="flex overflow-hidden rounded-xl border border-card-border">
           <button
             onClick={() => setChartType("pie")}
             aria-label="Pie chart"
@@ -63,7 +63,7 @@ export function CategoryCharts({ transactions }: { transactions: Transaction[] }
           </button>
         </div>
 
-        <div className="flex overflow-hidden rounded-2xl border border-card-border">
+        <div className="flex overflow-hidden rounded-xl border border-card-border">
           <button
             onClick={() => setValueMode("dollar")}
             aria-label="Show dollar amounts"
@@ -91,7 +91,7 @@ export function CategoryCharts({ transactions }: { transactions: Transaction[] }
         <select
           value={period}
           onChange={(e) => setPeriod(e.target.value as PeriodKey)}
-          className="rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+          className="rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
         >
           {PERIOD_OPTIONS.map((option) => (
             <option key={option.value} value={option.value}>

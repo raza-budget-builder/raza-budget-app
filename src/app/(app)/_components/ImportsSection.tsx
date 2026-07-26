@@ -77,7 +77,7 @@ function ImportRow({ csvImport }: { csvImport: CsvImportSummary }) {
           disabled={isPending}
           aria-label="Download CSV"
           title="Download"
-          className="flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-foreground/10 hover:text-foreground disabled:opacity-50"
+          className="flex h-11 w-11 items-center justify-center rounded-xl text-foreground-muted hover:bg-foreground/10 hover:text-foreground disabled:opacity-50"
         >
           <DownloadIcon className="h-4 w-4" />
         </button>
@@ -87,7 +87,7 @@ function ImportRow({ csvImport }: { csvImport: CsvImportSummary }) {
               onClick={() => setConfirmingRevert(true)}
               aria-label="Revert import"
               title="Revert"
-              className="flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-foreground/10 hover:text-attention"
+              className="flex h-11 w-11 items-center justify-center rounded-xl text-foreground-muted hover:bg-foreground/10 hover:text-attention"
             >
               <UndoIcon className="h-4 w-4" />
             </button>
@@ -118,7 +118,7 @@ export function ImportsSection({ imports }: { imports: CsvImportSummary[] }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <section className="mb-10 rounded-2xl border border-card-border bg-card p-6">
+    <section className="mb-10 rounded-xl border border-card-border bg-card p-6">
       <button
         onClick={() => setExpanded((e) => !e)}
         aria-expanded={expanded}

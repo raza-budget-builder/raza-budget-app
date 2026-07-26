@@ -39,7 +39,7 @@ export function RecurringSeriesList({
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <section className="mb-10 rounded-2xl border border-card-border bg-card p-6">
+    <section className="mb-10 rounded-xl border border-card-border bg-card p-6">
       <button
         onClick={() => setExpanded((e) => !e)}
         aria-expanded={expanded}
@@ -114,7 +114,7 @@ function RecurringSeriesRow({
             step="0.01"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+            className="mt-1 w-full rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
           />
         </div>
         <div>
@@ -122,7 +122,7 @@ function RecurringSeriesRow({
           <select
             value={frequency}
             onChange={(e) => setFrequency(e.target.value as RecurringInterval)}
-            className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+            className="mt-1 w-full rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
           >
             <option value="weekly">Weekly</option>
             <option value="biweekly">Biweekly</option>
@@ -134,7 +134,7 @@ function RecurringSeriesRow({
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+            className="mt-1 w-full rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
           >
             <option value="">Uncategorized</option>
             {filteredCategories.map((c) => (
@@ -148,13 +148,13 @@ function RecurringSeriesRow({
           <button
             onClick={handleSave}
             disabled={isPending}
-            className="rounded-2xl bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50"
+            className="rounded-xl bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50"
           >
             Save
           </button>
           <button
             onClick={() => setEditing(false)}
-            className="rounded-2xl border border-card-border px-3 py-1.5 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
+            className="rounded-xl border border-card-border px-3 py-1.5 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
           >
             Cancel
           </button>
@@ -191,7 +191,7 @@ function RecurringSeriesRow({
           onClick={() => setEditing(true)}
           aria-label="Edit series"
           title="Edit"
-          className="flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
+          className="flex h-11 w-11 items-center justify-center rounded-xl text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
         >
           <PencilIcon className="h-4 w-4" />
         </button>
@@ -200,7 +200,7 @@ function RecurringSeriesRow({
           disabled={isPending}
           aria-label={series.active ? "Stop recurring" : "Reactivate recurring"}
           title={series.active ? "Stop" : "Reactivate"}
-          className={`flex h-11 w-11 items-center justify-center rounded-2xl hover:bg-foreground/10 disabled:opacity-50 ${
+          className={`flex h-11 w-11 items-center justify-center rounded-xl hover:bg-foreground/10 disabled:opacity-50 ${
             series.active
               ? "text-foreground-muted hover:text-attention"
               : "text-positive hover:text-positive-hover"

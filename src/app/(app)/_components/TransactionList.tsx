@@ -289,7 +289,7 @@ export function TransactionList({
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search description…"
                   aria-label="Search transactions by description"
-                  className="w-40 rounded-2xl border border-card-border bg-input-bg px-3 py-1.5 text-sm text-foreground placeholder:text-foreground-muted"
+                  className="w-40 rounded-xl border border-card-border bg-input-bg px-3 py-1.5 text-sm text-foreground placeholder:text-foreground-muted"
                 />
               )}
             </div>
@@ -298,7 +298,7 @@ export function TransactionList({
               value={sortMode}
               onChange={(e) => setSortMode(e.target.value as SortMode)}
               aria-label="Sort transactions by"
-              className="rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+              className="rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
             >
               {SORT_CYCLE.map((mode) => (
                 <option key={mode} value={mode}>
@@ -327,7 +327,7 @@ export function TransactionList({
       )}
 
       {selecting && (
-        <div className="mb-3 space-y-3 rounded-2xl border border-card-border bg-card px-4 py-3 text-sm">
+        <div className="mb-3 space-y-3 rounded-xl border border-card-border bg-card px-4 py-3 text-sm">
           <div className="flex items-center justify-between">
             <span className="text-foreground-muted">{selectedIds.size} selected</span>
             {!confirmingDelete ? (
@@ -368,7 +368,7 @@ export function TransactionList({
                 onChange={(e) =>
                   handleBulkTypeChange(e.target.value as "" | "income" | "expense")
                 }
-                className="rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+                className="rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
               >
                 <option value="">Set type…</option>
                 <option value="expense">Expense</option>
@@ -377,7 +377,7 @@ export function TransactionList({
               <select
                 value={bulkCategory}
                 onChange={(e) => setBulkCategory(e.target.value)}
-                className="rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+                className="rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
               >
                 <option value="">Set category…</option>
                 {bulkCategoryOptions.map((c) => (
@@ -393,7 +393,7 @@ export function TransactionList({
                   isPending
                 }
                 onClick={handleApplyBulkEdit}
-                className="rounded-2xl bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-40"
+                className="rounded-xl bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-40"
               >
                 Apply to selected
               </button>
@@ -438,7 +438,7 @@ export function TransactionList({
                   style={{ gridTemplateRows: collapsed ? "0fr" : "1fr" }}
                 >
                   <div className="overflow-hidden">
-                    <ul className="divide-y divide-card-border rounded-2xl border border-card-border bg-card">
+                    <ul className="divide-y divide-card-border rounded-xl border border-card-border bg-card">
                       {sortMode === "date"
                         ? groupByDay(group.items).map((day) => (
                             <li key={day.key}>

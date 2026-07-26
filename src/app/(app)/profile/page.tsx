@@ -80,12 +80,12 @@ export default async function ProfilePage({
       />
 
       {error && (
-        <p className="mb-6 rounded-2xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
+        <p className="mb-6 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
           {error}
         </p>
       )}
 
-      <section className="mb-10 rounded-2xl border border-card-border bg-card p-6">
+      <section className="mb-10 rounded-xl border border-card-border bg-card p-6">
         <h2 className="font-bold text-foreground">Your info</h2>
         <form action={updateProfileInfo} className="mt-4 space-y-4">
           <div>
@@ -96,7 +96,7 @@ export default async function ProfilePage({
               type="text"
               name="name"
               defaultValue={profile?.name ?? ""}
-              className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
+              className="mt-1 w-full rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
             />
           </div>
           <div>
@@ -108,10 +108,10 @@ export default async function ProfilePage({
               name="main_goal"
               placeholder="e.g. Save for a house, Pay off debt"
               defaultValue={profile?.main_goal ?? ""}
-              className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
+              className="mt-1 w-full rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
             />
           </div>
-          <button className="rounded-2xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
+          <button className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
             Save
           </button>
         </form>
@@ -123,7 +123,7 @@ export default async function ProfilePage({
 
       <section
         id="budget-goals"
-        className="mb-10 scroll-mt-6 rounded-2xl border border-card-border bg-card p-6"
+        className="mb-10 scroll-mt-6 rounded-xl border border-card-border bg-card p-6"
       >
         <h2 className="font-bold text-foreground">Budget Goals</h2>
         <p className="mt-1 text-sm text-foreground-muted">
@@ -146,12 +146,12 @@ export default async function ProfilePage({
                   name={`budget_goal_${category.id}`}
                   defaultValue={capByCategory.get(category.id) ?? ""}
                   placeholder="No cap"
-                  className="w-28 rounded-2xl border border-card-border bg-input-bg px-3 py-1.5 text-right text-sm text-foreground"
+                  className="w-28 rounded-xl border border-card-border bg-input-bg px-3 py-1.5 text-right text-sm text-foreground"
                 />
               </div>
             </div>
           ))}
-          <button className="rounded-2xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
+          <button className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
             Save budget goals
           </button>
         </form>

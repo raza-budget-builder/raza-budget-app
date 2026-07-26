@@ -44,14 +44,14 @@ export function Modal({
         // viewport like a native mobile sheet, with safe-area padding so
         // content and controls clear the home-indicator/notch), centered
         // floating card at sm+ same as before.
-        className="flex h-full w-full flex-col overflow-y-auto bg-card p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] sm:h-auto sm:max-h-[85vh] sm:max-w-lg sm:flex-none sm:rounded-2xl sm:border sm:border-card-border sm:pb-6"
+        className="flex h-full w-full flex-col overflow-y-auto bg-card p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] sm:h-auto sm:max-h-[85vh] sm:max-w-lg sm:flex-none sm:rounded-xl sm:border sm:border-card-border sm:pb-6"
       >
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-sm font-bold text-foreground">{title}</h2>
           <button
             onClick={onClose}
             aria-label="Close"
-            className="-mr-2 flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
+            className="-mr-2 flex h-11 w-11 items-center justify-center rounded-xl text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
           >
             <CloseIcon className="h-5 w-5" />
           </button>

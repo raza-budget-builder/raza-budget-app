@@ -52,10 +52,10 @@ export function SummaryCard({ transactions }: { transactions: Transaction[] }) {
   const net = income - expense;
 
   return (
-    <section className="mb-10 rounded-2xl border border-card-border bg-card p-6">
+    <section className="mb-10 rounded-xl border border-card-border bg-card p-6">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
         <h2 className="text-sm font-bold text-foreground">{label}</h2>
-        <div className="flex overflow-hidden rounded-2xl border border-card-border">
+        <div className="flex overflow-hidden rounded-xl border border-card-border">
           <button
             onClick={() => setSummaryPeriod("monthly")}
             aria-pressed={summaryPeriod === "monthly"}

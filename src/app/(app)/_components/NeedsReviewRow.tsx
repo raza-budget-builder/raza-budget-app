@@ -97,7 +97,7 @@ export function NeedsReviewRow({
                 name="category"
                 required
                 defaultValue=""
-                className="rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+                className="rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
               >
                 <option value="" disabled>
                   Select category
@@ -108,7 +108,7 @@ export function NeedsReviewRow({
                   </option>
                 ))}
               </select>
-              <button className="rounded-2xl bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
+              <button className="rounded-xl bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
                 Confirm
               </button>
             </form>
@@ -116,7 +116,7 @@ export function NeedsReviewRow({
               onClick={() => setConfirmingDismiss(true)}
               aria-label="Dismiss transaction"
               title="Dismiss"
-              className="flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
+              className="flex h-11 w-11 items-center justify-center rounded-xl text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
             >
               <TrashIcon className="h-4 w-4" />
             </button>

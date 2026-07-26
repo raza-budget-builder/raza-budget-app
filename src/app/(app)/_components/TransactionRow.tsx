@@ -140,7 +140,7 @@ export function TransactionRow({
               name="date"
               required
               defaultValue={transaction.date}
-              className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+              className="mt-1 w-full rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
             />
           </div>
           <div>
@@ -153,7 +153,7 @@ export function TransactionRow({
               name="amount"
               required
               defaultValue={transaction.amount}
-              className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+              className="mt-1 w-full rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
             />
           </div>
           <div className="col-span-2">
@@ -192,7 +192,7 @@ export function TransactionRow({
               required
               value={editCategory}
               onChange={(e) => setEditCategory(e.target.value)}
-              className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+              className="mt-1 w-full rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
             >
               <option value="" disabled>
                 Select a category
@@ -213,11 +213,11 @@ export function TransactionRow({
               name="description"
               required
               defaultValue={transaction.description}
-              className="mt-1 w-full rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+              className="mt-1 w-full rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
             />
           </div>
           {inRecurringSeries ? (
-            <div className="col-span-2 rounded-2xl border border-card-border px-3 py-2">
+            <div className="col-span-2 rounded-xl border border-card-border px-3 py-2">
               <div className="flex items-center justify-between gap-2">
                 <div>
                   <label className="block text-xs font-medium text-foreground-muted">
@@ -226,7 +226,7 @@ export function TransactionRow({
                   <select
                     name="recurringInterval"
                     defaultValue={transaction.recurring_interval ?? "monthly"}
-                    className="mt-1 rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+                    className="mt-1 rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
                   >
                     <option value="weekly">Weekly</option>
                     <option value="biweekly">Biweekly</option>
@@ -237,7 +237,7 @@ export function TransactionRow({
                   <button
                     type="button"
                     onClick={() => setConfirmingStop(true)}
-                    className="flex items-center gap-1.5 rounded-2xl border border-card-border px-3 py-1.5 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-attention"
+                    className="flex items-center gap-1.5 rounded-xl border border-card-border px-3 py-1.5 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-attention"
                   >
                     <PauseIcon className="h-4 w-4" />
                     Stop recurring
@@ -268,13 +268,13 @@ export function TransactionRow({
             <RecurringToggleFields />
           )}
           <div className="col-span-2 flex gap-2 pt-1">
-            <button className="rounded-2xl bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
+            <button className="rounded-xl bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
               Save
             </button>
             <button
               type="button"
               onClick={() => setEditing(false)}
-              className="rounded-2xl border border-card-border px-3 py-1.5 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
+              className="rounded-xl border border-card-border px-3 py-1.5 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
             >
               Cancel
             </button>
@@ -357,7 +357,7 @@ export function TransactionRow({
                 onClick={startEditing}
                 aria-label="Edit transaction"
                 title="Edit"
-                className="flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
+                className="flex h-11 w-11 items-center justify-center rounded-xl text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
               >
                 <PencilIcon className="h-4 w-4" />
               </button>
@@ -365,7 +365,7 @@ export function TransactionRow({
                 onClick={() => setConfirmingDelete(true)}
                 aria-label="Delete transaction"
                 title="Delete"
-                className="flex h-11 w-11 items-center justify-center rounded-2xl text-foreground-muted hover:bg-foreground/10 hover:text-attention"
+                className="flex h-11 w-11 items-center justify-center rounded-xl text-foreground-muted hover:bg-foreground/10 hover:text-attention"
               >
                 <TrashIcon className="h-4 w-4" />
               </button>

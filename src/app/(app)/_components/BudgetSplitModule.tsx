@@ -83,7 +83,7 @@ export function BudgetSplitModule({ transactions }: { transactions: Transaction[
   }, [transactions, selectedMonth]);
 
   return (
-    <section className="mb-10 rounded-2xl border border-card-border bg-card p-6">
+    <section className="mb-10 rounded-xl border border-card-border bg-card p-6">
       <div className="flex items-start justify-between gap-4">
         <div>
           <h2 className="font-bold text-foreground">The 50-30-20 rule</h2>
@@ -94,7 +94,7 @@ export function BudgetSplitModule({ transactions }: { transactions: Transaction[
         <select
           value={selectedMonth}
           onChange={(e) => setSelectedMonth(e.target.value)}
-          className="shrink-0 rounded-2xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+          className="shrink-0 rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
         >
           {monthOptions.map((option) => (
             <option key={option.value} value={option.value}>

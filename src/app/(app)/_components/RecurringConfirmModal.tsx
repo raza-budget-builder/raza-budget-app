@@ -42,14 +42,14 @@ export function RecurringConfirmModal({
             <button
               onClick={handleConfirm}
               disabled={isPending}
-              className="rounded-2xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50"
+              className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50"
             >
               {isPending ? "Saving…" : "Yes, it's recurring"}
             </button>
             <button
               onClick={onResolved}
               disabled={isPending}
-              className="rounded-2xl border border-card-border px-4 py-2 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
+              className="rounded-xl border border-card-border px-4 py-2 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
             >
               No, just this once
             </button>

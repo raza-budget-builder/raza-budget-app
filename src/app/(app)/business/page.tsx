@@ -20,7 +20,7 @@ export default async function BusinessPage() {
   return (
     <div>
       <PageHeader title="Business" />
-      <div className="rounded-2xl border border-card-border bg-card p-6">
+      <div className="rounded-xl border border-card-border bg-card p-6">
         {isEntrepreneur ? (
           <p className="text-sm text-foreground-muted">Coming soon.</p>
         ) : (

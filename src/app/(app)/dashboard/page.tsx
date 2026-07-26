@@ -115,14 +115,14 @@ export default async function DashboardPage() {
 
       <InsightsCarousel slides={insightSlides} />
 
-      <section className="mb-10 rounded-2xl border border-card-border bg-card p-6">
+      <section className="mb-10 rounded-xl border border-card-border bg-card p-6">
         <CategoryCharts transactions={confirmedTransactions} />
       </section>
 
       <section>
         <h2 className="mb-4 font-bold text-foreground">Last 7 days</h2>
         {last7Days.length > 0 ? (
-          <ul className="divide-y divide-card-border rounded-2xl border border-card-border bg-card">
+          <ul className="divide-y divide-card-border rounded-xl border border-card-border bg-card">
             {last7Days.map((t) => (
               <li
                 key={t.id}
@@ -130,18 +130,18 @@ export default async function DashboardPage() {
               >
                 <div className="min-w-0">
                   <p
-                    className={`truncate font-bold ${
+                    className={`truncate font-medium ${
                       t.status === "pending" ? PENDING_TEXT_CLASS : "text-foreground"
                     }`}
                   >
                     {t.description}
                   </p>
-                  <p className="text-foreground-muted">
+                  <p className="text-xs text-foreground-muted">
                     {t.date} · {t.category?.name ?? "Uncategorized"}
                   </p>
                 </div>
                 <span
-                  className={`shrink-0 font-bold ${
+                  className={`shrink-0 text-base font-bold ${
                     t.status === "pending" ? PENDING_TEXT_CLASS : AMOUNT_TEXT_CLASS[t.type]
                   }`}
                 >
@@ -158,19 +158,19 @@ export default async function DashboardPage() {
       <section className="mt-10">
         <h2 className="mb-4 font-bold text-foreground">Upcoming</h2>
         {upcomingRecurring.length > 0 ? (
-          <ul className="divide-y divide-card-border rounded-2xl border border-card-border bg-card">
+          <ul className="divide-y divide-card-border rounded-xl border border-card-border bg-card">
             {upcomingRecurring.map((series) => (
               <li
                 key={series.groupId}
                 className="flex items-center justify-between gap-4 px-4 py-3 text-sm"
               >
                 <div className="min-w-0">
-                  <p className="truncate font-bold text-foreground">{series.description}</p>
-                  <p className="text-foreground-muted">
+                  <p className="truncate font-medium text-foreground">{series.description}</p>
+                  <p className="text-xs text-foreground-muted">
                     {series.nextDate} · {INTERVAL_LABEL[series.interval]}
                   </p>
                 </div>
-                <span className={`shrink-0 font-bold ${AMOUNT_TEXT_CLASS[series.type]}`}>
+                <span className={`shrink-0 text-base font-bold ${AMOUNT_TEXT_CLASS[series.type]}`}>
                   {formatSignedAmount(series.amount, series.type)}
                 </span>
               </li>

@@ -12,11 +12,14 @@
 [data-theme="light"] {
   color-scheme: light;
 
-  /* Ivory page + a near-white card, both outlined in a thin near-black
-     border rather than a shadow — sections read as "drawn," not "lifted." */
+  /* Ivory page + a near-white card, separated by a soft hairline rather
+     than a heavy border or a shadow (shadows barely read on the dark theme's
+     navy surface, so one consistent approach — the hairline — is used in
+     both, not shadow-in-one/border-in-the-other). --card-border below is
+     derived from --foreground at low opacity, not a hand-picked hex, so it
+     stays "soft neutral relative to the theme" automatically in both modes. */
   --background: #f6f1e4;
   --card: #fffdf7;
-  --card-border: #17150f;
   --input-bg: #efe8d4;
 
   --foreground: #16150f;
@@ -53,9 +56,6 @@
      lighter, layered surface on top of it (no white surfaces anywhere). */
   --background: #0a0e1a;
   --card: #1a2444;
-  /* Hairline card edge — a step lighter than --card, used instead of a
-     shadow (shadows barely read against an already-dark background). */
-  --card-border: #333d6c;
   /* Form fields sit a shade lighter than the card they're in, so they read
      as recessed/interactive rather than blending into the card fill. */
   --input-bg: #212c50;
@@ -71,6 +71,18 @@
   --accent: #ffffff;
   --accent-foreground: #111827;
   --accent-hover: #e5e7eb;
+}
+
+/* One hairline-border formula for both themes — derived from --foreground
+   at low opacity rather than a hand-picked hex per theme, so it's always a
+   "soft neutral tone relative to the surface" (rgba(0,0,0,0.08)-equivalent
+   on light, the mirror on dark) instead of two independently-tuned colors
+   that can drift out of sync. var(--foreground) here re-resolves live to
+   whichever theme's value is active, since custom-property references are
+   dynamic, not substituted at declaration time — one rule, not one per
+   theme. */
+:root {
+  --card-border: color-mix(in srgb, var(--foreground) 10%, transparent);
 }
 
 @theme inline {
@@ -97,7 +109,14 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* Was hardcoded to Arial — --font-sans (Geist Sans) was loaded and wired
+     into @theme inline above but never actually applied anywhere, so the
+     whole app was silently rendering in the browser's Arial fallback
+     instead of the intended typeface. One clean sans-serif everywhere,
+     per the design system: --font-editorial stays reserved for
+     AI-generated text only (weekly summary, drift alerts, AI Insights),
+     never used here. */
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
 /* Hard on/off blink for the narrative summary's typewriter cursor — a

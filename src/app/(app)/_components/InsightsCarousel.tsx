@@ -51,7 +51,7 @@ export function InsightsCarousel({ slides }: { slides: InsightSlide[] }) {
 
   return (
     <section
-      className="relative mb-10 overflow-hidden rounded-2xl border border-card-border bg-card p-6"
+      className="relative mb-10 overflow-hidden rounded-xl border border-card-border bg-card p-6"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >

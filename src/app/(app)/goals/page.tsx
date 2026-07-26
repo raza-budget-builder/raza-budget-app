@@ -100,7 +100,7 @@ export default async function GoalsPage() {
         extra={
           <Link
             href="/profile#budget-goals"
-            className="rounded-2xl border border-card-border px-3 py-1.5 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
+            className="rounded-xl border border-card-border px-3 py-1.5 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
           >
             Edit Goals
           </Link>
