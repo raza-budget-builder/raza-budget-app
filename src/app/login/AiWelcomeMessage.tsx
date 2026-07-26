@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import { AiInsightIcon } from "../(app)/_components/icons";
 
-// Split so the app name can carry its own italic styling as it reveals,
-// rather than the whole line being one plain string.
+// Split so "Steward" can carry its own bold-not-italic styling as it
+// reveals, distinct from the rest of the line (italic, regular weight).
 const PREFIX = "Welcome to the ";
-const APP_NAME = "Raza AI Budget Tool";
-const SUFFIX = ".";
+const APP_NAME = "Steward";
+const SUFFIX = " app, your AI-powered finance companion.";
 const LINE_ONE_LENGTH = PREFIX.length + APP_NAME.length + SUFFIX.length;
 
 const LINE_TWO =
@@ -64,12 +64,13 @@ export function AiWelcomeMessage() {
       <AiInsightIcon className="mt-1 h-5 w-auto shrink-0" />
       <div aria-live="polite" className="min-w-0 flex-1 font-mono">
         {/* clamp() scales continuously with viewport width (not fixed
-            breakpoint jumps) so the whole title reliably stays on one line
-            from the smallest phone up through desktop, where the wider
-            container (see page.tsx) lets it sit comfortably larger. */}
-        <p className="overflow-hidden text-[clamp(0.8rem,3.8vw,1.5rem)] leading-snug font-bold whitespace-nowrap text-ellipsis text-foreground">
+            breakpoint jumps), same formula as before. The sentence is
+            longer now, so it wraps across lines instead of forcing a
+            single nowrap line (which either truncated or shrank the text
+            to the point of illegibility on narrow phones). */}
+        <p className="text-[clamp(0.8rem,3.8vw,1.5rem)] leading-snug text-foreground">
           {PREFIX.slice(0, prefixShown)}
-          <span className="italic">{APP_NAME.slice(0, appNameShown)}</span>
+          <span className="font-bold italic">{APP_NAME.slice(0, appNameShown)}</span>
           {SUFFIX.slice(0, suffixShown)}
           {typingLineOne && <TypingCursor />}
         </p>
