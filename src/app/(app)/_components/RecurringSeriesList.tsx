@@ -43,7 +43,7 @@ export function RecurringSeriesList({
       <button
         onClick={() => setExpanded((e) => !e)}
         aria-expanded={expanded}
-        className="-my-2.5 flex w-full items-center justify-between py-2.5"
+        className="-my-2.5 flex min-h-11 w-full items-center justify-between py-2.5"
       >
         <h2 className="font-bold text-foreground">Recurring series ({series.length})</h2>
         <ChevronDownIcon
@@ -114,7 +114,7 @@ function RecurringSeriesRow({
             step="0.01"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className="mt-1 w-full rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+            className="mt-1 min-h-11 w-full rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
           />
         </div>
         <div>
@@ -122,7 +122,7 @@ function RecurringSeriesRow({
           <select
             value={frequency}
             onChange={(e) => setFrequency(e.target.value as RecurringInterval)}
-            className="mt-1 w-full rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+            className="mt-1 min-h-11 w-full rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
           >
             <option value="weekly">Weekly</option>
             <option value="biweekly">Biweekly</option>
@@ -134,7 +134,7 @@ function RecurringSeriesRow({
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="mt-1 w-full rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+            className="mt-1 min-h-11 w-full rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
           >
             <option value="">Uncategorized</option>
             {filteredCategories.map((c) => (
@@ -148,13 +148,13 @@ function RecurringSeriesRow({
           <button
             onClick={handleSave}
             disabled={isPending}
-            className="rounded-xl bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50"
+            className="flex min-h-11 items-center justify-center rounded-xl bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50"
           >
             Save
           </button>
           <button
             onClick={() => setEditing(false)}
-            className="rounded-xl border border-card-border px-3 py-1.5 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
+            className="flex min-h-11 items-center justify-center rounded-xl border border-card-border px-3 py-1.5 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
           >
             Cancel
           </button>

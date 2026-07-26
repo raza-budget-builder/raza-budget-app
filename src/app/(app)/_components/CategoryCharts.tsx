@@ -91,7 +91,7 @@ export function CategoryCharts({ transactions }: { transactions: Transaction[] }
         <select
           value={period}
           onChange={(e) => setPeriod(e.target.value as PeriodKey)}
-          className="rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+          className="min-h-11 rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
         >
           {PERIOD_OPTIONS.map((option) => (
             <option key={option.value} value={option.value}>

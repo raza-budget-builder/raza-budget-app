@@ -83,7 +83,7 @@ export function NeedsReviewList({
         </h2>
         <button
           onClick={toggleSelecting}
-          className="text-sm text-foreground-muted hover:text-foreground"
+          className="-my-2 -mx-1 px-1 py-2 text-sm text-foreground-muted hover:text-foreground"
         >
           {selecting ? "Cancel" : "Select"}
         </button>
@@ -109,7 +109,7 @@ export function NeedsReviewList({
               <button
                 disabled={selectedIds.size === 0}
                 onClick={() => setConfirmingDismiss(true)}
-                className="font-bold text-attention hover:text-attention-hover disabled:cursor-not-allowed disabled:opacity-40"
+                className="flex min-h-11 items-center rounded-xl font-bold text-attention hover:text-attention-hover disabled:cursor-not-allowed disabled:opacity-40"
               >
                 Dismiss selected
               </button>
@@ -122,13 +122,13 @@ export function NeedsReviewList({
                 <button
                   disabled={isPending}
                   onClick={handleDismissSelected}
-                  className="font-bold text-attention hover:text-attention-hover disabled:opacity-50"
+                  className="-my-2 -mx-1 px-1 py-2 font-bold text-attention hover:text-attention-hover disabled:opacity-50"
                 >
                   Confirm
                 </button>
                 <button
                   onClick={() => setConfirmingDismiss(false)}
-                  className="text-foreground-muted hover:text-foreground"
+                  className="-my-2 -mx-1 px-1 py-2 text-foreground-muted hover:text-foreground"
                 >
                   Cancel
                 </button>
@@ -141,7 +141,7 @@ export function NeedsReviewList({
               <select
                 value={bulkCategory}
                 onChange={(e) => setBulkCategory(e.target.value)}
-                className="rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+                className="min-h-11 rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
               >
                 <option value="">Set category…</option>
                 {categories.map((c) => (
@@ -153,7 +153,7 @@ export function NeedsReviewList({
               <button
                 disabled={selectedIds.size === 0 || !bulkCategory || isPending}
                 onClick={handleApplyBulkCategory}
-                className="rounded-xl bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-40"
+                className="flex min-h-11 items-center justify-center rounded-xl bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-40"
               >
                 Apply to selected
               </button>

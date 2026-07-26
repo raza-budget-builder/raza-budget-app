@@ -54,7 +54,7 @@ export function SummaryCard({ transactions }: { transactions: Transaction[] }) {
         <button
           onClick={() => setSummaryPeriod("monthly")}
           aria-pressed={summaryPeriod === "monthly"}
-          className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+          className={`flex min-h-11 items-center rounded-full px-2.5 py-1 text-xs font-medium ${
             summaryPeriod === "monthly" ? activeClass : inactiveClass
           }`}
         >
@@ -63,7 +63,7 @@ export function SummaryCard({ transactions }: { transactions: Transaction[] }) {
         <button
           onClick={() => setSummaryPeriod("this-year")}
           aria-pressed={summaryPeriod === "this-year"}
-          className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+          className={`flex min-h-11 items-center rounded-full px-2.5 py-1 text-xs font-medium ${
             summaryPeriod === "this-year" ? activeClass : inactiveClass
           }`}
         >
@@ -72,7 +72,7 @@ export function SummaryCard({ transactions }: { transactions: Transaction[] }) {
         <button
           onClick={() => setSummaryPeriod("all-time")}
           aria-pressed={summaryPeriod === "all-time"}
-          className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+          className={`flex min-h-11 items-center rounded-full px-2.5 py-1 text-xs font-medium ${
             summaryPeriod === "all-time" ? activeClass : inactiveClass
           }`}
         >

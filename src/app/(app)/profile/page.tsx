@@ -106,7 +106,7 @@ export default async function ProfilePage({
               type="text"
               name="name"
               defaultValue={profile?.name ?? ""}
-              className="mt-1 w-full rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
+              className="mt-1 min-h-11 w-full rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
             />
           </div>
           <div>
@@ -118,10 +118,10 @@ export default async function ProfilePage({
               name="main_goal"
               placeholder="e.g. Save for a house, Pay off debt"
               defaultValue={profile?.main_goal ?? ""}
-              className="mt-1 w-full rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
+              className="mt-1 min-h-11 w-full rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
             />
           </div>
-          <button className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
+          <button className="flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
             Save
           </button>
         </form>
@@ -154,14 +154,14 @@ export default async function ProfilePage({
                     name={`budget_goal_${category.id}`}
                     defaultValue={capByCategory.get(category.id) ?? ""}
                     placeholder="No cap"
-                    className="w-28 rounded-xl border border-card-border bg-input-bg px-3 py-1.5 text-right text-sm text-foreground"
+                    className="min-h-11 w-28 rounded-xl border border-card-border bg-input-bg px-3 py-1.5 text-right text-sm text-foreground"
                   />
                 </div>
               </div>
             ))}
           </div>
           <div className="p-4">
-            <button className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
+            <button className="flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
               Save budget goals
             </button>
           </div>

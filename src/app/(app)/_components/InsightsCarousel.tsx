@@ -81,7 +81,7 @@ export function InsightsCarousel({ slides }: { slides: InsightSlide[] }) {
                 {slide.action && (
                   <Link
                     href={slide.action.href}
-                    className="mt-2 inline-flex w-fit items-center gap-1 rounded-full border border-card-border px-3 py-1.5 text-xs font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
+                    className="mt-2 inline-flex min-h-11 w-fit items-center gap-1 rounded-full border border-card-border px-3 py-1.5 text-xs font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
                   >
                     {slide.action.label} →
                   </Link>

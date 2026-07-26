@@ -140,7 +140,7 @@ export function TransactionRow({
               name="date"
               required
               defaultValue={transaction.date}
-              className="mt-1 w-full rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+              className="mt-1 min-h-11 w-full rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
             />
           </div>
           <div>
@@ -153,7 +153,7 @@ export function TransactionRow({
               name="amount"
               required
               defaultValue={transaction.amount}
-              className="mt-1 w-full rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+              className="mt-1 min-h-11 w-full rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
             />
           </div>
           <div className="col-span-2">
@@ -192,7 +192,7 @@ export function TransactionRow({
               required
               value={editCategory}
               onChange={(e) => setEditCategory(e.target.value)}
-              className="mt-1 w-full rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+              className="mt-1 min-h-11 w-full rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
             >
               <option value="" disabled>
                 Select a category
@@ -213,7 +213,7 @@ export function TransactionRow({
               name="description"
               required
               defaultValue={transaction.description}
-              className="mt-1 w-full rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+              className="mt-1 min-h-11 w-full rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
             />
           </div>
           {inRecurringSeries ? (
@@ -226,7 +226,7 @@ export function TransactionRow({
                   <select
                     name="recurringInterval"
                     defaultValue={transaction.recurring_interval ?? "monthly"}
-                    className="mt-1 rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+                    className="mt-1 min-h-11 rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
                   >
                     <option value="weekly">Weekly</option>
                     <option value="biweekly">Biweekly</option>
@@ -237,7 +237,7 @@ export function TransactionRow({
                   <button
                     type="button"
                     onClick={() => setConfirmingStop(true)}
-                    className="flex items-center gap-1.5 rounded-xl border border-card-border px-3 py-1.5 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-attention"
+                    className="flex min-h-11 items-center gap-1.5 rounded-xl border border-card-border px-3 py-1.5 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-attention"
                   >
                     <PauseIcon className="h-4 w-4" />
                     Stop recurring
@@ -249,14 +249,14 @@ export function TransactionRow({
                       type="button"
                       disabled={isPending}
                       onClick={handleStopRecurring}
-                      className="font-bold text-attention hover:text-attention-hover disabled:opacity-50"
+                      className="-my-2 -mx-1 px-1 py-2 font-bold text-attention hover:text-attention-hover disabled:opacity-50"
                     >
                       Confirm
                     </button>
                     <button
                       type="button"
                       onClick={() => setConfirmingStop(false)}
-                      className="text-foreground-muted hover:text-foreground"
+                      className="-my-2 -mx-1 px-1 py-2 text-foreground-muted hover:text-foreground"
                     >
                       Cancel
                     </button>
@@ -268,13 +268,13 @@ export function TransactionRow({
             <RecurringToggleFields />
           )}
           <div className="col-span-2 flex gap-2 pt-1">
-            <button className="rounded-xl bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
+            <button className="flex min-h-11 items-center justify-center rounded-xl bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
               Save
             </button>
             <button
               type="button"
               onClick={() => setEditing(false)}
-              className="rounded-xl border border-card-border px-3 py-1.5 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
+              className="flex min-h-11 items-center justify-center rounded-xl border border-card-border px-3 py-1.5 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
             >
               Cancel
             </button>
@@ -381,13 +381,13 @@ export function TransactionRow({
                     showToast("Transaction deleted");
                   })
                 }
-                className="font-bold text-attention hover:text-attention-hover disabled:opacity-50"
+                className="-my-2 -mx-1 px-1 py-2 font-bold text-attention hover:text-attention-hover disabled:opacity-50"
               >
                 Confirm
               </button>
               <button
                 onClick={() => setConfirmingDelete(false)}
-                className="text-foreground-muted hover:text-foreground"
+                className="-my-2 -mx-1 px-1 py-2 text-foreground-muted hover:text-foreground"
               >
                 Cancel
               </button>

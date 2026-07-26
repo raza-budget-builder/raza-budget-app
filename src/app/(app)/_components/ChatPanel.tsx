@@ -165,7 +165,7 @@ export function ChatPanel() {
                   <button
                     key={s}
                     onClick={() => askSuggestion(s)}
-                    className="rounded-xl border border-card-border px-4 py-2.5 text-left text-sm text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
+                    className="min-h-11 rounded-xl border border-card-border px-4 py-2.5 text-left text-sm text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
                   >
                     {s}
                   </button>
@@ -213,7 +213,7 @@ export function ChatPanel() {
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask about your spending…"
                 disabled={isPending}
-                className="min-w-0 flex-1 rounded-xl border border-card-border bg-input-bg px-4 py-2.5 text-sm text-foreground placeholder:text-foreground-muted disabled:opacity-50"
+                className="min-h-11 min-w-0 flex-1 rounded-xl border border-card-border bg-input-bg px-4 py-2.5 text-sm text-foreground placeholder:text-foreground-muted disabled:opacity-50"
               />
               <button
                 type="submit"

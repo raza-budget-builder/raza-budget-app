@@ -53,7 +53,7 @@ export function AddTransactionForm({ categories }: { categories: Category[] }) {
             name="date"
             required
             defaultValue={new Date().toISOString().slice(0, 10)}
-            className="mt-1 w-full rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
+            className="mt-1 min-h-11 w-full rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
           />
         </div>
         <div>
@@ -64,7 +64,7 @@ export function AddTransactionForm({ categories }: { categories: Category[] }) {
             name="amount"
             required
             placeholder="0.00"
-            className="mt-1 w-full rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
+            className="mt-1 min-h-11 w-full rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
           />
         </div>
         <div className="col-span-2">
@@ -99,7 +99,7 @@ export function AddTransactionForm({ categories }: { categories: Category[] }) {
             required
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="mt-1 w-full rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
+            className="mt-1 min-h-11 w-full rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
           >
             <option value="" disabled>
               Select a category
@@ -119,12 +119,12 @@ export function AddTransactionForm({ categories }: { categories: Category[] }) {
             type="text"
             name="description"
             required
-            className="mt-1 w-full rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
+            className="mt-1 min-h-11 w-full rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
           />
         </div>
         <RecurringToggleFields />
         <div className="col-span-2">
-          <button className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
+          <button className="flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
             Add transaction
           </button>
         </div>

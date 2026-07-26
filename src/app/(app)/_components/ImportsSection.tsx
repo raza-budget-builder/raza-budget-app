@@ -97,13 +97,13 @@ function ImportRow({ csvImport }: { csvImport: CsvImportSummary }) {
               <button
                 disabled={isPending}
                 onClick={handleRevert}
-                className="font-bold text-attention hover:text-attention-hover disabled:opacity-50"
+                className="-my-2 -mx-1 px-1 py-2 font-bold text-attention hover:text-attention-hover disabled:opacity-50"
               >
                 Confirm
               </button>
               <button
                 onClick={() => setConfirmingRevert(false)}
-                className="text-foreground-muted hover:text-foreground"
+                className="-my-2 -mx-1 px-1 py-2 text-foreground-muted hover:text-foreground"
               >
                 Cancel
               </button>
@@ -122,7 +122,7 @@ export function ImportsSection({ imports }: { imports: CsvImportSummary[] }) {
       <button
         onClick={() => setExpanded((e) => !e)}
         aria-expanded={expanded}
-        className="-my-2.5 flex w-full items-center justify-between py-2.5"
+        className="-my-2.5 flex min-h-11 w-full items-center justify-between py-2.5"
       >
         <h2 className="font-bold text-foreground">Imports ({imports.length})</h2>
         <ChevronDownIcon

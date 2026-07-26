@@ -39,7 +39,7 @@ export default async function LoginPage({
               name="email"
               type="email"
               required
-              className="mt-1 block w-full rounded-xl bg-input-bg px-3 py-2 text-sm text-foreground outline-none focus:ring-2 focus:ring-accent/50"
+              className="mt-1 block min-h-11 w-full rounded-xl bg-input-bg px-3 py-2 text-sm text-foreground outline-none focus:ring-2 focus:ring-accent/50"
             />
           </div>
           <div>
@@ -55,7 +55,7 @@ export default async function LoginPage({
               type="password"
               required
               minLength={6}
-              className="mt-1 block w-full rounded-xl bg-input-bg px-3 py-2 text-sm text-foreground outline-none focus:ring-2 focus:ring-accent/50"
+              className="mt-1 block min-h-11 w-full rounded-xl bg-input-bg px-3 py-2 text-sm text-foreground outline-none focus:ring-2 focus:ring-accent/50"
             />
           </div>
 
@@ -67,13 +67,13 @@ export default async function LoginPage({
           <div className="flex flex-col gap-1 pt-2">
             <button
               formAction={signup}
-              className="w-full rounded-xl bg-accent px-3 py-2.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover"
+              className="flex min-h-11 w-full items-center justify-center rounded-xl bg-accent px-3 py-2.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover"
             >
               Sign up
             </button>
             <button
               formAction={login}
-              className="w-full rounded-xl px-3 py-2 text-sm font-medium text-foreground-muted hover:text-foreground"
+              className="flex min-h-11 w-full items-center justify-center rounded-xl px-3 py-2 text-sm font-medium text-foreground-muted hover:text-foreground"
             >
               Log in
             </button>

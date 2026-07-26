@@ -249,7 +249,7 @@ export function TransactionList({
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search transactions…"
               aria-label="Search transactions by description"
-              className="w-full rounded-xl bg-input-bg py-2.5 pr-3 pl-10 text-sm text-foreground placeholder:text-foreground-muted"
+              className="min-h-11 w-full rounded-xl bg-input-bg py-2.5 pr-3 pl-10 text-sm text-foreground placeholder:text-foreground-muted"
             />
           </div>
 
@@ -259,7 +259,7 @@ export function TransactionList({
               <button
                 onClick={() => toggleTypeFilter("expense")}
                 aria-pressed={typeFilter === "expense"}
-                className={`rounded-full px-3 py-1.5 text-xs font-medium ${
+                className={`flex min-h-11 items-center rounded-full px-3 py-1.5 text-xs font-medium ${
                   typeFilter === "expense"
                     ? "bg-accent text-accent-foreground"
                     : "text-foreground-muted hover:text-foreground"
@@ -270,7 +270,7 @@ export function TransactionList({
               <button
                 onClick={() => toggleTypeFilter("income")}
                 aria-pressed={typeFilter === "income"}
-                className={`rounded-full px-3 py-1.5 text-xs font-medium ${
+                className={`flex min-h-11 items-center rounded-full px-3 py-1.5 text-xs font-medium ${
                   typeFilter === "income"
                     ? "bg-accent text-accent-foreground"
                     : "text-foreground-muted hover:text-foreground"
@@ -285,7 +285,7 @@ export function TransactionList({
                 value={sortMode}
                 onChange={(e) => setSortMode(e.target.value as SortMode)}
                 aria-label="Sort transactions by"
-                className="rounded-xl bg-input-bg px-2 py-1 text-xs text-foreground"
+                className="min-h-11 rounded-xl bg-input-bg px-2 py-1 text-xs text-foreground"
               >
                 {SORT_CYCLE.map((mode) => (
                   <option key={mode} value={mode}>
@@ -296,7 +296,7 @@ export function TransactionList({
 
               <button
                 onClick={toggleSelecting}
-                className="rounded-full bg-card px-3 py-1.5 text-xs font-medium text-foreground-muted hover:text-foreground"
+                className="flex min-h-11 items-center rounded-full bg-card px-3 py-1.5 text-xs font-medium text-foreground-muted hover:text-foreground"
               >
                 {selecting ? "Cancel" : "Select"}
               </button>
@@ -304,7 +304,7 @@ export function TransactionList({
               {filtersActive && (
                 <button
                   onClick={clearFilters}
-                  className="text-xs font-medium text-foreground-muted underline-offset-2 hover:text-foreground hover:underline"
+                  className="-my-2 -mx-1 px-1 py-2 text-xs font-medium text-foreground-muted underline-offset-2 hover:text-foreground hover:underline"
                 >
                   Clear filters
                 </button>
@@ -322,7 +322,7 @@ export function TransactionList({
               <button
                 disabled={selectedIds.size === 0}
                 onClick={() => setConfirmingDelete(true)}
-                className="font-bold text-attention hover:text-attention-hover disabled:cursor-not-allowed disabled:opacity-40"
+                className="flex min-h-11 items-center rounded-xl font-bold text-attention hover:text-attention-hover disabled:cursor-not-allowed disabled:opacity-40"
               >
                 Delete selected
               </button>
@@ -335,13 +335,13 @@ export function TransactionList({
                 <button
                   disabled={isPending}
                   onClick={handleDeleteSelected}
-                  className="font-bold text-attention hover:text-attention-hover disabled:opacity-50"
+                  className="-my-2 -mx-1 px-1 py-2 font-bold text-attention hover:text-attention-hover disabled:opacity-50"
                 >
                   Confirm
                 </button>
                 <button
                   onClick={() => setConfirmingDelete(false)}
-                  className="text-foreground-muted hover:text-foreground"
+                  className="-my-2 -mx-1 px-1 py-2 text-foreground-muted hover:text-foreground"
                 >
                   Cancel
                 </button>
@@ -356,7 +356,7 @@ export function TransactionList({
                 onChange={(e) =>
                   handleBulkTypeChange(e.target.value as "" | "income" | "expense")
                 }
-                className="rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+                className="min-h-11 rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
               >
                 <option value="">Set type…</option>
                 <option value="expense">Expense</option>
@@ -365,7 +365,7 @@ export function TransactionList({
               <select
                 value={bulkCategory}
                 onChange={(e) => setBulkCategory(e.target.value)}
-                className="rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+                className="min-h-11 rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
               >
                 <option value="">Set category…</option>
                 {bulkCategoryOptions.map((c) => (
@@ -381,7 +381,7 @@ export function TransactionList({
                   isPending
                 }
                 onClick={handleApplyBulkEdit}
-                className="rounded-xl bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-40"
+                className="flex min-h-11 items-center justify-center rounded-xl bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-40"
               >
                 Apply to selected
               </button>

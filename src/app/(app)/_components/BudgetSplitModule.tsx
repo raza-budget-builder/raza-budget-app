@@ -94,7 +94,7 @@ export function BudgetSplitModule({ transactions }: { transactions: Transaction[
         <select
           value={selectedMonth}
           onChange={(e) => setSelectedMonth(e.target.value)}
-          className="shrink-0 rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+          className="min-h-11 shrink-0 rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
         >
           {monthOptions.map((option) => (
             <option key={option.value} value={option.value}>

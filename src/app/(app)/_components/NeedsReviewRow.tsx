@@ -74,13 +74,13 @@ export function NeedsReviewRow({
                   await deleteTransaction(transaction.id);
                 })
               }
-              className="font-bold text-attention hover:text-attention-hover disabled:opacity-50"
+              className="-my-2 -mx-1 px-1 py-2 font-bold text-attention hover:text-attention-hover disabled:opacity-50"
             >
               Confirm
             </button>
             <button
               onClick={() => setConfirmingDismiss(false)}
-              className="text-foreground-muted hover:text-foreground"
+              className="-my-2 -mx-1 px-1 py-2 text-foreground-muted hover:text-foreground"
             >
               Cancel
             </button>
@@ -97,7 +97,7 @@ export function NeedsReviewRow({
                 name="category"
                 required
                 defaultValue=""
-                className="rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
+                className="min-h-11 rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
               >
                 <option value="" disabled>
                   Select category
@@ -108,7 +108,7 @@ export function NeedsReviewRow({
                   </option>
                 ))}
               </select>
-              <button className="rounded-xl bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
+              <button className="flex min-h-11 items-center justify-center rounded-xl bg-accent px-3 py-1.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
                 Confirm
               </button>
             </form>
