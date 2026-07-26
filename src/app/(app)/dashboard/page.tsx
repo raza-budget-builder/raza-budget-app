@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { PageHeader } from "../_components/PageHeader";
 import { ThemeToggle } from "../_components/ThemeToggle";
 import { DashboardQuickActions } from "../_components/DashboardQuickActions";
+import { QuickActionsFab } from "../_components/QuickActionsFab";
 import { CategoryCharts } from "../_components/CategoryCharts";
 import { SummaryCard } from "../_components/SummaryCard";
 import { AMOUNT_TEXT_CLASS, PENDING_TEXT_CLASS, formatSignedAmount } from "@/lib/format";
@@ -106,6 +107,8 @@ export default async function DashboardPage() {
 
   return (
     <div>
+      <QuickActionsFab categories={categories ?? []} needsReviewCount={needsReviewCount ?? 0} />
+
       <PageHeader title="Dashboard" subtitle={monthLabel} extra={<ThemeToggle />} />
 
       <SummaryCard transactions={confirmedTransactions} />

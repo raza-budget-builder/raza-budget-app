@@ -349,13 +349,12 @@ export async function parseScreenshotAndCategorize(
           {
             type: "text",
             text:
-              `Is this a screenshot of digital transaction data (an email receipt, a ` +
-              `payment app's transaction list, a bank/credit card app or website, or a ` +
-              `spreadsheet) — not a photo of a physical printed receipt? If so, extract ` +
-              `every transaction confidently readable in it: its date (if visible), ` +
-              `description/merchant, amount (as a positive number), and whether it's ` +
-              `income (money in) or an expense (money out). Don't invent anything not ` +
-              `actually shown in the image.`,
+              `Does this image show transaction or receipt data — a photographed printed ` +
+              `receipt, an email receipt, a payment app's transaction list, a bank/credit ` +
+              `card app or website, or a spreadsheet? If so, extract every transaction ` +
+              `confidently readable in it: its date (if visible), description/merchant, ` +
+              `amount (as a positive number), and whether it's income (money in) or an ` +
+              `expense (money out). Don't invent anything not actually shown in the image.`,
           },
         ],
       },
@@ -365,16 +364,15 @@ export async function parseScreenshotAndCategorize(
   const parsed = response.parsed_output;
   if (!parsed) return { error: "Couldn't read that image. Please try again." };
 
-  if (!parsed.isScreenshot) {
+  if (!parsed.isReadable) {
     return {
       error:
         parsed.rejectionReason ||
-        "That looks like a photo of a printed receipt rather than a screenshot — only " +
-          "screenshots of digital transaction data are supported for now.",
+        "Couldn't find any transaction or receipt data in that image. Please try another.",
     };
   }
   if (parsed.transactions.length === 0) {
-    return { error: "No transactions were readable in that screenshot. Please try another." };
+    return { error: "No transactions were readable in that image. Please try another." };
   }
 
   const { data: categories, error: categoriesError } = await supabase
@@ -420,7 +418,7 @@ export async function parseScreenshotAndCategorize(
 
   return {
     candidates: result,
-    sourceLabel: parsed.sourceLabel || "Screenshot",
+    sourceLabel: parsed.sourceLabel || "Receipt",
     rawTransactionsJson: JSON.stringify(parsed.transactions, null, 2),
   };
 }

@@ -107,7 +107,7 @@ export function ScreenshotImportWizard() {
             <form action={handleUpload} className="space-y-4">
               <div>
                 <label className="block text-xs font-medium text-foreground-muted">
-                  Screenshot
+                  Receipt or screenshot
                 </label>
                 <input
                   type="file"
@@ -121,16 +121,17 @@ export function ScreenshotImportWizard() {
                 disabled={isPending}
                 className="flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50"
               >
-                {isPending ? "Reading screenshot…" : "Upload & continue"}
+                {isPending ? "Reading image…" : "Upload & continue"}
               </button>
             </form>
 
             <ol className="list-inside list-decimal space-y-1.5 border-t border-card-border pt-4 text-xs text-foreground-muted">
               <li>
-                Take a screenshot of an email receipt, a payment app&apos;s transaction list
-                (like Apple Wallet), a bank or credit card statement, or a spreadsheet
+                Take a photo of a printed receipt, or a screenshot of an email receipt, a
+                payment app&apos;s transaction list (like Apple Wallet), a bank or credit
+                card statement, or a spreadsheet
               </li>
-              <li>Upload it here — not a photo of a printed receipt, that&apos;s not supported yet</li>
+              <li>Upload it here</li>
               <li>
                 We&apos;ll read what&apos;s in it and sort transactions into categories
                 automatically

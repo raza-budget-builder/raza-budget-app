@@ -16,7 +16,6 @@ import {
   HandHeart,
   HeartPulse,
   Home,
-  Image as LucideImage,
   LayoutDashboard,
   List,
   LogOut,
@@ -68,7 +67,6 @@ export const ColumnChartIcon = wrap(BarChart3);
 export const DashboardIcon = wrap(LayoutDashboard);
 export const TransactionsIcon = wrap(List);
 export const ImportIcon = wrap(Upload);
-export const ImageIcon = wrap(LucideImage);
 export const InsightsIcon = wrap(TrendingUp);
 export const BusinessIcon = wrap(Briefcase);
 export const SortIcon = wrap(ArrowUpDown);

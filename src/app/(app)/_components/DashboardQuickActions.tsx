@@ -5,7 +5,7 @@ import { Modal } from "./Modal";
 import { AddTransactionForm } from "./AddTransactionForm";
 import { ImportWizard } from "./ImportWizard";
 import { ScreenshotImportWizard } from "./ScreenshotImportWizard";
-import { PlusIcon, ImportIcon, ImageIcon } from "./icons";
+import { PlusIcon, ImportIcon, ReceiptIcon } from "./icons";
 
 type Category = {
   id: string;
@@ -51,8 +51,8 @@ export function DashboardQuickActions({
           onClick={() => setOpenModal("screenshot")}
           className="flex min-h-11 items-center gap-2 rounded-full border border-card-border bg-card px-4 py-2 text-sm font-medium text-foreground hover:bg-foreground/5"
         >
-          <ImageIcon className="h-4 w-4" />
-          <span className="text-sm font-medium">Upload screenshot</span>
+          <ReceiptIcon className="h-4 w-4" />
+          <span className="text-sm font-medium">Upload receipt</span>
         </button>
       </div>
 
@@ -71,7 +71,7 @@ export function DashboardQuickActions({
       <Modal
         open={openModal === "screenshot"}
         onClose={() => setOpenModal(null)}
-        title="Upload a screenshot"
+        title="Upload a receipt"
       >
         <ScreenshotImportWizard />
       </Modal>
