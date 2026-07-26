@@ -21,7 +21,13 @@ const NET_LABEL: Record<SummaryPeriod, string> = {
 const activeClass = "bg-accent text-accent-foreground";
 const inactiveClass = "text-foreground-muted hover:text-foreground";
 
-export function SummaryCard({ transactions }: { transactions: Transaction[] }) {
+export function SummaryCard({
+  transactions,
+  quickActions,
+}: {
+  transactions: Transaction[];
+  quickActions?: React.ReactNode;
+}) {
   const [summaryPeriod, setSummaryPeriod] = useState<SummaryPeriod>("monthly");
 
   const filtered = useMemo(() => {
@@ -50,34 +56,37 @@ export function SummaryCard({ transactions }: { transactions: Transaction[] }) {
 
   return (
     <section className="mb-4">
-      <div className="mb-2 flex justify-end gap-1">
-        <button
-          onClick={() => setSummaryPeriod("monthly")}
-          aria-pressed={summaryPeriod === "monthly"}
-          className={`flex min-h-11 items-center rounded-full px-2.5 py-1 text-xs font-medium ${
-            summaryPeriod === "monthly" ? activeClass : inactiveClass
-          }`}
-        >
-          Monthly
-        </button>
-        <button
-          onClick={() => setSummaryPeriod("this-year")}
-          aria-pressed={summaryPeriod === "this-year"}
-          className={`flex min-h-11 items-center rounded-full px-2.5 py-1 text-xs font-medium ${
-            summaryPeriod === "this-year" ? activeClass : inactiveClass
-          }`}
-        >
-          This year
-        </button>
-        <button
-          onClick={() => setSummaryPeriod("all-time")}
-          aria-pressed={summaryPeriod === "all-time"}
-          className={`flex min-h-11 items-center rounded-full px-2.5 py-1 text-xs font-medium ${
-            summaryPeriod === "all-time" ? activeClass : inactiveClass
-          }`}
-        >
-          All-time
-        </button>
+      <div className="mb-2 flex items-center justify-between gap-2">
+        {quickActions}
+        <div className="flex gap-1">
+          <button
+            onClick={() => setSummaryPeriod("monthly")}
+            aria-pressed={summaryPeriod === "monthly"}
+            className={`flex min-h-11 items-center rounded-full px-2.5 py-1 text-xs font-medium ${
+              summaryPeriod === "monthly" ? activeClass : inactiveClass
+            }`}
+          >
+            Monthly
+          </button>
+          <button
+            onClick={() => setSummaryPeriod("this-year")}
+            aria-pressed={summaryPeriod === "this-year"}
+            className={`flex min-h-11 items-center rounded-full px-2.5 py-1 text-xs font-medium ${
+              summaryPeriod === "this-year" ? activeClass : inactiveClass
+            }`}
+          >
+            This year
+          </button>
+          <button
+            onClick={() => setSummaryPeriod("all-time")}
+            aria-pressed={summaryPeriod === "all-time"}
+            className={`flex min-h-11 items-center rounded-full px-2.5 py-1 text-xs font-medium ${
+              summaryPeriod === "all-time" ? activeClass : inactiveClass
+            }`}
+          >
+            All-time
+          </button>
+        </div>
       </div>
 
       {/* The one number this screen is built around — dominant size, and a

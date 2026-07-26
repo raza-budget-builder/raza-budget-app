@@ -107,11 +107,14 @@ export default async function DashboardPage() {
 
   return (
     <div>
-      <QuickActionsFab categories={categories ?? []} needsReviewCount={needsReviewCount ?? 0} />
-
       <PageHeader title="Dashboard" subtitle={monthLabel} extra={<ThemeToggle />} />
 
-      <SummaryCard transactions={confirmedTransactions} />
+      <SummaryCard
+        transactions={confirmedTransactions}
+        quickActions={
+          <QuickActionsFab categories={categories ?? []} needsReviewCount={needsReviewCount ?? 0} />
+        }
+      />
 
       <InsightsCarousel slides={insightSlides} />
 
