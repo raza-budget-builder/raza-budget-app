@@ -30,12 +30,59 @@ export type UpcomingRecurring = {
 
 export type RecurringSeriesSummary = UpcomingRecurring & { active: boolean };
 
-export function addInterval(dateISO: string, interval: RecurringInterval): string {
+function daysInMonth(year: number, monthIndex0: number): number {
+  return new Date(year, monthIndex0 + 1, 0).getDate();
+}
+
+function pad2(n: number): string {
+  return String(n).padStart(2, "0");
+}
+
+// `anchorDay` is the day-of-month the series was originally meant to land
+// on (pass the earliest member transaction's day) — a month too short for
+// that day (Feb for anything past 28, or any 30-day month for a day-31
+// series) clamps to that month's real last day instead of JS's default
+// Date.setMonth overflow behavior (e.g. Jan 31 + 1 month silently becomes
+// Mar 3, skipping February and permanently drifting off the 31st forever
+// after, since a plain date-chained implementation never sees 31 again).
+// Recomputing the anchor fresh each call (rather than chaining off the
+// previous occurrence's actual date) means the series bounces back to the
+// intended day the next time a long-enough month comes around — Jan 31 ->
+// Feb 28 -> Mar 31, not Jan 31 -> Feb 28 -> Mar 28. Falls back to the
+// passed-in date's own day if no anchor is given.
+export function addInterval(
+  dateISO: string,
+  interval: RecurringInterval,
+  anchorDay?: number,
+): string {
   const d = new Date(`${dateISO}T00:00:00`);
-  if (interval === "weekly") d.setDate(d.getDate() + 7);
-  else if (interval === "biweekly") d.setDate(d.getDate() + 14);
-  else d.setMonth(d.getMonth() + 1); // calendar month, not a flat 30 days
-  return d.toISOString().slice(0, 10);
+  if (interval === "weekly") {
+    d.setDate(d.getDate() + 7);
+    return d.toISOString().slice(0, 10);
+  }
+  if (interval === "biweekly") {
+    d.setDate(d.getDate() + 14);
+    return d.toISOString().slice(0, 10);
+  }
+
+  const targetDay = anchorDay ?? d.getDate();
+  let targetYear = d.getFullYear();
+  let targetMonth = d.getMonth() + 1; // 0-indexed month, one step forward
+  if (targetMonth > 11) {
+    targetMonth = 0;
+    targetYear += 1;
+  }
+  const clampedDay = Math.min(targetDay, daysInMonth(targetYear, targetMonth));
+  return `${targetYear}-${pad2(targetMonth + 1)}-${pad2(clampedDay)}`;
+}
+
+// The day-of-month a series was originally meant to land on — the earliest
+// member transaction's date, regardless of status, since a pending
+// prediction's date already reflects a correctly-clamped target day and is
+// harmless to include as a candidate.
+function anchorDayOf(members: MemberTx[]): number {
+  const earliest = members.map((m) => m.date).sort((a, b) => a.localeCompare(b))[0];
+  return Number(earliest.slice(8, 10));
 }
 
 async function fetchGroupsWithMembers(
@@ -102,7 +149,7 @@ export async function generateDueRecurringTransactions(
     const lastDate = confirmedDates[0];
     if (!lastDate) continue;
 
-    const nextDate = addInterval(lastDate, group.interval);
+    const nextDate = addInterval(lastDate, group.interval, anchorDayOf(members));
     if (nextDate > today) continue; // not due yet
 
     // Defensive: a transaction already logged for that exact date (e.g. the
@@ -155,7 +202,7 @@ export async function computeUpcomingRecurring(
       type: group.type,
       category: group.category,
       interval: group.interval,
-      nextDate: addInterval(lastDate, group.interval),
+      nextDate: addInterval(lastDate, group.interval, anchorDayOf(members)),
     });
   }
 
@@ -187,7 +234,7 @@ export async function listRecurringSeries(
       category: group.category,
       interval: group.interval,
       active: group.active,
-      nextDate: lastDate ? addInterval(lastDate, group.interval) : "",
+      nextDate: lastDate ? addInterval(lastDate, group.interval, anchorDayOf(members)) : "",
     });
   }
 
