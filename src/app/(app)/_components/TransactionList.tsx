@@ -6,6 +6,7 @@ import { bulkUpdateTransactions, deleteTransactions } from "../actions";
 import { ChevronDownIcon, SearchIcon } from "./icons";
 import { useToast } from "./ToastProvider";
 import { usePersistedState } from "@/lib/use-persisted-state";
+import type { RecurringInterval } from "@/lib/recurring";
 
 type Category = {
   id: string;
@@ -21,7 +22,7 @@ type Transaction = {
   type: "income" | "expense";
   is_recurring?: boolean;
   recurring_group_id?: string | null;
-  recurring_interval?: "weekly" | "biweekly" | "monthly" | null;
+  recurring_interval?: RecurringInterval | null;
   status?: "confirmed" | "pending";
   category: { id: string; name: string } | null;
 };

@@ -14,7 +14,12 @@ import { RecurringConfirmModal } from "./RecurringConfirmModal";
 import { RecurringScopeModal } from "./RecurringScopeModal";
 import { RecurringToggleFields } from "./RecurringToggleFields";
 import { useToast } from "./ToastProvider";
-import type { PendingRecurringCandidate, RecurringInterval } from "@/lib/recurring";
+import {
+  RECURRING_INTERVALS,
+  RECURRING_INTERVAL_LABEL,
+  type PendingRecurringCandidate,
+  type RecurringInterval,
+} from "@/lib/recurring";
 
 type Category = {
   id: string;
@@ -228,9 +233,11 @@ export function TransactionRow({
                     defaultValue={transaction.recurring_interval ?? "monthly"}
                     className="mt-1 min-h-11 rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
                   >
-                    <option value="weekly">Weekly</option>
-                    <option value="biweekly">Biweekly</option>
-                    <option value="monthly">Monthly</option>
+                    {RECURRING_INTERVALS.map((interval) => (
+                      <option key={interval} value={interval}>
+                        {RECURRING_INTERVAL_LABEL[interval]}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 {!confirmingStop ? (

@@ -7,6 +7,7 @@ import type { PendingRecurringCandidate } from "@/lib/recurring";
 import { formatCurrency } from "@/lib/format";
 
 const INTERVAL_LABEL: Record<PendingRecurringCandidate["interval"], string> = {
+  daily: "every day",
   weekly: "weekly",
   biweekly: "every two weeks",
   monthly: "monthly",

@@ -8,7 +8,7 @@ import {
 } from "../actions";
 import { AMOUNT_TEXT_CLASS, formatSignedAmount } from "@/lib/format";
 import { ChevronDownIcon, PauseIcon, PencilIcon } from "./icons";
-import type { RecurringInterval } from "@/lib/recurring";
+import { RECURRING_INTERVALS, RECURRING_INTERVAL_LABEL, type RecurringInterval } from "@/lib/recurring";
 
 type Category = { id: string; name: string; type: "income" | "expense" };
 
@@ -21,12 +21,6 @@ type Series = {
   interval: RecurringInterval;
   active: boolean;
   nextDate: string;
-};
-
-const INTERVAL_LABEL: Record<RecurringInterval, string> = {
-  weekly: "Weekly",
-  biweekly: "Biweekly",
-  monthly: "Monthly",
 };
 
 export function RecurringSeriesList({
@@ -124,9 +118,11 @@ function RecurringSeriesRow({
             onChange={(e) => setFrequency(e.target.value as RecurringInterval)}
             className="mt-1 min-h-11 w-full rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
           >
-            <option value="weekly">Weekly</option>
-            <option value="biweekly">Biweekly</option>
-            <option value="monthly">Monthly</option>
+            {RECURRING_INTERVALS.map((interval) => (
+              <option key={interval} value={interval}>
+                {RECURRING_INTERVAL_LABEL[interval]}
+              </option>
+            ))}
           </select>
         </div>
         <div className="col-span-2">
@@ -179,7 +175,7 @@ function RecurringSeriesRow({
           )}
         </p>
         <p className="text-foreground-muted">
-          {INTERVAL_LABEL[series.interval]}
+          {RECURRING_INTERVAL_LABEL[series.interval]}
           {series.nextDate && ` · Next: ${series.nextDate}`}
         </p>
       </div>

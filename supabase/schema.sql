@@ -57,7 +57,7 @@ create table if not exists public.transactions (
   -- matched transactions together, with the detected cadence alongside.
   is_recurring boolean not null default false,
   recurring_group_id uuid,
-  recurring_interval text check (recurring_interval in ('weekly', 'biweekly', 'monthly')),
+  recurring_interval text check (recurring_interval in ('daily', 'weekly', 'biweekly', 'monthly')),
   -- 'pending' = an auto-generated prediction of a recurring group's next
   -- occurrence, awaiting the user's confirmation. Independent of `confirmed`
   -- above, which is about category-confirmation for ambiguous CSV imports
@@ -139,7 +139,7 @@ create table if not exists public.recurring_groups (
   amount numeric(12, 2) not null,
   category uuid references public.categories(id) on delete set null,
   type text not null check (type in ('income', 'expense')),
-  interval text not null check (interval in ('weekly', 'biweekly', 'monthly')),
+  interval text not null check (interval in ('daily', 'weekly', 'biweekly', 'monthly')),
   active boolean not null default true,
   created_at timestamptz not null default now()
 );

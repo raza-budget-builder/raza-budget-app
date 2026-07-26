@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { RecurringInterval } from "@/lib/recurring";
+import { RECURRING_INTERVALS, RECURRING_INTERVAL_LABEL, type RecurringInterval } from "@/lib/recurring";
 
 export function RecurringToggleFields({
   defaultChecked = false,
@@ -33,9 +33,11 @@ export function RecurringToggleFields({
             defaultValue={defaultInterval}
             className="mt-1 min-h-11 w-full rounded-xl border border-card-border bg-input-bg px-2 py-1.5 text-sm text-foreground"
           >
-            <option value="weekly">Weekly</option>
-            <option value="biweekly">Biweekly</option>
-            <option value="monthly">Monthly</option>
+            {RECURRING_INTERVALS.map((interval) => (
+              <option key={interval} value={interval}>
+                {RECURRING_INTERVAL_LABEL[interval]}
+              </option>
+            ))}
           </select>
         </div>
       )}

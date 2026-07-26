@@ -4,6 +4,7 @@ import { PageHeader } from "../_components/PageHeader";
 import { DashboardQuickActions } from "../_components/DashboardQuickActions";
 import { TransactionList } from "../_components/TransactionList";
 import { NeedsReviewList } from "../_components/NeedsReviewList";
+import type { RecurringInterval } from "@/lib/recurring";
 
 type TransactionRowData = {
   id: string;
@@ -15,7 +16,7 @@ type TransactionRowData = {
   confirmed: boolean;
   is_recurring: boolean;
   recurring_group_id: string | null;
-  recurring_interval: "weekly" | "biweekly" | "monthly" | null;
+  recurring_interval: RecurringInterval | null;
   status: "confirmed" | "pending";
   category: { id: string; name: string } | null;
 };

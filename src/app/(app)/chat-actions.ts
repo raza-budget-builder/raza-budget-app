@@ -37,6 +37,13 @@ function systemPrompt(today: Date): string {
     `update_transaction to fix that same transaction — never call record_transaction again for ` +
     `it, that would create a duplicate. Only treat a message as a new purchase to record if it ` +
     `clearly describes a different transaction than the one you just logged.\n\n` +
+    `If the user describes something that repeats (e.g. "I pay $15.99 a month for Netflix", ` +
+    `"set up my rent, $1200 due monthly"), use record_recurring_transaction instead of ` +
+    `record_transaction. This needs ALL of: amount, description, frequency (daily/weekly/` +
+    `biweekly/monthly), and an unambiguous category before you call it — if the frequency ` +
+    `wasn't stated or any other field is missing/ambiguous, ask for what's missing rather than ` +
+    `assuming a frequency or guessing a category. Nothing is set up until every field is ` +
+    `confirmed.\n\n` +
     `You can also delete a transaction or recategorize a whole batch at once. Deleting is ` +
     `permanent: always state exactly which transaction you found (date, amount, description) ` +
     `and get an explicit yes from the user in this conversation before calling ` +

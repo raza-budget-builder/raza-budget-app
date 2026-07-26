@@ -61,9 +61,14 @@ export function QuickActionsFab({
         </button>
 
         {/* Absolutely positioned so opening it floats over the page instead
-            of pushing the period toggles / Net hero it sits beside down. */}
+            of pushing the period toggles / Net hero it sits beside down.
+            w-max is required: an absolutely-positioned box with only `left`
+            set (no `right`) shrink-to-fits within its containing block's
+            width, which here is just the 48-64px FAB button — without an
+            explicit max-content width the menu (and everything in it) got
+            squeezed into that width and overflow-hidden clipped the rest. */}
         <div
-          className="absolute top-full left-0 z-40 mt-2 grid transition-[grid-template-rows] duration-300 ease-in-out"
+          className="absolute top-full left-0 z-40 mt-2 grid w-max transition-[grid-template-rows] duration-300 ease-in-out"
           style={{ gridTemplateRows: expanded ? "1fr" : "0fr" }}
         >
           <div className="overflow-hidden">

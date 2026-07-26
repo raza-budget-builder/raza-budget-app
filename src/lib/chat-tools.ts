@@ -12,6 +12,8 @@ import {
 import { computeCategoryDrift } from "./drift-alerts";
 import { getGoalPerformance } from "./goal-performance";
 import { getPeriodRange, PERIOD_OPTIONS, type PeriodKey } from "./date-ranges";
+import { linkOrCreateRecurringGroup } from "./recurring-groups";
+import { RECURRING_INTERVALS } from "./recurring";
 
 export type ChatTransaction = {
   id: string;
@@ -312,6 +314,115 @@ export function buildChatTools(ctx: ChatToolContext) {
     },
   });
 
+  const recurringIntervalEnumValues = RECURRING_INTERVALS as [string, ...string[]];
+
+  const recordRecurringTransaction = betaZodTool({
+    name: "record_recurring_transaction",
+    description:
+      "Set up a new recurring transaction the user described, e.g. 'I pay $15.99 a month for " +
+      "Netflix' or 'set up my $1200 rent, due monthly'. Only call this once you have ALL of: " +
+      "the amount, a description/vendor, the frequency (daily/weekly/biweekly/monthly), AND a " +
+      "clear, unambiguous category — if any of those is missing, or the category could " +
+      "plausibly be more than one thing, ask the user instead of guessing. Nothing is set up " +
+      "until you have everything, so an unanswered question simply has no effect — there's no " +
+      "downside to asking. This records today's (or the given) date as the first occurrence " +
+      "and starts the recurring series from it; future occurrences generate automatically from " +
+      "there, exactly like manually flagging a transaction as recurring in the app.",
+    inputSchema: z.object({
+      amount: z.number().positive().describe("The transaction amount, always positive."),
+      description: z
+        .string()
+        .min(1)
+        .describe("Merchant/vendor or a short description, e.g. 'Netflix'."),
+      type: z
+        .enum(["income", "expense"])
+        .describe("'expense' for money paid out, 'income' for money received."),
+      interval: z
+        .enum(recurringIntervalEnumValues)
+        .describe("How often it recurs: 'daily', 'weekly', 'biweekly' (every two weeks), or 'monthly'."),
+      date: z
+        .string()
+        .optional()
+        .describe(
+          "ISO date YYYY-MM-DD of the first/most recent occurrence, if the user mentioned " +
+            "one. Omit to default to today.",
+        ),
+      categoryName: z
+        .enum(categoryEnumValues)
+        .describe(
+          "The category, exactly as given in the user's own category list above. Only use " +
+            "'Uncategorized' if the user explicitly said they don't know/don't care — not as a " +
+            "guess when you're simply unsure.",
+        ),
+    }),
+    run: async ({ amount, description, type, interval, date, categoryName }) => {
+      const category = ctx.categories.find(
+        (c) => c.name.toLowerCase() === categoryName.toLowerCase(),
+      );
+      const resolvedDate = date ?? ctx.today.toISOString().slice(0, 10);
+
+      const { data: inserted, error } = await ctx.supabase
+        .from("transactions")
+        .insert({
+          user_id: ctx.userId,
+          date: resolvedDate,
+          description,
+          amount,
+          type,
+          category: category?.id ?? null,
+          source: "ai_chat",
+          confirmed: true,
+        })
+        .select("id")
+        .single();
+
+      if (error || !inserted) {
+        return JSON.stringify({ ok: false, error: error?.message ?? "Insert failed" });
+      }
+
+      let groupId: string;
+      try {
+        groupId = await linkOrCreateRecurringGroup(ctx.supabase, ctx.userId, {
+          transactionId: inserted.id,
+          description,
+          cleanedDescription: null,
+          amount,
+          category: category?.id ?? null,
+          type,
+          // Safe: recurringIntervalEnumValues is built from RECURRING_INTERVALS itself.
+          interval: interval as (typeof RECURRING_INTERVALS)[number],
+        });
+      } catch (err) {
+        return JSON.stringify({
+          ok: false,
+          error:
+            err instanceof Error ? err.message : "Failed to set up the recurring series.",
+        });
+      }
+
+      ctx.transactions.push({
+        id: inserted.id,
+        date: resolvedDate,
+        description,
+        amount,
+        type,
+        category: category ? { id: category.id, name: category.name, budget_group: null } : null,
+      });
+
+      return JSON.stringify({
+        ok: true,
+        id: inserted.id,
+        groupId,
+        date: resolvedDate,
+        description,
+        amount,
+        type,
+        interval,
+        category: category?.name ?? "Uncategorized",
+      });
+    },
+  });
+
   const updateTransaction = betaZodTool({
     name: "update_transaction",
     description:
@@ -585,6 +696,7 @@ export function buildChatTools(ctx: ChatToolContext) {
     searchTransactions,
     getGoalPerformanceTool,
     recordTransaction,
+    recordRecurringTransaction,
     updateTransaction,
     deleteTransaction,
     bulkRecategorize,

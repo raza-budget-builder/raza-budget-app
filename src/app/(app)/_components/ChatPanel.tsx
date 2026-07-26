@@ -36,6 +36,10 @@ const SUGGESTION_POOL = [
   "I spent $75 at the vet for my dog",
   "$500 freelance payment came in today",
   "Spent $30 on dog food at PetSmart",
+  // Setting up a recurring transaction
+  "I pay $15.99 a month for Netflix",
+  "Set up my rent, $1200 due monthly",
+  "I get paid $2,500 every two weeks",
   // Correcting/managing what's recorded
   "Delete that Walmart transaction from yesterday",
   "Make all my Amazon purchases this month Shopping expenses",

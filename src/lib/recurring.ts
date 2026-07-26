@@ -8,7 +8,17 @@ const AMOUNT_TOLERANCE = 0.05;
 // recurrence dedup check (requirement 2 of the manual-recurrence feature).
 export const SIMILARITY_THRESHOLD = 0.85;
 
-export type RecurringInterval = "weekly" | "biweekly" | "monthly";
+export type RecurringInterval = "daily" | "weekly" | "biweekly" | "monthly";
+
+// Single source of truth for every dropdown/select across the app, so
+// adding/renaming an interval only needs to happen here.
+export const RECURRING_INTERVALS: RecurringInterval[] = ["daily", "weekly", "biweekly", "monthly"];
+export const RECURRING_INTERVAL_LABEL: Record<RecurringInterval, string> = {
+  daily: "Daily",
+  weekly: "Weekly",
+  biweekly: "Biweekly",
+  monthly: "Monthly",
+};
 
 // A brand-new pattern the detector just found — not written to the DB yet.
 // The caller shows this to the user and only calls confirmRecurringGroup()
@@ -24,6 +34,7 @@ export type PendingRecurringCandidate = {
 
 // Date-gap buckets, each with a few days of drift allowed either side.
 const INTERVAL_BUCKETS: { interval: RecurringInterval; min: number; max: number }[] = [
+  { interval: "daily", min: 1, max: 2 },
   { interval: "weekly", min: 5, max: 9 },
   { interval: "biweekly", min: 11, max: 17 },
   { interval: "monthly", min: 25, max: 34 },

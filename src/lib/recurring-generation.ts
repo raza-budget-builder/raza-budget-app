@@ -56,6 +56,10 @@ export function addInterval(
   anchorDay?: number,
 ): string {
   const d = new Date(`${dateISO}T00:00:00`);
+  if (interval === "daily") {
+    d.setDate(d.getDate() + 1);
+    return d.toISOString().slice(0, 10);
+  }
   if (interval === "weekly") {
     d.setDate(d.getDate() + 7);
     return d.toISOString().slice(0, 10);

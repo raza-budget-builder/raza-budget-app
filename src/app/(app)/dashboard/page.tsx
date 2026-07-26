@@ -10,12 +10,7 @@ import { AMOUNT_TEXT_CLASS, PENDING_TEXT_CLASS, formatSignedAmount } from "@/lib
 import { computeUpcomingRecurring } from "@/lib/recurring-generation";
 import { buildDashboardInsightSlides } from "@/lib/dashboard-insights";
 import { InsightsCarousel } from "../_components/InsightsCarousel";
-
-const INTERVAL_LABEL: Record<"weekly" | "biweekly" | "monthly", string> = {
-  weekly: "Weekly",
-  biweekly: "Biweekly",
-  monthly: "Monthly",
-};
+import { RECURRING_INTERVAL_LABEL } from "@/lib/recurring";
 
 type TransactionRowData = {
   id: string;
@@ -174,7 +169,7 @@ export default async function DashboardPage() {
                 <div className="min-w-0">
                   <p className="truncate font-medium text-foreground">{series.description}</p>
                   <p className="text-xs text-foreground-muted">
-                    {series.nextDate} · {INTERVAL_LABEL[series.interval]}
+                    {series.nextDate} · {RECURRING_INTERVAL_LABEL[series.interval]}
                   </p>
                 </div>
                 <span className={`shrink-0 text-base font-bold ${AMOUNT_TEXT_CLASS[series.type]}`}>
