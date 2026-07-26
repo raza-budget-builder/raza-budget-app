@@ -70,7 +70,10 @@ export async function getMonthlyGoalSummary(
             `month. Write a short (2-4 sentence), warm and encouraging paragraph ` +
             `summarizing their overall goal performance — celebrate what's going well, and ` +
             `if something is over budget, mention it gently and constructively rather than ` +
-            `critically. Talk to them directly as "you", kind tone throughout.\n\n` +
+            `critically. EXCEPTION: if "Tithing" or "Debt Payments" is over its cap, treat ` +
+            `that as a positive achievement to celebrate (giving more, or paying down more ` +
+            `debt, than planned) — never as a shortcoming, unlike every other category. Talk ` +
+            `to them directly as "you", kind tone throughout.\n\n` +
             `Goals:\n${lines}`,
         },
       ],

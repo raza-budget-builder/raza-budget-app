@@ -16,7 +16,8 @@ export type CategoryIconKey =
   | "card"
   | "business"
   | "goal"
-  | "receipt";
+  | "receipt"
+  | "handHeart";
 
 const RULES: { pattern: RegExp; icon: CategoryIconKey }[] = [
   { pattern: /dining|restaurant|takeout|coffee/i, icon: "utensils" },
@@ -32,6 +33,7 @@ const RULES: { pattern: RegExp; icon: CategoryIconKey }[] = [
   { pattern: /travel|flight|vacation/i, icon: "plane" },
   { pattern: /pet/i, icon: "paw" },
   { pattern: /gift|donation/i, icon: "gift" },
+  { pattern: /tith/i, icon: "handHeart" },
   { pattern: /childcare|education|tuition/i, icon: "graduation" },
   { pattern: /debt|loan/i, icon: "card" },
   { pattern: /business/i, icon: "business" },

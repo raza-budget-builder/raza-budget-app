@@ -12,6 +12,7 @@ import {
   GiftIcon,
   GoalsIcon,
   GraduationCapIcon,
+  HandHeartIcon,
   HeartPulseIcon,
   HomeIcon,
   PawIcon,
@@ -41,6 +42,7 @@ const ICONS: Record<CategoryIconKey, (props: { className?: string }) => React.Re
   business: BusinessIcon,
   goal: GoalsIcon,
   receipt: ReceiptIcon,
+  handHeart: HandHeartIcon,
 };
 
 // Same green/orange pair used everywhere else for "good" vs. "needs

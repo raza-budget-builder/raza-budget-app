@@ -338,9 +338,12 @@ export async function getDriftAlerts(
             `not a paraphrase), or null if it's a general/multi-category observation. Also ` +
             `mark each as "positive" or "negative": spending MORE than usual in an expense ` +
             `category, a new subscription, or a price increase are negative; spending LESS ` +
-            `than usual, or a category coming back down, is positive. Only mention what's ` +
-            `genuinely notable in the data below — don't invent anything and don't mention ` +
-            `categories that aren't listed.\n\n` +
+            `than usual, or a category coming back down, is positive. EXCEPTION: for the ` +
+            `"Tithing" and "Debt Payments" categories, apply the opposite logic — spending ` +
+            `MORE than usual is "positive" (giving more, or paying down debt faster, is worth ` +
+            `celebrating), and a change in either direction should never be marked ` +
+            `"negative". Only mention what's genuinely notable in the data below — don't ` +
+            `invent anything and don't mention categories that aren't listed.\n\n` +
             `Category spend this month vs. trailing averages:\n${categoryLines || "(none notable)"}` +
             (subscriptionLines
               ? `\n\nNew recurring subscriptions detected:\n${subscriptionLines}`

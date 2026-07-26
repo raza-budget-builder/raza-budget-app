@@ -53,6 +53,7 @@ const EXPENSE_CATEGORY_ORDER = [
   "Taxes",
   "Other Expense",
   "Savings & Investments",
+  "Tithing",
 ];
 
 function hashColor(name: string): string {

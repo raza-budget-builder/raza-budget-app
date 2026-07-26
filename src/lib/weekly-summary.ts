@@ -98,6 +98,9 @@ export async function getWeeklyNarrativeSummary(
             `spending behavior this week — what changed, what stood out.\n` +
             `2. "tip": one specific, actionable habit tip based on this data — something ` +
             `concrete they could actually do, not generic advice.\n\n` +
+            `If spending in the "Tithing" or "Debt Payments" categories went up, frame that ` +
+            `as something to celebrate (giving more, or paying down debt faster) — never as ` +
+            `overspending or a concern, unlike other categories.\n\n` +
             `Transactions:\n${lines}`,
         },
       ],

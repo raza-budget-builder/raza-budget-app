@@ -13,6 +13,7 @@ import {
   Film,
   Gift,
   GraduationCap,
+  HandHeart,
   HeartPulse,
   Home,
   LayoutDashboard,
@@ -94,6 +95,7 @@ export const HeartPulseIcon = wrap(HeartPulse);
 export const PlaneIcon = wrap(Plane);
 export const PawIcon = wrap(PawPrint);
 export const GiftIcon = wrap(Gift);
+export const HandHeartIcon = wrap(HandHeart);
 export const GraduationCapIcon = wrap(GraduationCap);
 export const CreditCardIcon = wrap(CreditCard);
 export const ReceiptIcon = wrap(Receipt);

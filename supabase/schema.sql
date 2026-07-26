@@ -244,7 +244,8 @@ begin
     (new.id, 'Business Expenses', 'expense', 'excluded'),
     (new.id, 'Taxes', 'expense', 'excluded'),
     (new.id, 'Other Expense', 'expense', 'excluded'),
-    (new.id, 'Savings & Investments', 'expense', 'savings');
+    (new.id, 'Savings & Investments', 'expense', 'savings'),
+    (new.id, 'Tithing', 'expense', 'excluded');
   return new;
 end;
 $$;

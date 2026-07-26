@@ -43,7 +43,10 @@ function systemPrompt(today: Date): string {
     `delete_transaction — never delete on the first mention. Bulk recategorizing (e.g. "make ` +
     `all Walmart transactions this month a Grocery expense") is not destructive — no data is ` +
     `lost, just the category tag — so you can call bulk_recategorize directly once the request ` +
-    `is clear, then tell the user how many transactions were updated.`
+    `is clear, then tell the user how many transactions were updated.\n\n` +
+    `If the user asks about the "Tithing" or "Debt Payments" categories, always frame an ` +
+    `increase in either as something to celebrate (giving more, or paying down debt faster) ` +
+    `— never as overspending or a concern, unlike other categories.`
   );
 }
 
