@@ -14,11 +14,66 @@ const HISTORY_TURNS_SENT = 10;
 // stopgap, not a real abuse guard.
 const MAX_SESSION_MESSAGES = 25;
 
-const SUGGESTIONS = [
+// A big pool so the empty state doesn't show the same 3 prompts every time
+// — a random sample is drawn once per panel open (see pickSuggestions
+// below). At least a dozen are transaction-recording examples specifically,
+// since that's the capability people are least likely to guess is possible
+// from a budgeting chat.
+const SUGGESTION_POOL = [
+  // Recording a transaction
   "I spent $40.22 at Walmart on groceries",
+  "I spent $12.50 on coffee at Starbucks",
+  "Paid $85 for gas at Shell",
+  "I spent $150 on home decor at HomeSense",
+  "$60 for a haircut yesterday",
+  "Spent $23.99 on a Netflix subscription",
+  "I got paid $2,500 today",
+  "$45 at the pharmacy for prescriptions",
+  "Spent $18 on lunch at Chipotle",
+  "I paid $1,200 for rent",
+  "$35 for an Uber ride",
+  "Spent $200 on my electric bill",
+  "I spent $75 at the vet for my dog",
+  "$500 freelance payment came in today",
+  "Spent $30 on dog food at PetSmart",
+  // Correcting/managing what's recorded
+  "Delete that Walmart transaction from yesterday",
+  "Make all my Amazon purchases this month Shopping expenses",
+  "Actually that Starbucks charge was $14.50, not $12.50",
+  // Spend/income totals
   "How much did I spend on dining this month?",
+  "How much did I spend on subscriptions this month?",
+  "What's my net income this month?",
+  "How much income did I bring in this year?",
+  "What's my total spending this week?",
+  "How much did I spend total last week?",
+  // Goals and budget
   "Am I on track with my budget goals?",
+  "Am I sticking to the 50/30/20 rule?",
+  "How close am I to my grocery budget?",
+  "Which categories am I over budget in?",
+  "How much do I have left in my dining budget this month?",
+  // Trends and comparisons
+  "What changed in my spending this month?",
+  "How does my spending compare to last month?",
+  "Compare my income this month to last month",
+  "Which category is trending up the most?",
+  "Is my spending unusual compared to my normal habits?",
+  "What's my savings trend looking like?",
+  "How much have I saved this year?",
+  // Lookups
+  "Show me my Uber charges from this month",
+  "Show me my last 5 transactions at Amazon",
+  "Show me all my transactions over $100 this month",
+  "What's my biggest expense category right now?",
+  "What did I spend on entertainment last month?",
 ];
+const SUGGESTIONS_SHOWN = 3;
+
+function pickSuggestions(): string[] {
+  const shuffled = [...SUGGESTION_POOL].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, SUGGESTIONS_SHOWN);
+}
 
 export function ChatPanel() {
   const { isOpen, close } = useChat();
@@ -27,6 +82,10 @@ export function ChatPanel() {
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const listRef = useRef<HTMLDivElement>(null);
+  // Lazy initializer runs once per mount — since the panel unmounts on
+  // close (see the early return below), this naturally draws a fresh random
+  // set each time the chat is reopened, not on every re-render.
+  const [suggestions] = useState(pickSuggestions);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -102,7 +161,7 @@ export function ChatPanel() {
                 Ask a question about your spending or income.
               </p>
               <div className="flex flex-col gap-2">
-                {SUGGESTIONS.map((s) => (
+                {suggestions.map((s) => (
                   <button
                     key={s}
                     onClick={() => askSuggestion(s)}
