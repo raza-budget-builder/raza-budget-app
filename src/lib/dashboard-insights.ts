@@ -5,6 +5,8 @@
 // because these need the category *id* to link a card's "Adjust goal"
 // action to the right budget_goals row.
 
+import { formatDollarSigned } from "./format";
+
 // Anything smaller than this is too small in dollar terms to be worth a
 // card, even if the ratio looks dramatic — same convention as drift-alerts.ts.
 const MIN_NOTABLE_AMOUNT = 20;
@@ -266,5 +268,86 @@ export function buildDashboardInsightSlides(
     slides.push({ id: "period-comparison", text: formatPeriodComparisonSentence(comparison) });
   }
 
+  // Always included (not filtered by "is this notable" like the swing/
+  // comparison slides above) once there's enough history to compute it —
+  // computeIllustrativeSavingsRate's own 3-completed-month gate is the only
+  // condition, so this reliably shows up in the rotation rather than being
+  // an occasional/optional slide.
+  const illustrativeSavingsRate = computeIllustrativeSavingsRate(transactions, today);
+  if (illustrativeSavingsRate) {
+    slides.push({
+      id: "illustrative-savings-rate",
+      text: formatIllustrativeSavingsSentence(illustrativeSavingsRate),
+    });
+  }
+
   return slides;
+}
+
+export type IllustrativeSavingsRate = {
+  avgMonthlyNet: number;
+  hypotheticalYearlyTotal: number;
+};
+
+// Purely descriptive math over the last 3 *completed* calendar months (the
+// current, still-in-progress month is excluded — it isn't a fair month to
+// average in). This is NOT a forecast or prediction of the user's actual
+// financial future, just "what a flat continuation of the recent average
+// would add up to" — keep that framing in every string this feeds (see
+// formatIllustrativeSavingsSentence below), and never rename this to
+// anything with "forecast"/"predict"/"projection" in it. Returns null
+// rather than computing on a thin sample when the user's history doesn't
+// go back a full 3 completed months yet.
+//
+// Deliberately a narrower param type than the file's other Transaction —
+// this is a plain sum by type, no category needed, so callers (e.g. the
+// Profile page) can pass a lighter query result without joining categories
+// just to satisfy an unused field.
+export function computeIllustrativeSavingsRate(
+  transactions: { date: string; amount: number; type: "income" | "expense" }[],
+  today: Date = new Date(),
+): IllustrativeSavingsRate | null {
+  if (transactions.length === 0) return null;
+
+  const currentMonth = today.toISOString().slice(0, 7);
+  const earliestDate = transactions.reduce(
+    (min, t) => (t.date < min ? t.date : min),
+    transactions[0].date,
+  );
+  // The actual calendar date 3 months back (not the 1st of that month) —
+  // otherwise someone whose history starts mid-month would be told they
+  // don't have "3 months of history" a few weeks early.
+  const threeMonthsAgo = new Date(today.getFullYear(), today.getMonth() - 3, today.getDate())
+    .toISOString()
+    .slice(0, 10);
+  if (earliestDate > threeMonthsAgo) return null;
+
+  let totalNet = 0;
+  for (let i = 1; i <= 3; i++) {
+    const month = addMonths(currentMonth, -i);
+    let income = 0;
+    let expense = 0;
+    for (const t of transactions) {
+      if (!t.date.startsWith(month)) continue;
+      if (t.type === "income") income += Number(t.amount);
+      else expense += Number(t.amount);
+    }
+    totalNet += income - expense;
+  }
+
+  const avgMonthlyNet = totalNet / 3;
+  return { avgMonthlyNet, hypotheticalYearlyTotal: avgMonthlyNet * 12 };
+}
+
+// Deliberately "if this continued, that would total" — never "you'll have"
+// / "you're on track for" / "you'd be at", which read as predictions about
+// the user's specific future rather than a plain what-if calculation. The
+// disclaimer lives in the same sentence, not a separate footnote, so it
+// can't be read in isolation from the number.
+export function formatIllustrativeSavingsSentence(rate: IllustrativeSavingsRate): string {
+  return (
+    `If your average pace over the last 3 months continued, that would total ` +
+    `${formatDollarSigned(rate.hypotheticalYearlyTotal)} over a year — though spending patterns ` +
+    `often shift month to month, so this is illustrative, not a forecast.`
+  );
 }
