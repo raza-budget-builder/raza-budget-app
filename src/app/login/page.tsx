@@ -19,16 +19,12 @@ export default async function LoginPage({
         <AiWelcomeMessage />
       </div>
 
-      <div className="w-full max-w-sm space-y-6 rounded-xl border border-card-border bg-card p-8 sm:max-w-md">
+      <div className="w-full max-w-sm space-y-6 rounded-xl bg-card p-8 sm:max-w-md">
         <p className="text-sm text-foreground-muted">
           Enter your email and password to sign in, or create an account.
         </p>
 
-        {error && (
-          <p className="rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
-            {error}
-          </p>
-        )}
+        {error && <p className="rounded-xl bg-critical/10 px-3 py-2 text-sm text-critical">{error}</p>}
 
         <form className="space-y-4">
           <div>
@@ -43,7 +39,7 @@ export default async function LoginPage({
               name="email"
               type="email"
               required
-              className="mt-1 block w-full rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground focus:border-foreground/40 focus:outline-none"
+              className="mt-1 block w-full rounded-xl bg-input-bg px-3 py-2 text-sm text-foreground outline-none focus:ring-2 focus:ring-accent/50"
             />
           </div>
           <div>
@@ -59,28 +55,33 @@ export default async function LoginPage({
               type="password"
               required
               minLength={6}
-              className="mt-1 block w-full rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground focus:border-foreground/40 focus:outline-none"
+              className="mt-1 block w-full rounded-xl bg-input-bg px-3 py-2 text-sm text-foreground outline-none focus:ring-2 focus:ring-accent/50"
             />
           </div>
 
-          <div className="flex gap-3 pt-2">
-            <button
-              formAction={login}
-              className="flex-1 rounded-xl bg-accent px-3 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover"
-            >
-              Log in
-            </button>
+          {/* Stacked, not side-by-side at equal width — sign up is the more
+              likely action for someone seeing this page for the first time
+              (log in requires already having an account), so it gets the
+              filled primary treatment; log in is a plain text-weight
+              secondary action underneath, not a competing button. */}
+          <div className="flex flex-col gap-1 pt-2">
             <button
               formAction={signup}
-              className="flex-1 rounded-xl border border-card-border px-3 py-2 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
+              className="w-full rounded-xl bg-accent px-3 py-2.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover"
             >
               Sign up
+            </button>
+            <button
+              formAction={login}
+              className="w-full rounded-xl px-3 py-2 text-sm font-medium text-foreground-muted hover:text-foreground"
+            >
+              Log in
             </button>
           </div>
         </form>
       </div>
 
-      <p className="max-w-sm text-center text-xs text-foreground-muted sm:max-w-lg md:max-w-xl">
+      <p className="max-w-sm text-center text-xs text-foreground-muted/80 sm:max-w-lg md:max-w-xl">
         *All advice generated from the analysis of your personal finances is not to be taken as
         financial advice — always seek professional help before investing or buying financial
         products.
