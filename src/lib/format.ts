@@ -28,3 +28,13 @@ export function formatSignedAmount(amount: number, type: TransactionType) {
   const isCredit = type === "income" || (type === "expense" && amount < 0);
   return isCredit ? `+$${abs}` : `–$${abs}`;
 }
+
+// For an already-computed signed total (net, cumulative, headroom) rather
+// than a raw transaction amount — sign follows the number's own value, none
+// of formatSignedAmount's refund-detection heuristic (which assumes a raw
+// transaction amount + declared type, not a derived figure that can
+// legitimately be negative on its own terms).
+export function formatDollarSigned(amount: number): string {
+  const sign = amount < 0 ? "–" : amount > 0 ? "+" : "";
+  return `${sign}$${formatCurrency(Math.abs(amount))}`;
+}

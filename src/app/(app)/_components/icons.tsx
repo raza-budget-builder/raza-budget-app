@@ -17,6 +17,7 @@ import {
   Home,
   LayoutDashboard,
   List,
+  LogOut,
   type LucideIcon,
   MessageCircle,
   Moon,
@@ -69,6 +70,7 @@ export const InsightsIcon = wrap(TrendingUp);
 export const BusinessIcon = wrap(Briefcase);
 export const SortIcon = wrap(ArrowUpDown);
 export const PersonIcon = wrap(User);
+export const LogOutIcon = wrap(LogOut);
 export const CheckIcon = wrap(Check);
 export const RecurringIcon = wrap(Repeat);
 export const PlusIcon = wrap(Plus);

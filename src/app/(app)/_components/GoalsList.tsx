@@ -67,7 +67,7 @@ export function GoalsList({
     .sort((a, b) => a.name.localeCompare(b.name));
 
   return (
-    <ul className="divide-y divide-card-border rounded-xl border border-card-border bg-card">
+    <ul className="divide-y divide-card-border rounded-xl bg-card">
       {withGoal.map((c) => {
         const cap = capByCategory.get(c.id)!;
         const spend = spendByCategory.get(c.id) ?? 0;
@@ -76,7 +76,7 @@ export function GoalsList({
         const color = statusColor(ratio);
 
         return (
-          <li key={c.id} className="px-4 py-3 text-sm">
+          <li key={c.id} className="px-4 py-2.5 text-sm">
             <div className="mb-1.5 flex flex-wrap items-baseline justify-between gap-x-2">
               <span className="font-bold text-foreground">{c.name}</span>
               <span className="text-foreground-muted">
@@ -95,7 +95,7 @@ export function GoalsList({
         );
       })}
       {withoutGoal.map((c) => (
-        <li key={c.id} className="flex items-center justify-between px-4 py-3 text-sm">
+        <li key={c.id} className="flex items-center justify-between px-4 py-2.5 text-sm">
           <span className="font-bold text-foreground">{c.name}</span>
           <span className="text-foreground-muted">Not set</span>
         </li>

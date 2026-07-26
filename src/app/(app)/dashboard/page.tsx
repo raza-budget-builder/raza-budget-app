@@ -102,27 +102,28 @@ export default async function DashboardPage() {
     today,
   );
 
+  const monthLabel = today.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+
   return (
     <div>
-      <PageHeader title="Dashboard" extra={<ThemeToggle />} />
-
-      <DashboardQuickActions
-        categories={categories ?? []}
-        needsReviewCount={needsReviewCount ?? 0}
-      />
+      <PageHeader title="Dashboard" subtitle={monthLabel} extra={<ThemeToggle />} />
 
       <SummaryCard transactions={confirmedTransactions} />
 
       <InsightsCarousel slides={insightSlides} />
 
-      <section className="mb-10 rounded-xl border border-card-border bg-card p-6">
+      <section className="mb-4 rounded-xl bg-card p-5">
         <CategoryCharts transactions={confirmedTransactions} />
       </section>
 
       <section>
-        <h2 className="mb-4 font-bold text-foreground">Last 7 days</h2>
+        <h2 className="mb-3 font-bold text-foreground">Last 7 days</h2>
+        <DashboardQuickActions
+          categories={categories ?? []}
+          needsReviewCount={needsReviewCount ?? 0}
+        />
         {last7Days.length > 0 ? (
-          <ul className="divide-y divide-card-border rounded-xl border border-card-border bg-card">
+          <ul className="divide-y divide-card-border rounded-xl bg-card">
             {last7Days.map((t) => (
               <li
                 key={t.id}
@@ -155,10 +156,10 @@ export default async function DashboardPage() {
         )}
       </section>
 
-      <section className="mt-10">
-        <h2 className="mb-4 font-bold text-foreground">Upcoming</h2>
+      <section className="mt-6">
+        <h2 className="mb-3 font-bold text-foreground">Upcoming</h2>
         {upcomingRecurring.length > 0 ? (
-          <ul className="divide-y divide-card-border rounded-xl border border-card-border bg-card">
+          <ul className="divide-y divide-card-border rounded-xl bg-card">
             {upcomingRecurring.map((series) => (
               <li
                 key={series.groupId}

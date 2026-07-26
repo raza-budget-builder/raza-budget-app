@@ -9,17 +9,12 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { formatCurrency } from "@/lib/format";
+import { formatDollarSigned } from "@/lib/format";
 import type { MonthlyNetFlowPoint } from "@/lib/net-flow";
 import { useChartTheme } from "./useChartTheme";
 
 // Same green used for income amounts elsewhere in the app.
 const TOTAL_COLOR = "var(--positive)";
-
-function formatDollarSigned(n: number): string {
-  const sign = n < 0 ? "–" : n > 0 ? "+" : "";
-  return `${sign}$${formatCurrency(Math.abs(n))}`;
-}
 
 function NetFlowTooltip({
   active,

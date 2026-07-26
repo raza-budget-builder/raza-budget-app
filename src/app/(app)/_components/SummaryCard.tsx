@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AMOUNT_TEXT_CLASS, formatSignedAmount } from "@/lib/format";
+import { AMOUNT_TEXT_CLASS, formatDollarSigned, formatSignedAmount } from "@/lib/format";
 import { getPeriodRange } from "@/lib/date-ranges";
 
 type Transaction = {
@@ -12,35 +12,31 @@ type Transaction = {
 
 type SummaryPeriod = "monthly" | "this-year" | "all-time";
 
+const NET_LABEL: Record<SummaryPeriod, string> = {
+  monthly: "Net this month",
+  "this-year": "Net this year",
+  "all-time": "Net all-time",
+};
+
 const activeClass = "bg-accent text-accent-foreground";
 const inactiveClass = "text-foreground-muted hover:text-foreground";
 
 export function SummaryCard({ transactions }: { transactions: Transaction[] }) {
   const [summaryPeriod, setSummaryPeriod] = useState<SummaryPeriod>("monthly");
 
-  const { filtered, label } = useMemo(() => {
+  const filtered = useMemo(() => {
     const now = new Date();
     if (summaryPeriod === "monthly") {
       const monthPrefix = now.toISOString().slice(0, 7); // "YYYY-MM"
-      const monthLabel = now.toLocaleDateString("en-US", {
-        month: "long",
-        year: "numeric",
-      });
-      return {
-        filtered: transactions.filter((t) => t.date.startsWith(monthPrefix)),
-        label: `${monthLabel} summary`,
-      };
+      return transactions.filter((t) => t.date.startsWith(monthPrefix));
     }
     if (summaryPeriod === "this-year") {
       // Full calendar year, including transactions already entered with a
       // future date — same "this year" window the charts use.
       const { start, end } = getPeriodRange("this-year", now);
-      return {
-        filtered: transactions.filter((t) => t.date >= start && t.date <= end),
-        label: `${now.getFullYear()} summary`,
-      };
+      return transactions.filter((t) => t.date >= start && t.date <= end);
     }
-    return { filtered: transactions, label: "All-time summary" };
+    return transactions;
   }, [transactions, summaryPeriod]);
 
   const income = filtered
@@ -50,62 +46,67 @@ export function SummaryCard({ transactions }: { transactions: Transaction[] }) {
     .filter((t) => t.type === "expense")
     .reduce((sum, t) => sum + Number(t.amount), 0);
   const net = income - expense;
+  const netVar = net >= 0 ? "--positive" : "--critical";
 
   return (
-    <section className="mb-10 rounded-xl border border-card-border bg-card p-6">
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-sm font-bold text-foreground">{label}</h2>
-        <div className="flex overflow-hidden rounded-xl border border-card-border">
-          <button
-            onClick={() => setSummaryPeriod("monthly")}
-            aria-pressed={summaryPeriod === "monthly"}
-            className={`px-3 py-1.5 text-sm font-medium ${
-              summaryPeriod === "monthly" ? activeClass : inactiveClass
-            }`}
-          >
-            Monthly
-          </button>
-          <button
-            onClick={() => setSummaryPeriod("this-year")}
-            aria-pressed={summaryPeriod === "this-year"}
-            className={`border-l border-card-border px-3 py-1.5 text-sm font-medium ${
-              summaryPeriod === "this-year" ? activeClass : inactiveClass
-            }`}
-          >
-            This year
-          </button>
-          <button
-            onClick={() => setSummaryPeriod("all-time")}
-            aria-pressed={summaryPeriod === "all-time"}
-            className={`border-l border-card-border px-3 py-1.5 text-sm font-medium ${
-              summaryPeriod === "all-time" ? activeClass : inactiveClass
-            }`}
-          >
-            All-time
-          </button>
-        </div>
+    <section className="mb-4">
+      <div className="mb-2 flex justify-end gap-1">
+        <button
+          onClick={() => setSummaryPeriod("monthly")}
+          aria-pressed={summaryPeriod === "monthly"}
+          className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+            summaryPeriod === "monthly" ? activeClass : inactiveClass
+          }`}
+        >
+          Monthly
+        </button>
+        <button
+          onClick={() => setSummaryPeriod("this-year")}
+          aria-pressed={summaryPeriod === "this-year"}
+          className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+            summaryPeriod === "this-year" ? activeClass : inactiveClass
+          }`}
+        >
+          This year
+        </button>
+        <button
+          onClick={() => setSummaryPeriod("all-time")}
+          aria-pressed={summaryPeriod === "all-time"}
+          className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+            summaryPeriod === "all-time" ? activeClass : inactiveClass
+          }`}
+        >
+          All-time
+        </button>
       </div>
-      <div className="grid grid-cols-3 gap-4">
-        <div className="min-w-0">
+
+      {/* The one number this screen is built around — dominant size, and a
+          background tinted by its own sign (not the flat --card tone every
+          other section uses) so it reads as the hero at a glance, not just
+          another box in the stack. */}
+      <div
+        className="rounded-xl p-6"
+        style={{ background: `color-mix(in srgb, var(${netVar}) 10%, var(--card))` }}
+      >
+        <p className="text-xs font-medium text-foreground-muted">{NET_LABEL[summaryPeriod]}</p>
+        <p className="mt-1 truncate text-4xl font-bold" style={{ color: `var(${netVar})` }}>
+          {formatDollarSigned(net)}
+        </p>
+      </div>
+
+      {/* Supporting figures — smaller, grouped side by side, plain card
+          tone, so they read as secondary detail under the hero above. */}
+      <div className="mt-3 grid grid-cols-2 gap-3">
+        <div className="min-w-0 rounded-xl bg-card p-4">
           <p className="text-xs font-medium text-foreground-muted">Income</p>
-          <p className={`mt-1 truncate text-xl font-bold ${AMOUNT_TEXT_CLASS.income}`}>
+          <p className={`mt-1 truncate text-lg font-bold ${AMOUNT_TEXT_CLASS.income}`}>
             {formatSignedAmount(income, "income")}
           </p>
         </div>
-        <div className="min-w-0">
+        <div className="min-w-0 rounded-xl bg-card p-4">
           <p className="text-xs font-medium text-foreground-muted">Expenses</p>
-          <p className={`mt-1 truncate text-xl font-bold ${AMOUNT_TEXT_CLASS.expense}`}>
+          <p className={`mt-1 truncate text-lg font-bold ${AMOUNT_TEXT_CLASS.expense}`}>
             {formatSignedAmount(expense, "expense")}
-          </p>
-        </div>
-        <div className="min-w-0">
-          <p className="text-xs font-medium text-foreground-muted">Net</p>
-          <p
-            className={`mt-1 truncate text-xl font-bold ${
-              net >= 0 ? AMOUNT_TEXT_CLASS.income : AMOUNT_TEXT_CLASS.expense
-            }`}
-          >
-            {formatSignedAmount(net, net >= 0 ? "income" : "expense")}
           </p>
         </div>
       </div>
