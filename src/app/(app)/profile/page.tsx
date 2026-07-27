@@ -8,6 +8,8 @@ import { CloseIcon } from "../_components/icons";
 import { listRecurringSeries } from "@/lib/recurring-generation";
 import { listCsvImports } from "../import-actions";
 import { updateProfileInfo, updateBudgetGoals } from "./actions";
+import { IncomeTypeFields } from "./IncomeTypeFields";
+import { isIncomeType } from "@/lib/income-type";
 
 type Category = { id: string; name: string };
 type AllCategory = { id: string; name: string; type: "income" | "expense" };
@@ -33,7 +35,7 @@ export default async function ProfilePage({
     recurringSeries,
     csvImports,
   ] = await Promise.all([
-    supabase.from("profiles").select("name, main_goal").eq("id", user.id).single(),
+    supabase.from("profiles").select("name, main_goal, income_type").eq("id", user.id).single(),
     supabase
       .from("categories")
       .select("id, name")
@@ -109,6 +111,9 @@ export default async function ProfilePage({
               className="mt-1 min-h-11 w-full rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
             />
           </div>
+          <IncomeTypeFields
+            defaultValue={((profile?.income_type ?? []) as string[]).filter(isIncomeType)}
+          />
           <div>
             <label className="block text-xs font-medium text-foreground-muted">
               Main goal

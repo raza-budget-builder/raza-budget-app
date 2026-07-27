@@ -26,8 +26,21 @@ export default async function AppLayout({
   // rather than one blocking the other on every single navigation.
   const [, { data: profile }] = await Promise.all([
     generateDueRecurringTransactions(supabase, user.id),
-    supabase.from("profiles").select("tier").eq("id", user.id).single(),
+    supabase
+      .from("profiles")
+      .select("tier, onboarding_completed_at")
+      .eq("id", user.id)
+      .single(),
   ]);
+
+  // Checked once here (not duplicated per page) so any first-time signed-in
+  // user — regardless of how they authenticated (email confirm, Google,
+  // password without confirmation) — gets routed to onboarding before
+  // reaching any (app) page. /onboarding lives outside this route group, so
+  // there's no redirect loop.
+  if (profile && !profile.onboarding_completed_at) {
+    redirect("/onboarding");
+  }
 
   const showBusiness = profile?.tier === "entrepreneur";
 

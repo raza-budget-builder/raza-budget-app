@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { isIncomeType } from "@/lib/income-type";
 
 export async function updateProfileInfo(formData: FormData) {
   const supabase = await createClient();
@@ -13,12 +14,19 @@ export async function updateProfileInfo(formData: FormData) {
 
   const name = (formData.get("name") as string)?.trim() || null;
   const mainGoal = (formData.get("main_goal") as string)?.trim() || null;
+  const incomeType = formData.getAll("income_type").filter(
+    (v): v is string => typeof v === "string" && isIncomeType(v),
+  );
 
   // .select() forces the update to return its written row — same fix as
   // updateBudgetGoals below, guarding against the same write/re-read race.
   const { error } = await supabase
     .from("profiles")
-    .update({ name, main_goal: mainGoal })
+    .update({
+      name,
+      main_goal: mainGoal,
+      income_type: incomeType.length > 0 ? incomeType : null,
+    })
     .eq("id", user.id)
     .select();
 

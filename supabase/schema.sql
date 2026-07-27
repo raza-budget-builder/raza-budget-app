@@ -27,6 +27,13 @@ create table if not exists public.profiles (
   tier text not null default 'free' check (tier in ('free', 'entrepreneur')),
   name text,
   main_goal text,
+  -- Collected by onboarding, editable afterward in Profile. Constrained to
+  -- the 4 known values; null (unset) is allowed and passes the check.
+  income_type text[] check (income_type <@ array['salaried', 'freelance', 'business_owner', 'other']::text[]),
+  -- Null until the new-user onboarding flow finishes or is explicitly
+  -- skipped — checked once in the (app) layout to route a signed-in user
+  -- to /onboarding before anything else, rather than a per-page check.
+  onboarding_completed_at timestamptz,
   created_at timestamptz not null default now()
 );
 
