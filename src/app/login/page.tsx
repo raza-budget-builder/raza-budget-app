@@ -5,9 +5,9 @@ import { ThemeToggle } from "../(app)/_components/ThemeToggle";
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; checkEmail?: string }>;
+  searchParams: Promise<{ error?: string; checkEmail?: string; confirmed?: string }>;
 }) {
-  const { error, checkEmail } = await searchParams;
+  const { error, checkEmail, confirmed } = await searchParams;
 
   return (
     <div className="relative flex flex-1 flex-col items-center justify-center gap-4 bg-background px-4 py-16">
@@ -28,6 +28,11 @@ export default async function LoginPage({
         {checkEmail && (
           <p className="rounded-xl bg-positive/10 px-3 py-2 text-sm text-positive">
             Check your email to confirm your account, then log in below.
+          </p>
+        )}
+        {confirmed && (
+          <p className="rounded-xl bg-positive/10 px-3 py-2 text-sm text-positive">
+            Your email has been confirmed — you can log in now.
           </p>
         )}
 

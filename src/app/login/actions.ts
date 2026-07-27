@@ -36,11 +36,13 @@ export async function signup(formData: FormData) {
     password,
     options: {
       // Points at the route handler that verifies the token from the
-      // confirmation email — see src/app/auth/confirm/route.ts. This only
-      // takes effect if the Supabase project's "Confirm signup" email
-      // template actually links here (token_hash/type/next) rather than
-      // its own default template.
-      emailRedirectTo: `${origin}/auth/confirm?next=/dashboard`,
+      // confirmation email — see src/app/auth/confirm/route.ts. `next`
+      // sends them to the login page with a success banner (not straight
+      // to the dashboard) so confirming reads as "now log in", not an
+      // automatic sign-in. This only takes effect if the Supabase
+      // project's "Confirm signup" email template actually links here
+      // (token_hash/type/next) rather than its own default template.
+      emailRedirectTo: `${origin}/auth/confirm?next=${encodeURIComponent("/login?confirmed=1")}`,
     },
   });
 
