@@ -1,6 +1,7 @@
-import { login, signup } from "./actions";
+import { login, loginWithGoogle, signup } from "./actions";
 import { AiWelcomeMessage } from "./AiWelcomeMessage";
 import { ThemeToggle } from "../(app)/_components/ThemeToggle";
+import { GoogleIcon } from "../(app)/_components/icons";
 
 export default async function LoginPage({
   searchParams,
@@ -88,6 +89,22 @@ export default async function LoginPage({
               Log in
             </button>
           </div>
+        </form>
+
+        <div className="flex items-center gap-3">
+          <div className="h-px flex-1 bg-card-border" />
+          <span className="text-xs text-foreground-muted">or</span>
+          <div className="h-px flex-1 bg-card-border" />
+        </div>
+
+        <form>
+          <button
+            formAction={loginWithGoogle}
+            className="flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-card-border px-3 py-2 text-sm font-medium text-foreground hover:bg-foreground/5"
+          >
+            <GoogleIcon className="h-4 w-4" />
+            Continue with Google
+          </button>
         </form>
       </div>
 

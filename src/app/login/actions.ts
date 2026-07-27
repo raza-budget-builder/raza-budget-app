@@ -24,6 +24,33 @@ export async function login(formData: FormData) {
   redirect("/dashboard");
 }
 
+export async function loginWithGoogle() {
+  const supabase = await createClient();
+  const origin = (await headers()).get("origin");
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      // Points at the OAuth code-exchange route — see
+      // src/app/auth/callback/route.ts. Different flow than email
+      // confirmation's token_hash (see auth/confirm/route.ts): this one
+      // exchanges an authorization `code` via exchangeCodeForSession.
+      redirectTo: `${origin}/auth/callback`,
+    },
+  });
+
+  if (error) {
+    redirect(`/login?error=${encodeURIComponent(error.message)}`);
+  }
+
+  // signInWithOAuth doesn't sign anyone in itself — it just returns
+  // Google's consent-screen URL. The redirect there (and back to our
+  // callback route afterward) is what actually completes the sign-in.
+  if (data.url) {
+    redirect(data.url);
+  }
+}
+
 export async function signup(formData: FormData) {
   const supabase = await createClient();
 
