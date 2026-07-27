@@ -95,7 +95,7 @@ export async function sendChatMessage(
       .order("date", { ascending: false })
       .limit(10000)
       .returns<ChatTransaction[]>(),
-    supabase.from("categories").select("id, name, type").returns<ChatCategory[]>(),
+    supabase.from("categories").select("id, name, type, is_variable").returns<ChatCategory[]>(),
     supabase
       .from("budget_goals")
       .select("category_id, monthly_cap")

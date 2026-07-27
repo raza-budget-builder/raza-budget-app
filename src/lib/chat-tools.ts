@@ -23,7 +23,12 @@ export type ChatTransaction = {
   type: "income" | "expense";
   category: { id: string; name: string; budget_group: string | null } | null;
 };
-export type ChatCategory = { id: string; name: string; type: "income" | "expense" };
+export type ChatCategory = {
+  id: string;
+  name: string;
+  type: "income" | "expense";
+  is_variable?: boolean | null;
+};
 export type ChatGoal = { category_id: string; monthly_cap: number };
 
 export type ChatToolContext = {
@@ -126,7 +131,12 @@ export function buildChatTools(ctx: ChatToolContext) {
     name: "get_pace_to_goal",
     description:
       "Get this month's spend-so-far vs. budget goal cap per category, with a projected " +
-      "month-end total. Use this for 'am I on track' or 'will I go over budget' questions.",
+      "month-end total. Use this for 'am I on track' or 'will I go over budget' questions. " +
+      "Only returns categories whose spend naturally varies month to month (Groceries, Dining " +
+      "Out, etc.) — fixed/committed expenses like Rent/Mortgage or Insurance are excluded " +
+      "since a month-end 'pace' projection doesn't mean anything for an amount that's already " +
+      "known. If a fixed-expense category isn't in the results, that's why — say so rather " +
+      "than treating it as 'no goal set'.",
     inputSchema: z.object({
       categoryName: z.string().optional().describe("If given, only return this category."),
     }),

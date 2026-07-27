@@ -26,6 +26,7 @@ type Category = {
   id: string;
   name: string;
   type: "income" | "expense";
+  is_variable: boolean | null;
 };
 
 type Goal = { category_id: string; monthly_cap: number };
@@ -55,7 +56,7 @@ export default async function DashboardPage() {
       .returns<TransactionRowData[]>(),
     supabase
       .from("categories")
-      .select("id, name, type")
+      .select("id, name, type, is_variable")
       .order("type")
       .order("name")
       .returns<Category[]>(),

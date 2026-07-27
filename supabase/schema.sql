@@ -12,6 +12,13 @@ create table if not exists public.categories (
   -- income categories leave this null. Nullable rather than defaulted, since
   -- "excluded" is a real, deliberate choice, not the same as "unset".
   budget_group text check (budget_group in ('needs', 'wants', 'savings', 'excluded')),
+  -- Hardcoded, developer-defined: does this category's monthly spend
+  -- naturally fluctuate (Groceries) or is it a known/committed amount each
+  -- month (Rent/Mortgage)? Gates the "pace projection" insight, which
+  -- doesn't make sense for a fixed expense. Null for income categories and
+  -- for any category not explicitly classified — exclusion is the default,
+  -- not inclusion, so an unclassified category never gets a projection.
+  is_variable boolean,
   created_at timestamptz not null default now()
 );
 
@@ -217,35 +224,35 @@ security definer
 set search_path = public
 as $$
 begin
-  insert into public.categories (user_id, name, type, budget_group) values
-    (new.id, 'Salary', 'income', null),
-    (new.id, 'Freelance Income', 'income', null),
-    (new.id, 'Business Revenue', 'income', null),
-    (new.id, 'Investment Income', 'income', null),
-    (new.id, 'Gifts', 'income', null),
-    (new.id, 'Other Income', 'income', null),
-    (new.id, 'Rent/Mortgage', 'expense', 'needs'),
-    (new.id, 'Utilities', 'expense', 'needs'),
-    (new.id, 'Groceries', 'expense', 'needs'),
-    (new.id, 'Dining Out', 'expense', 'wants'),
-    (new.id, 'Transportation', 'expense', 'needs'),
-    (new.id, 'Insurance', 'expense', 'needs'),
-    (new.id, 'Health & Medical', 'expense', 'needs'),
-    (new.id, 'Personal Care', 'expense', 'wants'),
-    (new.id, 'Subscriptions', 'expense', 'wants'),
-    (new.id, 'Entertainment', 'expense', 'wants'),
-    (new.id, 'Shopping', 'expense', 'wants'),
-    (new.id, 'Debt Payments', 'expense', 'needs'),
-    (new.id, 'Childcare & Education', 'expense', 'needs'),
-    (new.id, 'Travel', 'expense', 'wants'),
-    (new.id, 'Gifts & Donations', 'expense', 'wants'),
-    (new.id, 'Pet Care', 'expense', 'needs'),
-    (new.id, 'Home Maintenance', 'expense', 'needs'),
-    (new.id, 'Business Expenses', 'expense', 'excluded'),
-    (new.id, 'Taxes', 'expense', 'excluded'),
-    (new.id, 'Other Expense', 'expense', 'excluded'),
-    (new.id, 'Savings & Investments', 'expense', 'savings'),
-    (new.id, 'Tithing', 'expense', 'excluded');
+  insert into public.categories (user_id, name, type, budget_group, is_variable) values
+    (new.id, 'Salary', 'income', null, null),
+    (new.id, 'Freelance Income', 'income', null, null),
+    (new.id, 'Business Revenue', 'income', null, null),
+    (new.id, 'Investment Income', 'income', null, null),
+    (new.id, 'Gifts', 'income', null, null),
+    (new.id, 'Other Income', 'income', null, null),
+    (new.id, 'Rent/Mortgage', 'expense', 'needs', false),
+    (new.id, 'Utilities', 'expense', 'needs', false),
+    (new.id, 'Groceries', 'expense', 'needs', true),
+    (new.id, 'Dining Out', 'expense', 'wants', true),
+    (new.id, 'Transportation', 'expense', 'needs', true),
+    (new.id, 'Insurance', 'expense', 'needs', false),
+    (new.id, 'Health & Medical', 'expense', 'needs', true),
+    (new.id, 'Personal Care', 'expense', 'wants', true),
+    (new.id, 'Subscriptions', 'expense', 'wants', false),
+    (new.id, 'Entertainment', 'expense', 'wants', true),
+    (new.id, 'Shopping', 'expense', 'wants', true),
+    (new.id, 'Debt Payments', 'expense', 'needs', false),
+    (new.id, 'Childcare & Education', 'expense', 'needs', false),
+    (new.id, 'Travel', 'expense', 'wants', true),
+    (new.id, 'Gifts & Donations', 'expense', 'wants', true),
+    (new.id, 'Pet Care', 'expense', 'needs', true),
+    (new.id, 'Home Maintenance', 'expense', 'needs', true),
+    (new.id, 'Business Expenses', 'expense', 'excluded', true),
+    (new.id, 'Taxes', 'expense', 'excluded', false),
+    (new.id, 'Other Expense', 'expense', 'excluded', false),
+    (new.id, 'Savings & Investments', 'expense', 'savings', false),
+    (new.id, 'Tithing', 'expense', 'excluded', false);
   return new;
 end;
 $$;

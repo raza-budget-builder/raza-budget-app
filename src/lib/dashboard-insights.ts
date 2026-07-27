@@ -18,7 +18,7 @@ type Transaction = {
   category: { id: string; name: string } | null;
 };
 
-type Category = { id: string; name: string };
+type Category = { id: string; name: string; is_variable?: boolean | null };
 type Goal = { category_id: string; monthly_cap: number };
 
 function monthKey(dateISO: string): string {
@@ -46,7 +46,14 @@ export type PaceProjection = {
 // For each category with a budget goal, projects this month's total spend
 // by extrapolating "spend so far / days elapsed" across the full month.
 // Sorted most-over-pace first, so a caller showing just one card gets the
-// most urgent one by default.
+// most urgent one by default. Only runs for categories explicitly marked
+// `is_variable: true` — a "pace toward month-end" projection doesn't mean
+// anything for a fixed/committed expense like Rent/Mortgage, which is the
+// same known amount every month. Deliberately inclusion-based (skip unless
+// true, not skip-if-false): a category that hasn't been classified yet
+// (is_variable is null/undefined) is excluded by default, so a newly added
+// category never gets a nonsensical projection just because no one set its
+// classification yet.
 export function computePaceProjections(
   transactions: Transaction[],
   goals: Goal[],
@@ -71,7 +78,7 @@ export function computePaceProjections(
   const projections: PaceProjection[] = [];
   for (const g of goals) {
     const category = categoryById.get(g.category_id);
-    if (!category) continue;
+    if (!category || category.is_variable !== true) continue;
 
     const spentSoFar = spendByCategory.get(g.category_id) ?? 0;
     const projectedTotal = (spentSoFar / Math.max(1, daysElapsed)) * daysInMonth;
