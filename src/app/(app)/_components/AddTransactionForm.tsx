@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { addTransaction } from "../actions";
 import { RecurringConfirmModal } from "./RecurringConfirmModal";
+import { DuplicateConfirmModal } from "./DuplicateConfirmModal";
 import { RecurringToggleFields } from "./RecurringToggleFields";
 import { useToast } from "./ToastProvider";
 import type { PendingRecurringCandidate } from "@/lib/recurring";
+import type { DuplicateCandidate } from "@/lib/duplicate-detection";
 
 type Category = {
   id: string;
@@ -25,6 +27,13 @@ export function AddTransactionForm({ categories }: { categories: Category[] }) {
   const [pendingCandidate, setPendingCandidate] = useState<PendingRecurringCandidate | null>(
     null,
   );
+  // Holds the just-submitted FormData so "Add anyway" can resubmit the
+  // exact same values with confirmDuplicate set, rather than asking the
+  // user to re-enter everything.
+  const [pendingDuplicate, setPendingDuplicate] = useState<{
+    candidate: DuplicateCandidate;
+    formData: FormData;
+  } | null>(null);
   const { showToast } = useToast();
 
   const filteredCategories = categories.filter((c) => c.type === type);
@@ -34,13 +43,34 @@ export function AddTransactionForm({ categories }: { categories: Category[] }) {
     setCategory("");
   }
 
-  async function handleSubmit(formData: FormData) {
-    const result = await addTransaction(formData);
+  function finishAfterInsert(pendingRecurring: PendingRecurringCandidate | null) {
     setType("expense");
     setCategory("");
     setFormKey((k) => k + 1);
     showToast("Transaction added");
-    if (result?.pendingRecurring) setPendingCandidate(result.pendingRecurring);
+    if (pendingRecurring) setPendingCandidate(pendingRecurring);
+  }
+
+  async function handleSubmit(formData: FormData) {
+    const result = await addTransaction(formData);
+    if (result.possibleDuplicate) {
+      // Deliberately don't reset the form here — nothing was recorded, so
+      // the user's entered values stay visible while they decide, same
+      // "an unanswered question just means nothing happens" convention the
+      // AI chat already uses for ambiguous categories.
+      setPendingDuplicate({ candidate: result.possibleDuplicate, formData });
+      return;
+    }
+    finishAfterInsert(result.pendingRecurring);
+  }
+
+  async function handleConfirmDuplicate() {
+    if (!pendingDuplicate) return;
+    const { formData } = pendingDuplicate;
+    formData.set("confirmDuplicate", "true");
+    setPendingDuplicate(null);
+    const result = await addTransaction(formData);
+    finishAfterInsert(result.pendingRecurring);
   }
 
   return (
@@ -132,6 +162,11 @@ export function AddTransactionForm({ categories }: { categories: Category[] }) {
       <RecurringConfirmModal
         candidate={pendingCandidate}
         onResolved={() => setPendingCandidate(null)}
+      />
+      <DuplicateConfirmModal
+        candidate={pendingDuplicate?.candidate ?? null}
+        onConfirm={handleConfirmDuplicate}
+        onCancel={() => setPendingDuplicate(null)}
       />
     </>
   );

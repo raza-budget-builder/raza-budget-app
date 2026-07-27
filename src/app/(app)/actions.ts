@@ -3,7 +3,12 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { detectRecurringTransactions, type RecurringInterval } from "@/lib/recurring";
+import {
+  detectRecurringTransactions,
+  type PendingRecurringCandidate,
+  type RecurringInterval,
+} from "@/lib/recurring";
+import { findPossibleDuplicate, type DuplicateCandidate } from "@/lib/duplicate-detection";
 import {
   linkOrCreateRecurringGroup,
   reactivateRecurringGroup,
@@ -11,7 +16,12 @@ import {
   updateRecurringGroupTemplate,
 } from "@/lib/recurring-groups";
 
-export async function addTransaction(formData: FormData) {
+export async function addTransaction(
+  formData: FormData,
+): Promise<{
+  possibleDuplicate: DuplicateCandidate | null;
+  pendingRecurring: PendingRecurringCandidate | null;
+}> {
   const supabase = await createClient();
 
   const {
@@ -29,6 +39,38 @@ export async function addTransaction(formData: FormData) {
   const type = formData.get("type") as string;
   const isRecurring = formData.get("isRecurring") === "on";
   const recurringInterval = formData.get("recurringInterval") as RecurringInterval | null;
+  const confirmDuplicate = formData.get("confirmDuplicate") === "true";
+
+  // Flag-and-confirm, not block: check once, then let the resubmit (with
+  // confirmDuplicate set) through unconditionally rather than re-checking
+  // and risking a loop the user can't get past.
+  if (!confirmDuplicate) {
+    const { data: sameDay } = await supabase
+      .from("transactions")
+      .select("id, date, description, amount, cleaned_description, category:categories(id, name)")
+      .eq("user_id", user.id)
+      .eq("date", date)
+      .returns<
+        {
+          id: string;
+          date: string;
+          description: string;
+          amount: number;
+          cleaned_description: string | null;
+          category: { id: string; name: string } | null;
+        }[]
+      >();
+
+    const possibleDuplicate = findPossibleDuplicate(sameDay ?? [], {
+      date,
+      amount: Number(amount),
+      description,
+      categoryId: category || null,
+    });
+    if (possibleDuplicate) {
+      return { possibleDuplicate, pendingRecurring: null };
+    }
+  }
 
   const { data: inserted, error } = await supabase
     .from("transactions")
@@ -70,7 +112,7 @@ export async function addTransaction(formData: FormData) {
   revalidatePath("/dashboard");
   revalidatePath("/transactions");
 
-  return { pendingRecurring: pendingRecurring ?? null };
+  return { possibleDuplicate: null, pendingRecurring: pendingRecurring ?? null };
 }
 
 // scope only matters when the transaction is already part of a recurring

@@ -14,6 +14,7 @@ import { getGoalPerformance } from "./goal-performance";
 import { getPeriodRange, PERIOD_OPTIONS, type PeriodKey } from "./date-ranges";
 import { linkOrCreateRecurringGroup } from "./recurring-groups";
 import { RECURRING_INTERVALS } from "./recurring";
+import { findPossibleDuplicate } from "./duplicate-detection";
 
 export type ChatTransaction = {
   id: string;
@@ -249,7 +250,10 @@ export function buildChatTools(ctx: ChatToolContext) {
       "could plausibly be more than one thing (e.g. a snack at a pharmacy could be Dining Out " +
       "or Groceries), ask the user instead of calling this tool with a guess. Nothing is " +
       "recorded until you're sure, so an unanswered question simply has no effect — there's no " +
-      "downside to asking. Today's date is used if the user didn't mention one.",
+      "downside to asking. Today's date is used if the user didn't mention one. If the result " +
+      "has possibleDuplicate set, nothing was recorded — tell the user what matched (date, " +
+      "amount, description) and ask whether to add it anyway before calling this again with " +
+      "confirmDuplicate: true.",
     inputSchema: z.object({
       amount: z.number().positive().describe("The transaction amount, always positive."),
       description: z
@@ -270,12 +274,31 @@ export function buildChatTools(ctx: ChatToolContext) {
             "'Uncategorized' if the user explicitly said they don't know/don't care — not as a " +
             "guess when you're simply unsure.",
         ),
+      confirmDuplicate: z
+        .boolean()
+        .optional()
+        .describe(
+          "Only set true when the user has explicitly confirmed they want to add this even " +
+            "though it looked like a duplicate of an existing transaction.",
+        ),
     }),
-    run: async ({ amount, description, type, date, categoryName }) => {
+    run: async ({ amount, description, type, date, categoryName, confirmDuplicate }) => {
       const category = ctx.categories.find(
         (c) => c.name.toLowerCase() === categoryName.toLowerCase(),
       );
       const resolvedDate = date ?? ctx.today.toISOString().slice(0, 10);
+
+      if (!confirmDuplicate) {
+        const possibleDuplicate = findPossibleDuplicate(ctx.transactions, {
+          date: resolvedDate,
+          amount,
+          description,
+          categoryId: category?.id ?? null,
+        });
+        if (possibleDuplicate) {
+          return JSON.stringify({ ok: false, possibleDuplicate });
+        }
+      }
 
       const { data: inserted, error } = await ctx.supabase
         .from("transactions")
@@ -337,7 +360,9 @@ export function buildChatTools(ctx: ChatToolContext) {
       "until you have everything, so an unanswered question simply has no effect — there's no " +
       "downside to asking. This records today's (or the given) date as the first occurrence " +
       "and starts the recurring series from it; future occurrences generate automatically from " +
-      "there, exactly like manually flagging a transaction as recurring in the app.",
+      "there, exactly like manually flagging a transaction as recurring in the app. If the " +
+      "result has possibleDuplicate set, nothing was set up — tell the user what matched and " +
+      "ask whether to proceed anyway before calling this again with confirmDuplicate: true.",
     inputSchema: z.object({
       amount: z.number().positive().describe("The transaction amount, always positive."),
       description: z
@@ -364,12 +389,31 @@ export function buildChatTools(ctx: ChatToolContext) {
             "'Uncategorized' if the user explicitly said they don't know/don't care — not as a " +
             "guess when you're simply unsure.",
         ),
+      confirmDuplicate: z
+        .boolean()
+        .optional()
+        .describe(
+          "Only set true when the user has explicitly confirmed they want to set this up even " +
+            "though it looked like a duplicate of an existing transaction.",
+        ),
     }),
-    run: async ({ amount, description, type, interval, date, categoryName }) => {
+    run: async ({ amount, description, type, interval, date, categoryName, confirmDuplicate }) => {
       const category = ctx.categories.find(
         (c) => c.name.toLowerCase() === categoryName.toLowerCase(),
       );
       const resolvedDate = date ?? ctx.today.toISOString().slice(0, 10);
+
+      if (!confirmDuplicate) {
+        const possibleDuplicate = findPossibleDuplicate(ctx.transactions, {
+          date: resolvedDate,
+          amount,
+          description,
+          categoryId: category?.id ?? null,
+        });
+        if (possibleDuplicate) {
+          return JSON.stringify({ ok: false, possibleDuplicate });
+        }
+      }
 
       const { data: inserted, error } = await ctx.supabase
         .from("transactions")
