@@ -71,23 +71,24 @@ export default async function LoginPage({
             />
           </div>
 
-          {/* Stacked, not side-by-side at equal width — sign up is the more
-              likely action for someone seeing this page for the first time
-              (log in requires already having an account), so it gets the
-              filled primary treatment; log in is a plain text-weight
-              secondary action underneath, not a competing button. */}
+          {/* Log in listed first — not just visually (a bordered secondary
+              button, same treatment as onboarding's "Skip for now"), but in
+              DOM order too: with two submit buttons in one form, pressing
+              Enter in a field triggers whichever one comes first in the
+              markup. Most visitors here already have an account, so Enter
+              should log them in, not attempt a signup. */}
           <div className="flex flex-col gap-1 pt-2">
+            <button
+              formAction={login}
+              className="flex min-h-11 w-full items-center justify-center rounded-xl border border-card-border px-3 py-2 text-sm font-medium text-foreground hover:bg-foreground/5"
+            >
+              Log in
+            </button>
             <button
               formAction={signup}
               className="flex min-h-11 w-full items-center justify-center rounded-xl bg-accent px-3 py-2.5 text-sm font-medium text-accent-foreground hover:bg-accent-hover"
             >
               Sign up
-            </button>
-            <button
-              formAction={login}
-              className="flex min-h-11 w-full items-center justify-center rounded-xl px-3 py-2 text-sm font-medium text-foreground-muted hover:text-foreground"
-            >
-              Log in
             </button>
           </div>
         </form>

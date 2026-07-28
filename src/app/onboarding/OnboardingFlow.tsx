@@ -306,6 +306,14 @@ export function OnboardingFlow() {
                   Profile.
                 </p>
               )}
+              <div className="flex items-center justify-between gap-2">
+                <button
+                  onClick={() => setStep(3)}
+                  className="-my-2 -mx-1 px-1 py-2 text-sm text-foreground-muted hover:text-foreground"
+                >
+                  ← Back
+                </button>
+              </div>
               <div className="flex flex-col gap-2">
                 {recommendation && (
                   <button
