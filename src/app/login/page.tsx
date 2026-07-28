@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { login, loginWithGoogle, signup } from "./actions";
 import { AiWelcomeMessage } from "./AiWelcomeMessage";
 import { ThemeToggle } from "../(app)/_components/ThemeToggle";
@@ -112,6 +113,16 @@ export default async function LoginPage({
         *All advice generated from the analysis of your personal finances is not to be taken as
         financial advice — always seek professional help before investing or buying financial
         products.
+      </p>
+
+      <p className="text-xs text-foreground-muted/80">
+        <Link href="/privacy" className="hover:text-foreground">
+          Privacy Policy
+        </Link>
+        {" · "}
+        <Link href="/terms" className="hover:text-foreground">
+          Terms of Service
+        </Link>
       </p>
     </div>
   );

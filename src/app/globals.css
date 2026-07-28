@@ -145,3 +145,13 @@ body {
     opacity: 0;
   }
 }
+
+/* Simple crossfade for the landing page's persona-tab content swap. */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
