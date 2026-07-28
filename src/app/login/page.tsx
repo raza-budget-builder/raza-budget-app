@@ -116,7 +116,7 @@ export default async function LoginPage({
       </p>
 
       <p className="text-xs text-foreground-muted/80">
-        <Link href="/privacy" className="hover:text-foreground">
+        <Link href="/privacy-policy" className="hover:text-foreground">
           Privacy Policy
         </Link>
         {" · "}

@@ -43,7 +43,7 @@ export default function LandingPage() {
       <FinalCta />
 
       <footer className="mx-auto w-full max-w-5xl px-4 py-8 text-center text-xs text-foreground-muted/80">
-        <Link href="/privacy" className="hover:text-foreground">
+        <Link href="/privacy-policy" className="hover:text-foreground">
           Privacy Policy
         </Link>
         {" · "}
