@@ -24,7 +24,7 @@ export default async function AppLayout({
   // request here instead — effectively on every app load/navigation.
   // Independent of the profile lookup below, so they run concurrently
   // rather than one blocking the other on every single navigation.
-  const [, { data: profile }] = await Promise.all([
+  const [, { data: profile, error: profileError }] = await Promise.all([
     generateDueRecurringTransactions(supabase, user.id),
     supabase
       .from("profiles")
@@ -32,6 +32,12 @@ export default async function AppLayout({
       .eq("id", user.id)
       .single(),
   ]);
+
+  // Logged, not just silently swallowed: a failed fetch here (e.g. a schema
+  // migration that hasn't been run yet) means `profile` is null below, which
+  // makes the onboarding-redirect check silently never fire — exactly the
+  // kind of bug that's invisible without this line.
+  if (profileError) console.error("profile fetch failed in (app) layout", profileError);
 
   // Checked once here (not duplicated per page) so any first-time signed-in
   // user — regardless of how they authenticated (email confirm, Google,

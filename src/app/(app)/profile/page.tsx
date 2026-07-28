@@ -28,7 +28,7 @@ export default async function ProfilePage({
   if (!user) redirect("/login");
 
   const [
-    { data: profile },
+    { data: profile, error: profileError },
     { data: expenseCategories, error: categoriesError },
     { data: budgetGoals, error: budgetGoalsError },
     { data: allCategories, error: allCategoriesError },
@@ -57,6 +57,7 @@ export default async function ProfilePage({
     listCsvImports(),
   ]);
 
+  if (profileError) console.error("profile fetch error", profileError);
   if (categoriesError) console.error("categories error", categoriesError);
   if (budgetGoalsError) console.error("budget goals error", budgetGoalsError);
   if (allCategoriesError) console.error("categories error", allCategoriesError);
