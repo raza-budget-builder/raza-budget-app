@@ -12,7 +12,7 @@ import { FinalCta } from "./FinalCta";
 export const metadata: Metadata = {
   title: "Steward — AI-powered budgeting",
   description:
-    "Budgeting that adapts to how you earn. Steward turns messy bank data into clear, categorized transactions.",
+    "Steward is a personal budgeting and finance tracking app. It automatically categorizes your bank transactions and helps you track spending, income, and financial goals.",
 };
 
 // No theme override here (previously forced data-theme="dark") — this page

@@ -34,6 +34,9 @@ const editorialSerif = Source_Serif_4({
 export const metadata: Metadata = {
   title: "Steward",
   description: "A personal budgeting app",
+  verification: {
+    google: "9rLa25-Ilh_fcezk9MFal4rjytAwnNA118B0-o3JX54",
+  },
 };
 
 export default function RootLayout({

@@ -4,12 +4,16 @@ import { ScrollReveal } from "./ScrollReveal";
 export function LandingHero() {
   return (
     <section className="mx-auto w-full max-w-3xl px-4 pt-20 pb-8 text-center">
-      <h1 className="text-4xl font-bold text-foreground sm:text-5xl">
+      <p className="text-sm font-semibold tracking-wide text-accent uppercase">
+        Personal budgeting &amp; finance tracking app
+      </p>
+      <h1 className="mt-3 text-4xl font-bold text-foreground sm:text-5xl">
         Budgeting that adapts to how you earn
       </h1>
       <p className="mx-auto mt-4 max-w-xl text-base text-foreground-muted sm:text-lg">
-        Steward turns messy bank data into clear, categorized transactions — and understands
-        your income whether it&apos;s salaried, freelance, or your own business.
+        Steward is a personal budgeting app that automatically categorizes your bank
+        transactions and helps you track spending, income, and financial goals — whether your
+        income is salaried, freelance, or your own business.
       </p>
 
       <Link
