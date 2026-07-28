@@ -9,6 +9,7 @@ export async function completeOnboarding(params: {
   incomeType: IncomeType[];
   mainGoal: string;
   acceptedTier: "entrepreneur" | null;
+  firstAction: "manual" | "csv" | "receipt" | null;
 }) {
   const supabase = await createClient();
   const {
@@ -39,7 +40,10 @@ export async function completeOnboarding(params: {
   }
 
   revalidatePath("/", "layout");
-  redirect("/dashboard");
+  // firstAction is a one-time routing hint, not a stored preference — it
+  // tells the dashboard which quick-action modal to auto-open so the very
+  // next thing a new user sees is the flow they said they wanted.
+  redirect(params.firstAction ? `/dashboard?openAction=${params.firstAction}` : "/dashboard");
 }
 
 // A full skip still marks onboarding done — "skippable" means permanently

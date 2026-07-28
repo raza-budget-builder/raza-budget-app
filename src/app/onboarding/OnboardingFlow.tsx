@@ -31,10 +31,18 @@ const primaryButtonClass =
 const secondaryButtonClass =
   "flex min-h-11 w-full items-center justify-center rounded-xl border border-card-border px-4 py-2 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground disabled:opacity-50";
 
+const FIRST_ACTIONS = [
+  { value: "manual", label: "Add one manually" },
+  { value: "csv", label: "Import a CSV" },
+  { value: "receipt", label: "Snap a receipt photo" },
+] as const;
+type FirstAction = (typeof FIRST_ACTIONS)[number]["value"];
+
 export function OnboardingFlow() {
-  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
   const [incomeType, setIncomeType] = useState<IncomeType[]>([]);
   const [mainGoal, setMainGoal] = useState("");
+  const [firstAction, setFirstAction] = useState<FirstAction | null>(null);
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [isPending, startTransition] = useTransition();
 
@@ -64,6 +72,7 @@ export function OnboardingFlow() {
         incomeType,
         mainGoal,
         acceptedTier: acceptTier ? (recommendation?.tier ?? null) : null,
+        firstAction,
       });
     });
   }
@@ -84,7 +93,7 @@ export function OnboardingFlow() {
       </button>
 
       <div className="w-full max-w-sm space-y-5 rounded-xl bg-card p-8 sm:max-w-md">
-        <p className="text-xs font-medium text-foreground-muted">Step {step} of 3</p>
+        <p className="text-xs font-medium text-foreground-muted">Step {step} of 4</p>
 
         {step === 1 && (
           <>
@@ -138,6 +147,41 @@ export function OnboardingFlow() {
         )}
 
         {step === 3 && (
+          <>
+            <h1 className="text-lg font-bold text-foreground">
+              How do you want to add your first transactions?
+            </h1>
+            <div className="flex flex-col gap-2">
+              {FIRST_ACTIONS.map((action) => (
+                <button
+                  key={action.value}
+                  onClick={() => setFirstAction(action.value)}
+                  aria-pressed={firstAction === action.value}
+                  className={`flex min-h-11 w-full items-center rounded-xl px-4 py-2 text-left text-sm font-medium ${
+                    firstAction === action.value
+                      ? "bg-accent text-accent-foreground"
+                      : "border border-card-border text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
+                  }`}
+                >
+                  {action.label}
+                </button>
+              ))}
+            </div>
+            <div className="flex items-center justify-between gap-2">
+              <button
+                onClick={() => setStep(2)}
+                className="-my-2 -mx-1 px-1 py-2 text-sm text-foreground-muted hover:text-foreground"
+              >
+                ← Back
+              </button>
+            </div>
+            <button onClick={() => setStep(4)} className={primaryButtonClass}>
+              Continue
+            </button>
+          </>
+        )}
+
+        {step === 4 && (
           <>
             <h1 className="text-lg font-bold text-foreground">You&apos;re all set</h1>
             {recommendation ? (

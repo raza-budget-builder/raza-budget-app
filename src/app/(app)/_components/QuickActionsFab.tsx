@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "./Modal";
 import { AddTransactionForm } from "./AddTransactionForm";
 import { ImportWizard } from "./ImportWizard";
@@ -26,7 +26,33 @@ export function QuickActionsFab({
   needsReviewCount: number;
 }) {
   const [expanded, setExpanded] = useState(false);
-  const [openModal, setOpenModal] = useState<"add" | "upload" | "screenshot" | null>(null);
+  // Lazy initializer (not an effect) reads ?openAction=manual|csv|receipt
+  // once on the client so onboarding can route straight into the action the
+  // user said they wanted next, instead of dropping them on an empty
+  // dashboard. Guarded for SSR, where `window` doesn't exist yet.
+  const [openModal, setOpenModal] = useState<"add" | "upload" | "screenshot" | null>(() => {
+    if (typeof window === "undefined") return null;
+    const action = new URLSearchParams(window.location.search).get("openAction");
+    return action === "manual"
+      ? "add"
+      : action === "csv"
+        ? "upload"
+        : action === "receipt"
+          ? "screenshot"
+          : null;
+  });
+
+  // Strips the query param right after so refreshing or navigating back
+  // doesn't reopen the modal — a pure external-system side effect (browser
+  // history), not a setState call, so it doesn't trigger the
+  // set-state-in-effect lint rule.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (!params.has("openAction")) return;
+    params.delete("openAction");
+    const query = params.toString();
+    window.history.replaceState(null, "", query ? `?${query}` : window.location.pathname);
+  }, []);
 
   function openAction(modal: "add" | "upload" | "screenshot") {
     setExpanded(false);
