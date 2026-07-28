@@ -155,3 +155,17 @@ body {
     opacity: 1;
   }
 }
+
+/* Fade + slide for the onboarding flow's step transitions — same duration/
+   easing as fadeIn above (persona tabs), with a touch of vertical motion
+   since onboarding is a full-screen sequential flow rather than a tab swap. */
+@keyframes stepIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

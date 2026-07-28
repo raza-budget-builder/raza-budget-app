@@ -4,9 +4,11 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { isIncomeType, type IncomeType } from "@/lib/income-type";
+import { isGoalOption, type GoalOption } from "@/lib/goal-options";
 
 export async function completeOnboarding(params: {
   incomeType: IncomeType[];
+  goalTypes: GoalOption[];
   mainGoal: string;
   acceptedTier: "entrepreneur" | null;
   firstAction: "manual" | "csv" | "receipt" | null;
@@ -18,15 +20,18 @@ export async function completeOnboarding(params: {
   if (!user) redirect("/login");
 
   const incomeType = params.incomeType.filter(isIncomeType);
+  const goalTypes = params.goalTypes.filter(isGoalOption);
   const mainGoal = params.mainGoal.trim();
 
   const update: {
     income_type: IncomeType[] | null;
+    goal_types: GoalOption[] | null;
     main_goal: string | null;
     onboarding_completed_at: string;
     tier?: "entrepreneur";
   } = {
     income_type: incomeType.length > 0 ? incomeType : null,
+    goal_types: goalTypes.length > 0 ? goalTypes : null,
     main_goal: mainGoal || null,
     onboarding_completed_at: new Date().toISOString(),
   };
