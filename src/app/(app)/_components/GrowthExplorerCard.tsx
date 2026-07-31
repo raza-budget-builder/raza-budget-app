@@ -66,9 +66,16 @@ export function GrowthExplorerCard({
   savedSoFar: number;
 }) {
   const colors = useChartTheme();
-  const [monthlyContribution, setMonthlyContribution] = useState(
-    Math.round(defaultMonthlyContribution) || 200,
+  // Raw text, not a number — a controlled <input> whose value is forced
+  // back to a coerced number on every keystroke can never show a genuinely
+  // empty field, which traps you the moment you backspace out a "0": React
+  // immediately redraws it as "0" again before you can type a replacement.
+  // Parsing happens only where the number is actually used, so the field
+  // can sit empty mid-edit like any normal text input.
+  const [monthlyContributionInput, setMonthlyContributionInput] = useState(
+    String(Math.round(defaultMonthlyContribution) || 200),
   );
+  const monthlyContribution = Math.max(0, Number(monthlyContributionInput) || 0);
   const [includeSavedSoFar, setIncludeSavedSoFar] = useState(savedSoFar > 0);
   const [years, setYears] = useState<(typeof HORIZON_OPTIONS_YEARS)[number]>(10);
 
@@ -100,8 +107,8 @@ export function GrowthExplorerCard({
               type="number"
               min="0"
               step="10"
-              value={monthlyContribution}
-              onChange={(e) => setMonthlyContribution(Math.max(0, Number(e.target.value)))}
+              value={monthlyContributionInput}
+              onChange={(e) => setMonthlyContributionInput(e.target.value)}
               className="min-h-11 w-full rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
             />
           </div>
