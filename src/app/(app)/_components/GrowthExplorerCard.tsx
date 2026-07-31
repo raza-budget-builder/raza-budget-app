@@ -19,6 +19,14 @@ import {
 import { formatCurrency } from "@/lib/format";
 import { useChartTheme } from "./useChartTheme";
 
+// Projected figures, not real transaction amounts — cents on a 10-year
+// hypothetical would read as false precision, so these round to the
+// nearest hundred with no decimals rather than using formatCurrency's
+// cents-accurate formatting (kept for real dollar amounts elsewhere).
+function formatRoundedHundred(amount: number): string {
+  return (Math.round(amount / 100) * 100).toLocaleString("en-US");
+}
+
 function GrowthTooltip({
   active,
   payload,
@@ -45,7 +53,7 @@ function GrowthTooltip({
       {INVESTMENT_OPTIONS.map((option) => (
         <p key={option.key} style={{ color: colors.ink }}>
           <span style={{ color: option.color }}>●</span> {option.label}: $
-          {formatCurrency(point[option.key])}
+          {formatRoundedHundred(point[option.key])}
         </p>
       ))}
     </div>
@@ -190,7 +198,7 @@ export function GrowthExplorerCard({
               {option.label} ({option.annualReturnPercent}%/yr avg)
             </span>
             <span className="font-bold text-foreground">
-              ${formatCurrency(finalPoint[option.key])}
+              ${formatRoundedHundred(finalPoint[option.key])}
             </span>
           </div>
         ))}
