@@ -11,10 +11,10 @@ export function LandingHero() {
         <p className="text-sm font-semibold tracking-wide text-accent uppercase">
           Personal budgeting &amp; finance tracking app
         </p>
-        <h1 className="font-landing-heading mt-3 text-4xl font-extrabold tracking-[-0.028em] text-foreground sm:text-5xl md:text-6xl md:leading-[1.04]">
+        <h1 className="font-landing-heading mt-3 text-4xl font-extrabold tracking-[-0.028em] text-foreground sm:text-5xl md:text-6xl md:leading-[1.04] xl:text-7xl">
           Budgeting that adapts to how you earn
         </h1>
-        <p className="mt-5 max-w-xl text-base text-foreground-muted sm:text-lg">
+        <p className="mt-5 max-w-xl text-base text-foreground-muted sm:text-lg xl:text-xl">
           Steward is a personal budgeting app that automatically categorizes your bank
           transactions and helps you track spending, income, and financial goals — whether your
           income is salaried, freelance, or your own business.
