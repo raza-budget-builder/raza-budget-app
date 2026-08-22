@@ -1,4 +1,5 @@
 import { ScrollReveal } from "./ScrollReveal";
+import { CONTAINER_CLASS } from "./container";
 
 // Explicitly placeholder — bracketed content, not fabricated quotes. Per
 // the "no fake logo wall" instruction, there's no company-logo strip here
@@ -12,7 +13,7 @@ const TESTIMONIALS = [
 export function TestimonialsSection() {
   return (
     <ScrollReveal>
-      <section className="mx-auto w-full max-w-5xl px-4 py-16">
+      <section className={`py-16 ${CONTAINER_CLASS}`}>
         <p className="text-center text-sm font-medium text-foreground-muted">
           What early users are saying
         </p>

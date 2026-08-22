@@ -104,6 +104,13 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-editorial: var(--font-serif-editorial);
+  /* Landing-page-only pairing (DM Sans body / Plus Jakarta Sans headings),
+     modeled on code-x.ai's typography. The app's own Geist Sans stays the
+     default everywhere else — these vars only resolve to real fonts inside
+     app/home's subtree, where home/layout.tsx defines them; elsewhere they're
+     unset and these utilities are simply unused. */
+  --font-landing-sans: var(--font-dm-sans);
+  --font-landing-heading: var(--font-plus-jakarta);
 }
 
 body {

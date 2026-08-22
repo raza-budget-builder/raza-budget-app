@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { InsightCard } from "../(app)/_components/InsightCard";
 import { ScrollReveal } from "./ScrollReveal";
+import { CONTAINER_CLASS } from "./container";
 
 type Feature = {
   key: string;
@@ -161,11 +162,11 @@ export function FeatureSections() {
         const Visual = VISUALS[feature.key];
         return (
           <ScrollReveal key={feature.key}>
-            <section className="mx-auto w-full max-w-5xl px-4 py-14">
+            <section className={`py-14 ${CONTAINER_CLASS}`}>
               <div className="grid items-center gap-10 sm:grid-cols-2">
                 <div className={feature.reverse ? "sm:order-2" : "sm:order-1"}>
                   <p className="text-sm font-medium text-foreground-muted">{feature.eyebrow}</p>
-                  <h2 className="mt-2 text-2xl font-bold text-foreground sm:text-3xl">
+                  <h2 className="font-landing-heading mt-2 text-2xl font-bold text-foreground sm:text-3xl">
                     {feature.headline}
                   </h2>
                   <p className="mt-3 text-sm leading-relaxed text-foreground-muted">

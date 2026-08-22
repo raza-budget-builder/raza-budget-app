@@ -8,6 +8,7 @@ import { FeatureSections } from "./FeatureSections";
 import { TestimonialsSection } from "./TestimonialsSection";
 import { PricingSection } from "./PricingSection";
 import { FinalCta } from "./FinalCta";
+import { CONTAINER_CLASS } from "./container";
 
 export const metadata: Metadata = {
   title: "Steward — AI-powered budgeting",
@@ -21,11 +22,11 @@ export const metadata: Metadata = {
 // as /login. The reused ThemeToggle below is the only thing that changes it.
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-background">
-      <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-6">
+    <div className="min-h-screen bg-background font-landing-sans">
+      <header className={`flex items-center justify-between py-6 ${CONTAINER_CLASS}`}>
         <div className="flex items-center gap-2">
           <AiInsightIcon className="h-5 w-auto" />
-          <span className="font-bold text-foreground">Steward</span>
+          <span className="font-landing-heading font-bold text-foreground">Steward</span>
         </div>
         <div className="flex items-center gap-1">
           <ThemeToggle />
@@ -42,7 +43,9 @@ export default function LandingPage() {
       <PricingSection />
       <FinalCta />
 
-      <footer className="mx-auto w-full max-w-5xl px-4 py-8 text-center text-xs text-foreground-muted/80">
+      <footer
+        className={`py-8 text-center text-xs text-foreground-muted/80 ${CONTAINER_CLASS}`}
+      >
         <Link href="/privacy-policy" className="hover:text-foreground">
           Privacy Policy
         </Link>

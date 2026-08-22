@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ScrollReveal } from "./ScrollReveal";
+import { CONTAINER_CLASS } from "./container";
 
 // Forward-looking marketing copy for a 3-tier structure — none of the
 // enforcement (daily usage limits, tier-gating on goals/recurring) exists
@@ -55,8 +56,8 @@ const TIERS = [
 export function PricingSection() {
   return (
     <ScrollReveal>
-      <section className="mx-auto w-full max-w-5xl px-4 py-16">
-        <h2 className="text-center text-2xl font-bold text-foreground sm:text-3xl">
+      <section className={`py-16 ${CONTAINER_CLASS}`}>
+        <h2 className="font-landing-heading text-center text-2xl font-bold text-foreground sm:text-3xl">
           Simple pricing
         </h2>
 

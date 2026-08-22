@@ -1,36 +1,41 @@
 import Link from "next/link";
 import { ScrollReveal } from "./ScrollReveal";
+import { CONTAINER_CLASS } from "./container";
 
 export function LandingHero() {
   return (
-    <section className="mx-auto w-full max-w-3xl px-4 pt-20 pb-8 text-center">
-      <p className="text-sm font-semibold tracking-wide text-accent uppercase">
-        Personal budgeting &amp; finance tracking app
-      </p>
-      <h1 className="mt-3 text-4xl font-bold text-foreground sm:text-5xl">
-        Budgeting that adapts to how you earn
-      </h1>
-      <p className="mx-auto mt-4 max-w-xl text-base text-foreground-muted sm:text-lg">
-        Steward is a personal budgeting app that automatically categorizes your bank
-        transactions and helps you track spending, income, and financial goals — whether your
-        income is salaried, freelance, or your own business.
-      </p>
+    <section
+      className={`grid grid-cols-1 items-center gap-12 py-16 md:grid-cols-[1fr_1.1fr] md:gap-16 md:py-24 ${CONTAINER_CLASS}`}
+    >
+      <div>
+        <p className="text-sm font-semibold tracking-wide text-accent uppercase">
+          Personal budgeting &amp; finance tracking app
+        </p>
+        <h1 className="font-landing-heading mt-3 text-4xl font-extrabold tracking-[-0.028em] text-foreground sm:text-5xl md:text-6xl md:leading-[1.04]">
+          Budgeting that adapts to how you earn
+        </h1>
+        <p className="mt-5 max-w-xl text-base text-foreground-muted sm:text-lg">
+          Steward is a personal budgeting app that automatically categorizes your bank
+          transactions and helps you track spending, income, and financial goals — whether your
+          income is salaried, freelance, or your own business.
+        </p>
 
-      <Link
-        href="/login"
-        className="mt-8 inline-flex min-h-11 items-center justify-center rounded-xl bg-accent px-6 py-3 text-sm font-medium text-accent-foreground hover:bg-accent-hover"
-      >
-        Get started free
-      </Link>
+        <Link
+          href="/login"
+          className="mt-8 inline-flex min-h-11 items-center justify-center rounded-xl bg-accent px-6 py-3 text-sm font-medium text-accent-foreground hover:bg-accent-hover"
+        >
+          Get started free
+        </Link>
+      </div>
 
       {/* The core value proof: a real raw bank line becoming a real Steward
           transaction row, styled exactly like the app's own transaction
           list and AI-insight card — not a generic before/after graphic.
-          Staggered ScrollReveal (0/125/250ms) so the "after" card visibly
-          follows the "before" card rather than both appearing at once —
-          fires on initial load since the hero sits above the fold, same
-          mechanism the below-the-fold sections use on scroll. */}
-      <div className="mt-16 grid grid-cols-1 items-center gap-4 text-left sm:grid-cols-[1fr_auto_1fr]">
+          Stacked vertically (not side-by-side like the old centered layout)
+          since this now lives in its own narrower grid column rather than
+          spanning the full page width. Staggered ScrollReveal (0/125/250ms)
+          fires on initial load since the hero sits above the fold. */}
+      <div className="flex flex-col gap-4">
         <ScrollReveal>
           <div className="rounded-xl border border-card-border bg-foreground/5 p-4">
             <p className="text-xs font-medium tracking-wide text-foreground-muted uppercase">
@@ -43,11 +48,8 @@ export function LandingHero() {
         </ScrollReveal>
 
         <ScrollReveal delayMs={125}>
-          <div
-            aria-hidden="true"
-            className="hidden justify-self-center text-2xl text-foreground-muted sm:block"
-          >
-            →
+          <div aria-hidden="true" className="text-center text-2xl text-foreground-muted">
+            ↓
           </div>
         </ScrollReveal>
 
@@ -66,13 +68,6 @@ export function LandingHero() {
           </div>
         </ScrollReveal>
       </div>
-
-      <Link
-        href="/login"
-        className="mt-10 inline-flex min-h-11 items-center justify-center rounded-xl bg-accent px-6 py-3 text-sm font-medium text-accent-foreground hover:bg-accent-hover"
-      >
-        Get started free
-      </Link>
     </section>
   );
 }

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ScrollReveal } from "./ScrollReveal";
+import { CONTAINER_CLASS } from "./container";
 
 type Persona = {
   key: string;
@@ -154,11 +155,11 @@ export function PersonaTabs() {
 
   return (
     <ScrollReveal>
-      <section className="mx-auto w-full max-w-4xl px-4 pt-8 pb-20">
+      <section className={`pt-8 pb-20 ${CONTAINER_CLASS}`}>
         <p className="text-center text-sm font-medium text-foreground-muted">
           Built for how you actually earn
         </p>
-        <h2 className="mt-2 text-center text-2xl font-bold text-foreground sm:text-3xl">
+        <h2 className="font-landing-heading mt-2 text-center text-2xl font-bold text-foreground sm:text-3xl">
           One app, four kinds of income
         </h2>
 
@@ -185,11 +186,13 @@ export function PersonaTabs() {
             persona so the fade+slide replays on every tab switch. */}
         <div
           key={persona.key}
-          className="mt-10 animate-[fadeIn_350ms_ease-out] rounded-2xl border border-card-border p-6 sm:p-8"
+          className="mx-auto mt-10 max-w-4xl animate-[fadeIn_350ms_ease-out] rounded-2xl border border-card-border p-6 sm:p-8"
         >
           <div className="grid gap-8 sm:grid-cols-2 sm:items-center">
             <div>
-              <h3 className="text-xl font-bold text-foreground">{persona.headline}</h3>
+              <h3 className="font-landing-heading text-xl font-bold text-foreground">
+                {persona.headline}
+              </h3>
               <p className="mt-3 text-sm leading-relaxed text-foreground-muted">
                 {persona.description}
               </p>
