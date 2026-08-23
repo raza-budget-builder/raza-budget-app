@@ -6,20 +6,23 @@ import { GrowthExplorerCard } from "../_components/GrowthExplorerCard";
 import { NarrativeSummaryModule } from "../_components/NarrativeSummaryModule";
 import { NetFlowChart } from "../_components/NetFlowChart";
 import { DriftAlertsModule } from "../_components/DriftAlertsModule";
+import { BudgetForecastModule } from "../_components/BudgetForecastModule";
 import { getWeeklyNarrativeSummary } from "@/lib/weekly-summary";
 import { buildCumulativeNetFlow } from "@/lib/net-flow";
 import { buildBudgetSplit } from "@/lib/budget-split";
 import { computePlannedMonthlySavings } from "@/lib/growth-projection";
 import { getDriftAlerts } from "@/lib/drift-alerts";
+import { computeBudgetForecast } from "@/lib/budget-forecast";
 
 type MonthTransaction = {
   date: string;
   amount: number;
   type: "income" | "expense";
-  category: { name: string; budget_group: string | null } | null;
+  category: { id: string; name: string; budget_group: string | null } | null;
 };
 
 type BudgetGoalRow = { monthly_cap: number };
+type CategoryRow = { id: string; name: string; is_variable: boolean | null };
 
 export default async function InsightsPage() {
   const supabase = await createClient();
@@ -28,23 +31,32 @@ export default async function InsightsPage() {
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const [{ data: transactions, error }, { data: budgetGoals, error: goalsError }] =
-    await Promise.all([
-      supabase
-        .from("transactions")
-        .select("date, amount, type, category:categories(name, budget_group)")
-        // Pending recurring predictions aren't real yet — exclude from the split.
-        .neq("status", "pending")
-        .returns<MonthTransaction[]>(),
-      supabase
-        .from("budget_goals")
-        .select("monthly_cap")
-        .eq("user_id", user.id)
-        .returns<BudgetGoalRow[]>(),
-    ]);
+  const [
+    { data: transactions, error },
+    { data: budgetGoals, error: goalsError },
+    { data: categories, error: categoriesError },
+  ] = await Promise.all([
+    supabase
+      .from("transactions")
+      .select("date, amount, type, category:categories(id, name, budget_group)")
+      // Pending recurring predictions aren't real yet — exclude from the split.
+      .neq("status", "pending")
+      .returns<MonthTransaction[]>(),
+    supabase
+      .from("budget_goals")
+      .select("monthly_cap")
+      .eq("user_id", user.id)
+      .returns<BudgetGoalRow[]>(),
+    supabase
+      .from("categories")
+      .select("id, name, is_variable")
+      .eq("user_id", user.id)
+      .returns<CategoryRow[]>(),
+  ]);
 
   if (error) console.error("transactions error", error);
   if (goalsError) console.error("budget goals error", goalsError);
+  if (categoriesError) console.error("categories error", categoriesError);
 
   const allTransactions = transactions ?? [];
 
@@ -65,6 +77,7 @@ export default async function InsightsPage() {
   const plannedMonthlySavings = computePlannedMonthlySavings(allTransactions, budgetGoals ?? []);
   const lifetimeSavings =
     buildBudgetSplit(allTransactions).rows.find((r) => r.group === "savings")?.actual ?? 0;
+  const budgetForecast = computeBudgetForecast(allTransactions, categories ?? []);
 
   return (
     <div>
@@ -73,6 +86,7 @@ export default async function InsightsPage() {
       <NarrativeSummaryModule data={narrativeSummary} />
       <NetFlowChart points={netFlowPoints} />
       <DriftAlertsModule data={driftAlerts} />
+      <BudgetForecastModule {...budgetForecast} />
       <BudgetSplitModule transactions={allTransactions} />
       <GrowthExplorerCard
         defaultMonthlyContribution={plannedMonthlySavings}

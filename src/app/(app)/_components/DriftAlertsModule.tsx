@@ -1,56 +1,6 @@
 import type { DriftAlerts } from "@/lib/drift-alerts";
-import { categoryIconKey, type CategoryIconKey } from "@/lib/category-icon";
-import {
-  AiInsightIcon,
-  BagIcon,
-  BasketIcon,
-  BoltIcon,
-  BusinessIcon,
-  CarIcon,
-  CreditCardIcon,
-  FilmIcon,
-  GiftIcon,
-  GoalsIcon,
-  GraduationCapIcon,
-  HandHeartIcon,
-  HeartPulseIcon,
-  HomeIcon,
-  PawIcon,
-  PlaneIcon,
-  ReceiptIcon,
-  RecurringIcon,
-  ShieldIcon,
-  UtensilsIcon,
-} from "./icons";
-
-const ICONS: Record<CategoryIconKey, (props: { className?: string }) => React.ReactElement> = {
-  utensils: UtensilsIcon,
-  basket: BasketIcon,
-  car: CarIcon,
-  recurring: RecurringIcon,
-  film: FilmIcon,
-  bag: BagIcon,
-  home: HomeIcon,
-  bolt: BoltIcon,
-  shield: ShieldIcon,
-  heart: HeartPulseIcon,
-  plane: PlaneIcon,
-  paw: PawIcon,
-  gift: GiftIcon,
-  graduation: GraduationCapIcon,
-  card: CreditCardIcon,
-  business: BusinessIcon,
-  goal: GoalsIcon,
-  receipt: ReceiptIcon,
-  handHeart: HandHeartIcon,
-};
-
-// Same green/orange pair used everywhere else for "good" vs. "needs
-// attention" (transaction amounts, the 50/30/20 meters) — negative here
-// means a concerning change (spending up, new subscription, price
-// increase), positive means the opposite.
-const POSITIVE_COLOR = "var(--positive)";
-const NEGATIVE_COLOR = "var(--attention)";
+import { AiInsightIcon } from "./icons";
+import { CategoryIconBadge } from "./CategoryIconBadge";
 
 export function DriftAlertsModule({ data }: { data: DriftAlerts }) {
   return (
@@ -66,26 +16,15 @@ export function DriftAlertsModule({ data }: { data: DriftAlerts }) {
       <div className="mt-4">
         {data.alerts && data.alerts.length > 0 ? (
           <ul className="space-y-3">
-            {data.alerts.map((alert, i) => {
-              const Icon = ICONS[categoryIconKey(alert.category)];
-              const color = alert.sentiment === "positive" ? POSITIVE_COLOR : NEGATIVE_COLOR;
-              return (
-                <li key={i} className="flex items-start gap-3">
-                  <span
-                    aria-hidden="true"
-                    className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
-                    style={{ backgroundColor: `color-mix(in srgb, ${color} 10%, transparent)` }}
-                  >
-                    <Icon
-                      className={`h-4 w-4 ${
-                        alert.sentiment === "positive" ? "text-positive" : "text-attention"
-                      }`}
-                    />
-                  </span>
-                  <span className="pt-1 text-sm text-foreground">{alert.text}</span>
-                </li>
-              );
-            })}
+            {data.alerts.map((alert, i) => (
+              <li key={i} className="flex items-start gap-3">
+                <CategoryIconBadge
+                  categoryName={alert.category}
+                  tone={alert.sentiment === "positive" ? "positive" : "attention"}
+                />
+                <span className="pt-1 text-sm text-foreground">{alert.text}</span>
+              </li>
+            ))}
           </ul>
         ) : (
           <p className="text-sm text-foreground-muted">
