@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import {
   categorizeCandidates,
@@ -24,11 +24,21 @@ const FIELDS: { key: "date" | "description" | "amount"; label: string }[] = [
   { key: "amount", label: "Amount" },
 ];
 
-export function ImportWizard() {
+// initialFile is set when this wizard was opened by dropping a file onto
+// the quick-actions FAB (QuickActionsFab) rather than clicking "Upload
+// CSV" — skips straight to parsing it instead of making the user pick the
+// same file again from a file input. Modal unmounts this component on
+// close (see Modal.tsx), so a fresh mount always means a fresh drop; no
+// need to guard the auto-submit effect against re-firing.
+export function ImportWizard({ initialFile = null }: { initialFile?: File | null }) {
   const router = useRouter();
   const [step, setStep] = useState<Step>("upload");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  // Stays true only through the "upload" step, so it stops applying the
+  // instant handleUpload below moves the wizard on to "account-type" — a
+  // plain derived flag, not separate state to keep in sync.
+  const capturingDroppedFile = initialFile !== null && step === "upload";
   const [parsed, setParsed] = useState<ParsedCsv | null>(null);
   const [accountType, setAccountType] = useState<AccountType | null>(null);
   const [mapping, setMapping] = useState<MappingInput>({
@@ -50,6 +60,15 @@ export function ImportWizard() {
 
   const suspectedTransfers = categorized?.filter((c) => c.suspectedTransfer) ?? [];
   const allTransfersDecided = suspectedTransfers.every((c) => transferDecisions.has(c.index));
+
+  useEffect(() => {
+    if (!initialFile) return;
+    const formData = new FormData();
+    formData.append("file", initialFile);
+    handleUpload(formData);
+    // Fires once on mount only — see the initialFile comment above.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function handleUpload(formData: FormData) {
     setError(null);
@@ -140,27 +159,33 @@ export function ImportWizard() {
   
         {step === "upload" && (
           <div className="space-y-4">
-            <form action={handleUpload} className="space-y-4">
-              <div>
-                <label className="block text-xs font-medium text-foreground-muted">
-                  CSV file
-                </label>
-                <input
-                  type="file"
-                  name="file"
-                  accept=".csv,text/csv"
-                  required
-                  className="mt-1 min-h-11 w-full rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
-                />
-              </div>
-              <button
-                disabled={isPending}
-                className="flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50"
-              >
-                {isPending ? "Reading file…" : "Upload & continue"}
-              </button>
-            </form>
-  
+            {capturingDroppedFile ? (
+              <p className="rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground-muted">
+                Reading {initialFile!.name}…
+              </p>
+            ) : (
+              <form action={handleUpload} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-medium text-foreground-muted">
+                    CSV file
+                  </label>
+                  <input
+                    type="file"
+                    name="file"
+                    accept=".csv,text/csv"
+                    required
+                    className="mt-1 min-h-11 w-full rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
+                  />
+                </div>
+                <button
+                  disabled={isPending}
+                  className="flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50"
+                >
+                  {isPending ? "Reading file…" : "Upload & continue"}
+                </button>
+              </form>
+            )}
+
             <ol className="list-inside list-decimal space-y-1.5 border-t border-card-border pt-4 text-xs text-foreground-muted">
               <li>
                 Export a CSV from your bank (usually under &quot;Statements&quot; or

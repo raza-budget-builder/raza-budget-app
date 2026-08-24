@@ -1,11 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Modal } from "./Modal";
 import { AddTransactionForm } from "./AddTransactionForm";
 import { ImportWizard } from "./ImportWizard";
 import { ScreenshotImportWizard } from "./ScreenshotImportWizard";
 import { PlusIcon, ImportIcon, ReceiptIcon } from "./icons";
+import { useToast } from "./ToastProvider";
+
+function isCsvFile(file: File): boolean {
+  return file.name.toLowerCase().endsWith(".csv") || file.type === "text/csv";
+}
+
+function isImageFile(file: File): boolean {
+  return file.type.startsWith("image/");
+}
 
 type Category = {
   id: string;
@@ -25,7 +34,20 @@ export function QuickActionsFab({
   categories: Category[];
   needsReviewCount: number;
 }) {
+  const { showToast } = useToast();
   const [expanded, setExpanded] = useState(false);
+  // Set when a file was dropped onto the FAB rather than picked via a modal's
+  // own file input — handed to the matching wizard so it can skip straight
+  // to reading it. Reset on every openAction call (including the plain
+  // click-to-open ones, via the default param below) so a stale drop never
+  // leaks into an unrelated later open.
+  const [droppedFile, setDroppedFile] = useState<File | null>(null);
+  // dragenter/dragleave fire on every child element as the pointer crosses
+  // them while dragging over the FAB, not just once for the whole region —
+  // a plain boolean flickers off between children. Counting enter vs. leave
+  // and only clearing at 0 is the standard fix.
+  const dragDepth = useRef(0);
+  const [isDragOver, setIsDragOver] = useState(false);
   // Lazy initializer (not an effect) reads ?openAction=manual|csv|receipt
   // once on the client so onboarding can route straight into the action the
   // user said they wanted next, instead of dropping them on an empty
@@ -54,14 +76,68 @@ export function QuickActionsFab({
     window.history.replaceState(null, "", query ? `?${query}` : window.location.pathname);
   }, []);
 
-  function openAction(modal: "add" | "upload" | "screenshot") {
+  function openAction(modal: "add" | "upload" | "screenshot", file: File | null = null) {
     setExpanded(false);
     setOpenModal(modal);
+    setDroppedFile(file);
+  }
+
+  function closeModal() {
+    setOpenModal(null);
+    setDroppedFile(null);
+  }
+
+  // Drag-and-drop capture: dragging a CSV or photo anywhere over the FAB
+  // (button or, once expanded, the pill menu) expands it and routes the
+  // drop straight into the matching wizard — a desktop-only convenience
+  // (HTML5 drag-and-drop has no touch equivalent, so this is inert on
+  // mobile) for the same two file-based actions the pills already offer.
+  function handleDragEnter(e: React.DragEvent) {
+    if (!e.dataTransfer.types.includes("Files")) return;
+    e.preventDefault();
+    dragDepth.current += 1;
+    setIsDragOver(true);
+    setExpanded(true);
+  }
+
+  function handleDragOver(e: React.DragEvent) {
+    // Required for onDrop to ever fire — the browser's default is to
+    // reject drops everywhere.
+    if (e.dataTransfer.types.includes("Files")) e.preventDefault();
+  }
+
+  function handleDragLeave(e: React.DragEvent) {
+    if (!e.dataTransfer.types.includes("Files")) return;
+    dragDepth.current = Math.max(0, dragDepth.current - 1);
+    if (dragDepth.current === 0) setIsDragOver(false);
+  }
+
+  function handleDrop(e: React.DragEvent) {
+    e.preventDefault();
+    dragDepth.current = 0;
+    setIsDragOver(false);
+
+    const file = e.dataTransfer.files[0];
+    if (!file) return;
+    if (isCsvFile(file)) {
+      openAction("upload", file);
+    } else if (isImageFile(file)) {
+      openAction("screenshot", file);
+    } else {
+      setExpanded(false);
+      showToast("Drop a CSV file or a photo/screenshot to import it.", "error");
+    }
   }
 
   return (
     <>
-      <div className="relative">
+      <div
+        className="relative"
+        onDragEnter={handleDragEnter}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
         {/* Transparent click-catcher so tapping anywhere outside the expanded
             menu closes it, same click-outside convention as a dropdown. */}
         {expanded && (
@@ -77,7 +153,9 @@ export function QuickActionsFab({
           onClick={() => setExpanded((e) => !e)}
           aria-label={expanded ? "Close quick actions" : "Quick actions"}
           aria-expanded={expanded}
-          className="relative z-40 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-card-border bg-card text-accent shadow-lg hover:bg-foreground/5 md:h-16 md:w-16"
+          className={`relative z-40 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-card-border bg-card text-accent shadow-lg transition-transform duration-150 hover:bg-foreground/5 md:h-16 md:w-16 ${
+            isDragOver ? "scale-110 ring-4 ring-accent/40" : ""
+          }`}
         >
           <PlusIcon
             className={`h-5 w-5 transition-transform duration-300 ease-in-out md:h-6 md:w-6 ${
@@ -118,10 +196,14 @@ export function QuickActionsFab({
               </button>
               <button
                 onClick={() => openAction("upload")}
-                className="relative flex min-h-11 items-center gap-2 rounded-full border border-card-border bg-card px-4 py-2 text-sm font-medium text-foreground shadow-lg hover:bg-foreground/5"
+                className={`relative flex min-h-11 items-center gap-2 rounded-full border bg-card px-4 py-2 text-sm font-medium text-foreground shadow-lg hover:bg-foreground/5 ${
+                  isDragOver ? "border-dashed border-accent" : "border-card-border"
+                }`}
               >
                 <ImportIcon className="h-4 w-4" />
-                <span className="text-sm font-medium">Upload CSV</span>
+                <span className="text-sm font-medium">
+                  {isDragOver ? "Drop CSV here" : "Upload CSV"}
+                </span>
                 {needsReviewCount > 0 && (
                   <span
                     aria-label={`${needsReviewCount} needs review`}
@@ -133,34 +215,30 @@ export function QuickActionsFab({
               </button>
               <button
                 onClick={() => openAction("screenshot")}
-                className="flex min-h-11 items-center gap-2 rounded-full border border-card-border bg-card px-4 py-2 text-sm font-medium text-foreground shadow-lg hover:bg-foreground/5"
+                className={`flex min-h-11 items-center gap-2 rounded-full border bg-card px-4 py-2 text-sm font-medium text-foreground shadow-lg hover:bg-foreground/5 ${
+                  isDragOver ? "border-dashed border-accent" : "border-card-border"
+                }`}
               >
                 <ReceiptIcon className="h-4 w-4" />
-                <span className="text-sm font-medium">Upload receipt</span>
+                <span className="text-sm font-medium">
+                  {isDragOver ? "Drop photo here" : "Upload receipt"}
+                </span>
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      <Modal
-        open={openModal === "add"}
-        onClose={() => setOpenModal(null)}
-        title="Add a transaction"
-      >
+      <Modal open={openModal === "add"} onClose={closeModal} title="Add a transaction">
         <AddTransactionForm categories={categories} />
       </Modal>
 
-      <Modal open={openModal === "upload"} onClose={() => setOpenModal(null)} title="Upload CSV">
-        <ImportWizard />
+      <Modal open={openModal === "upload"} onClose={closeModal} title="Upload CSV">
+        <ImportWizard initialFile={openModal === "upload" ? droppedFile : null} />
       </Modal>
 
-      <Modal
-        open={openModal === "screenshot"}
-        onClose={() => setOpenModal(null)}
-        title="Upload a receipt"
-      >
-        <ScreenshotImportWizard />
+      <Modal open={openModal === "screenshot"} onClose={closeModal} title="Upload a receipt">
+        <ScreenshotImportWizard initialFile={openModal === "screenshot" ? droppedFile : null} />
       </Modal>
     </>
   );

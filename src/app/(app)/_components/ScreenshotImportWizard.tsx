@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import {
   finalizeImport,
@@ -16,11 +16,17 @@ type TransferDecision = "transfer" | "keep";
 
 const ACCEPT = "image/png,image/jpeg,image/webp,image/gif";
 
-export function ScreenshotImportWizard() {
+// initialFile mirrors ImportWizard's prop of the same name — set when this
+// wizard was opened by dropping an image onto the quick-actions FAB
+// (QuickActionsFab) instead of clicking "Upload receipt", so it can skip
+// straight to reading it. Modal unmounts this component on close (see
+// Modal.tsx), so a fresh mount always means a fresh drop.
+export function ScreenshotImportWizard({ initialFile = null }: { initialFile?: File | null }) {
   const router = useRouter();
   const [step, setStep] = useState<Step>("upload");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const capturingDroppedFile = initialFile !== null && step === "upload";
   const [sourceLabel, setSourceLabel] = useState("");
   const [rawTransactionsJson, setRawTransactionsJson] = useState("");
   const [categorized, setCategorized] = useState<CategorizedCandidate[] | null>(null);
@@ -36,6 +42,15 @@ export function ScreenshotImportWizard() {
 
   const suspectedTransfers = categorized?.filter((c) => c.suspectedTransfer) ?? [];
   const allTransfersDecided = suspectedTransfers.every((c) => transferDecisions.has(c.index));
+
+  useEffect(() => {
+    if (!initialFile) return;
+    const formData = new FormData();
+    formData.append("file", initialFile);
+    handleUpload(formData);
+    // Fires once on mount only — see the initialFile comment above.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function commitImport(candidates: CategorizedCandidate[]) {
     const res = await finalizeImport(
@@ -104,26 +119,32 @@ export function ScreenshotImportWizard() {
 
         {step === "upload" && (
           <div className="space-y-4">
-            <form action={handleUpload} className="space-y-4">
-              <div>
-                <label className="block text-xs font-medium text-foreground-muted">
-                  Receipt or screenshot
-                </label>
-                <input
-                  type="file"
-                  name="file"
-                  accept={ACCEPT}
-                  required
-                  className="mt-1 min-h-11 w-full rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
-                />
-              </div>
-              <button
-                disabled={isPending}
-                className="flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50"
-              >
-                {isPending ? "Reading image…" : "Upload & continue"}
-              </button>
-            </form>
+            {capturingDroppedFile ? (
+              <p className="rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground-muted">
+                Reading {initialFile!.name}…
+              </p>
+            ) : (
+              <form action={handleUpload} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-medium text-foreground-muted">
+                    Receipt or screenshot
+                  </label>
+                  <input
+                    type="file"
+                    name="file"
+                    accept={ACCEPT}
+                    required
+                    className="mt-1 min-h-11 w-full rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground"
+                  />
+                </div>
+                <button
+                  disabled={isPending}
+                  className="flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50"
+                >
+                  {isPending ? "Reading image…" : "Upload & continue"}
+                </button>
+              </form>
+            )}
 
             <ol className="list-inside list-decimal space-y-1.5 border-t border-card-border pt-4 text-xs text-foreground-muted">
               <li>
