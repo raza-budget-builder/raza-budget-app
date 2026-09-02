@@ -214,6 +214,56 @@ export async function computeUpcomingRecurring(
   return upcoming;
 }
 
+export type RecurringOccurrence = {
+  groupId: string;
+  description: string;
+  amount: number;
+  type: "income" | "expense";
+  date: string;
+};
+
+// Every occurrence (not just the next one) of every active recurring series
+// between today and `horizonEndISO` inclusive — the walk-forward input for
+// the Cash Flow Forecast card (lib/cashflow-projection.ts), which needs the
+// full list of known future hits within its window, unlike
+// computeUpcomingRecurring above which only returns each series' single
+// next date.
+export async function computeRecurringOccurrencesWithinHorizon(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  userId: string,
+  horizonEndISO: string,
+): Promise<RecurringOccurrence[]> {
+  const { groups, byGroup } = await fetchGroupsWithMembers(supabase, userId, { activeOnly: true });
+  if (groups.length === 0) return [];
+
+  const occurrences: RecurringOccurrence[] = [];
+  for (const group of groups) {
+    const members = byGroup.get(group.id) ?? [];
+    if (members.length === 0) continue;
+
+    const dates = members.map((m) => m.date).sort((a, b) => b.localeCompare(a));
+    const lastDate = dates[0];
+    const anchorDay = anchorDayOf(members);
+
+    // Bounded to at most horizonDays iterations per series (daily is the
+    // shortest interval a group can have) — cheap even at a 60-day horizon.
+    let nextDate = addInterval(lastDate, group.interval, anchorDay);
+    while (nextDate <= horizonEndISO) {
+      occurrences.push({
+        groupId: group.id,
+        description: group.description,
+        amount: group.amount,
+        type: group.type,
+        date: nextDate,
+      });
+      nextDate = addInterval(nextDate, group.interval, anchorDay);
+    }
+  }
+
+  occurrences.sort((a, b) => a.date.localeCompare(b.date));
+  return occurrences;
+}
+
 // Every series (active + stopped) for the Profile page's expandable list.
 // Stopped series have no due-generation running, but still show their last
 // projected next-date so the entry reads coherently even greyed out.
