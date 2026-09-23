@@ -157,41 +157,45 @@ const VISUALS: Record<string, () => React.ReactElement> = {
 
 export function FeatureSections() {
   return (
-    <>
-      {FEATURES.map((feature) => {
-        const Visual = VISUALS[feature.key];
-        return (
-          <ScrollReveal key={feature.key}>
-            <section className={`py-14 ${CONTAINER_CLASS}`}>
-              <div className="grid items-center gap-10 sm:grid-cols-2">
-                <div className={feature.reverse ? "sm:order-2" : "sm:order-1"}>
-                  <p className="text-sm font-medium text-foreground-muted">{feature.eyebrow}</p>
-                  <h2 className="font-landing-heading mt-2 text-2xl font-bold text-foreground sm:text-3xl">
-                    {feature.headline}
-                  </h2>
-                  <p className="mt-3 text-sm leading-relaxed text-foreground-muted">
-                    {feature.description}
-                  </p>
-                  <Link
-                    href="/login"
-                    className="mt-5 inline-flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover"
+    <div className="bg-landing-band">
+      <div className={`divide-y divide-card-border ${CONTAINER_CLASS}`}>
+        {FEATURES.map((feature) => {
+          const Visual = VISUALS[feature.key];
+          return (
+            <ScrollReveal key={feature.key}>
+              <section className="py-14">
+                <div className="grid items-center gap-10 sm:grid-cols-2">
+                  <div className={feature.reverse ? "sm:order-2" : "sm:order-1"}>
+                    <p className="font-landing-mono text-xs font-medium tracking-[0.08em] text-foreground-muted uppercase">
+                      {feature.eyebrow}
+                    </p>
+                    <h2 className="font-landing-heading mt-3 text-2xl font-semibold tracking-[-0.01em] text-foreground sm:text-3xl">
+                      {feature.headline}
+                    </h2>
+                    <p className="mt-3 text-sm leading-relaxed text-foreground-muted">
+                      {feature.description}
+                    </p>
+                    <Link
+                      href="/login"
+                      className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover"
+                    >
+                      Get started free
+                    </Link>
+                  </div>
+                  <div
+                    className={`rounded-2xl p-2 sm:p-4 ${feature.reverse ? "sm:order-1" : "sm:order-2"}`}
+                    style={{
+                      background: `color-mix(in srgb, var(${feature.tintVar}) 10%, var(--card))`,
+                    }}
                   >
-                    Get started free
-                  </Link>
+                    <Visual />
+                  </div>
                 </div>
-                <div
-                  className={`rounded-2xl p-2 sm:p-4 ${feature.reverse ? "sm:order-1" : "sm:order-2"}`}
-                  style={{
-                    background: `color-mix(in srgb, var(${feature.tintVar}) 8%, var(--background))`,
-                  }}
-                >
-                  <Visual />
-                </div>
-              </div>
-            </section>
-          </ScrollReveal>
-        );
-      })}
-    </>
+              </section>
+            </ScrollReveal>
+          );
+        })}
+      </div>
+    </div>
   );
 }

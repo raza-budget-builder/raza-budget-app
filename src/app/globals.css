@@ -85,6 +85,20 @@
   --card-border: color-mix(in srgb, var(--foreground) 10%, transparent);
 }
 
+/* Landing-page-only alternate section tone (spade.com-inspired banding —
+   sections alternate --background/--landing-band down the page). Sage-green
+   in light mode; a deep forest-tinted surface in dark mode rather than a
+   pale color that would blow out the eyes, keeping the same "the other
+   band" relationship in both themes. The app's own --background/--card are
+   untouched; nothing outside /home reads --landing-band. */
+:root,
+[data-theme="light"] {
+  --landing-band: #edf3e4;
+}
+[data-theme="dark"] {
+  --landing-band: #131f16;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-card: var(--card);
@@ -104,13 +118,16 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-editorial: var(--font-serif-editorial);
-  /* Landing-page-only pairing (DM Sans body / Plus Jakarta Sans headings),
-     modeled on code-x.ai's typography. The app's own Geist Sans stays the
-     default everywhere else — these vars only resolve to real fonts inside
-     app/home's subtree, where home/layout.tsx defines them; elsewhere they're
-     unset and these utilities are simply unused. */
-  --font-landing-sans: var(--font-dm-sans);
-  --font-landing-heading: var(--font-plus-jakarta);
+  /* Landing-page-only trio (Inter body / Hanken Grotesk headings /
+     JetBrains Mono for eyebrow labels & stats), modeled on spade.com's
+     typography. The app's own Geist Sans stays the default everywhere
+     else — these vars only resolve to real fonts inside app/home's
+     subtree, where home/layout.tsx defines them; elsewhere they're unset
+     and these utilities are simply unused. */
+  --font-landing-sans: var(--font-landing-body);
+  --font-landing-heading: var(--font-landing-display);
+  --font-landing-mono: var(--font-landing-mono-face);
+  --color-landing-band: var(--landing-band);
 }
 
 body {

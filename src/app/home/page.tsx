@@ -26,11 +26,16 @@ export default function LandingPage() {
       <header className={`flex items-center justify-between py-6 ${CONTAINER_CLASS}`}>
         <div className="flex items-center gap-2">
           <AiInsightIcon className="h-5 w-auto" />
-          <span className="font-landing-heading font-bold text-foreground">Steward</span>
+          <span className="font-landing-heading font-semibold tracking-[-0.01em] text-foreground">
+            Steward
+          </span>
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-3">
           <ThemeToggle />
-          <Link href="/login" className="text-sm text-foreground-muted hover:text-foreground">
+          <Link
+            href="/login"
+            className="flex min-h-11 items-center rounded-full border border-card-border px-4 py-2 text-sm font-medium text-foreground hover:bg-foreground/5"
+          >
             Log in
           </Link>
         </div>
@@ -44,7 +49,7 @@ export default function LandingPage() {
       <FinalCta />
 
       <footer
-        className={`py-8 text-center text-xs text-foreground-muted/80 ${CONTAINER_CLASS}`}
+        className={`font-landing-mono py-8 text-center text-xs text-foreground-muted/80 ${CONTAINER_CLASS}`}
       >
         <Link href="/privacy-policy" className="hover:text-foreground">
           Privacy Policy

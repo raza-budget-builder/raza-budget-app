@@ -155,11 +155,11 @@ export function PersonaTabs() {
 
   return (
     <ScrollReveal>
-      <section className={`pt-8 pb-20 ${CONTAINER_CLASS}`}>
-        <p className="text-center text-sm font-medium text-foreground-muted">
+      <section className={`pt-16 pb-20 ${CONTAINER_CLASS}`}>
+        <p className="font-landing-mono text-center text-xs font-medium tracking-[0.08em] text-foreground-muted uppercase sm:text-sm">
           Built for how you actually earn
         </p>
-        <h2 className="font-landing-heading mt-2 text-center text-2xl font-bold text-foreground sm:text-3xl">
+        <h2 className="font-landing-heading mt-3 text-center text-2xl font-semibold tracking-[-0.01em] text-foreground sm:text-4xl">
           One app, four kinds of income
         </h2>
 
@@ -190,7 +190,7 @@ export function PersonaTabs() {
         >
           <div className="grid gap-8 sm:grid-cols-2 sm:items-center">
             <div>
-              <h3 className="font-landing-heading text-xl font-bold text-foreground">
+              <h3 className="font-landing-heading text-xl font-semibold tracking-[-0.01em] text-foreground">
                 {persona.headline}
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-foreground-muted">
@@ -198,7 +198,7 @@ export function PersonaTabs() {
               </p>
               <Link
                 href="/login"
-                className="mt-5 inline-flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover"
+                className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover"
               >
                 Get started free
               </Link>

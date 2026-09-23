@@ -57,8 +57,11 @@ export function PricingSection() {
   return (
     <ScrollReveal>
       <section className={`py-16 ${CONTAINER_CLASS}`}>
-        <h2 className="font-landing-heading text-center text-2xl font-bold text-foreground sm:text-3xl">
-          Simple pricing
+        <p className="font-landing-mono text-center text-xs font-medium tracking-[0.08em] text-foreground-muted uppercase sm:text-sm">
+          Pricing
+        </p>
+        <h2 className="font-landing-heading mt-3 text-center text-2xl font-semibold tracking-[-0.01em] text-foreground sm:text-4xl">
+          Simple, straightforward plans
         </h2>
 
         <div className="mt-10 grid gap-4 sm:grid-cols-3">
@@ -71,8 +74,10 @@ export function PricingSection() {
                   : "border border-card-border"
               }`}
             >
-              <p className="text-sm font-medium text-foreground-muted">{tier.name}</p>
-              <p className="mt-1 text-3xl font-bold text-foreground">
+              <p className="font-landing-mono text-xs font-medium tracking-[0.06em] text-foreground-muted uppercase">
+                {tier.name}
+              </p>
+              <p className="font-landing-heading mt-2 text-3xl font-semibold text-foreground">
                 {tier.price}
                 <span className="text-sm font-normal text-foreground-muted"> {tier.cadence}</span>
               </p>
@@ -88,7 +93,7 @@ export function PricingSection() {
               </ul>
               <Link
                 href="/login"
-                className={`mt-6 flex min-h-11 items-center justify-center rounded-xl px-4 py-2 text-sm font-medium ${
+                className={`mt-6 flex min-h-11 items-center justify-center rounded-full px-4 py-2 text-sm font-medium ${
                   tier.highlight
                     ? "bg-accent text-accent-foreground hover:bg-accent-hover"
                     : "border border-card-border text-foreground hover:bg-foreground/5"

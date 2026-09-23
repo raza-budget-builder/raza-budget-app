@@ -14,7 +14,7 @@ export function TestimonialsSection() {
   return (
     <ScrollReveal>
       <section className={`py-16 ${CONTAINER_CLASS}`}>
-        <p className="text-center text-sm font-medium text-foreground-muted">
+        <p className="font-landing-mono text-center text-xs font-medium tracking-[0.08em] text-foreground-muted uppercase sm:text-sm">
           What early users are saying
         </p>
         <p className="mt-1 text-center text-xs text-foreground-muted/70 italic">
