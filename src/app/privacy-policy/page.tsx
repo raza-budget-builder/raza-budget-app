@@ -177,9 +177,14 @@ export default function PrivacyPolicyPage() {
             <h2 className="text-lg font-bold text-foreground">8. Data Retention</h2>
             <p className="mt-2 text-foreground-muted">
               We retain your transaction and account data for as long as your account remains
-              active. Uploaded CSV bank statement files are processed to extract transaction
-              data and are not retained after import is complete. If you delete your account,
-              your data is removed from our active systems as described in Section 7.
+              active — this includes transactions entered manually and transactions extracted
+              from an uploaded CSV bank statement or receipt image, since maintaining your
+              ongoing transaction history is core to how the App works. The content of an
+              uploaded CSV or receipt image is also retained, associated with that import, so
+              you can review your import history, re-download a past file, or revert an import;
+              it is not stored as a separate uploaded file, but as part of that import record.
+              If you delete your account, your data — including retained import content — is
+              removed from our active systems as described in Section 7.
             </p>
           </section>
 
