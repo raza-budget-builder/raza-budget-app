@@ -24,7 +24,7 @@ export function RecurringToggleFields({
         This is recurring
       </label>
       {enabled && (
-        <div className="mt-2">
+        <div className="mt-2 animate-[stepIn_200ms_ease-out_both]">
           <label className="block text-xs font-medium text-foreground-muted">
             Frequency
           </label>

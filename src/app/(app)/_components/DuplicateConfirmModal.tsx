@@ -3,6 +3,7 @@
 import { useTransition } from "react";
 import { Modal } from "./Modal";
 import { formatCurrency } from "@/lib/format";
+import { TAP_FEEDBACK } from "@/lib/motion";
 import type { DuplicateCandidate } from "@/lib/duplicate-detection";
 
 export function DuplicateConfirmModal({
@@ -43,14 +44,14 @@ export function DuplicateConfirmModal({
             <button
               onClick={handleConfirm}
               disabled={isPending}
-              className="flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50"
+              className={`flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50 ${TAP_FEEDBACK}`}
             >
               {isPending ? "Adding…" : "Add anyway"}
             </button>
             <button
               onClick={onCancel}
               disabled={isPending}
-              className="flex min-h-11 items-center justify-center rounded-xl border border-card-border px-4 py-2 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
+              className={`flex min-h-11 items-center justify-center rounded-xl border border-card-border px-4 py-2 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground ${TAP_FEEDBACK}`}
             >
               Cancel
             </button>

@@ -11,6 +11,7 @@ import { computeUpcomingRecurring } from "@/lib/recurring-generation";
 import { buildDashboardInsightSlides } from "@/lib/dashboard-insights";
 import { InsightsCarousel } from "../_components/InsightsCarousel";
 import { RECURRING_INTERVAL_LABEL } from "@/lib/recurring";
+import { ENTRANCE_ANIMATION, nestedListBaseMs, sectionDelay, staggerDelay } from "@/lib/motion";
 
 type TransactionRowData = {
   id: string;
@@ -101,20 +102,36 @@ export default async function DashboardPage() {
 
   const monthLabel = today.toLocaleDateString("en-US", { month: "long", year: "numeric" });
 
+  // On-load entrance: Summary/Insights/Charts each get their own fade-in
+  // (sectionDelay 0/1/2). The two list sections below don't fade in as
+  // whole blocks — only their rows do, staggered — but keep slots 3/4 in
+  // the same sectionDelay numbering (via nestedListBaseMs) so the list rows
+  // pick up the cascade right where Charts left off instead of restarting
+  // it from zero.
   return (
     <div>
       <PageHeader title="Dashboard" subtitle={monthLabel} extra={<ThemeToggle />} />
 
-      <SummaryCard
-        transactions={confirmedTransactions}
-        quickActions={
-          <QuickActionsFab categories={categories ?? []} needsReviewCount={needsReviewCount ?? 0} />
-        }
-      />
+      <div className={ENTRANCE_ANIMATION} style={sectionDelay(0)}>
+        <SummaryCard
+          transactions={confirmedTransactions}
+          quickActions={
+            <QuickActionsFab
+              categories={categories ?? []}
+              needsReviewCount={needsReviewCount ?? 0}
+            />
+          }
+        />
+      </div>
 
-      <InsightsCarousel slides={insightSlides} />
+      <div className={ENTRANCE_ANIMATION} style={sectionDelay(1)}>
+        <InsightsCarousel slides={insightSlides} />
+      </div>
 
-      <section className="mb-4 rounded-xl bg-card p-5">
+      <section
+        className={`mb-4 rounded-xl bg-card p-5 ${ENTRANCE_ANIMATION}`}
+        style={sectionDelay(2)}
+      >
         <CategoryCharts transactions={confirmedTransactions} />
       </section>
 
@@ -126,10 +143,11 @@ export default async function DashboardPage() {
         />
         {last7Days.length > 0 ? (
           <ul className="divide-y divide-card-border rounded-xl bg-card">
-            {last7Days.map((t) => (
+            {last7Days.map((t, i) => (
               <li
                 key={t.id}
-                className="flex items-center justify-between gap-4 px-4 py-3 text-sm"
+                className={`flex items-center justify-between gap-4 px-4 py-3 text-sm ${ENTRANCE_ANIMATION}`}
+                style={staggerDelay(i, nestedListBaseMs(3))}
               >
                 <div className="min-w-0">
                   <p
@@ -162,10 +180,11 @@ export default async function DashboardPage() {
         <h2 className="mb-3 font-bold text-foreground">Upcoming</h2>
         {upcomingRecurring.length > 0 ? (
           <ul className="divide-y divide-card-border rounded-xl bg-card">
-            {upcomingRecurring.map((series) => (
+            {upcomingRecurring.map((series, i) => (
               <li
                 key={series.groupId}
-                className="flex items-center justify-between gap-4 px-4 py-3 text-sm"
+                className={`flex items-center justify-between gap-4 px-4 py-3 text-sm ${ENTRANCE_ANIMATION}`}
+                style={staggerDelay(i, nestedListBaseMs(4))}
               >
                 <div className="min-w-0">
                   <p className="truncate font-medium text-foreground">{series.description}</p>

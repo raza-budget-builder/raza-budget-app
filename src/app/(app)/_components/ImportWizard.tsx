@@ -14,6 +14,7 @@ import { AMOUNT_TEXT_CLASS, formatSignedAmount } from "@/lib/format";
 import { RecurringConfirmModal } from "./RecurringConfirmModal";
 import type { PendingRecurringCandidate } from "@/lib/recurring";
 import type { AccountType } from "@/lib/csv-import";
+import { ENTRANCE_ANIMATION, TAP_FEEDBACK } from "@/lib/motion";
 
 type Step = "upload" | "account-type" | "mapping" | "transfers" | "done";
 type TransferDecision = "transfer" | "keep";
@@ -158,7 +159,7 @@ export function ImportWizard({ initialFile = null }: { initialFile?: File | null
         )}
   
         {step === "upload" && (
-          <div className="space-y-4">
+          <div className={`space-y-4 ${ENTRANCE_ANIMATION}`}>
             {capturingDroppedFile ? (
               <p className="rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground-muted">
                 Reading {initialFile!.name}…
@@ -179,7 +180,7 @@ export function ImportWizard({ initialFile = null }: { initialFile?: File | null
                 </div>
                 <button
                   disabled={isPending}
-                  className="flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50"
+                  className={`flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50 ${TAP_FEEDBACK}`}
                 >
                   {isPending ? "Reading file…" : "Upload & continue"}
                 </button>
@@ -206,7 +207,7 @@ export function ImportWizard({ initialFile = null }: { initialFile?: File | null
         )}
   
         {step === "account-type" && (
-          <div className="space-y-4">
+          <div className={`space-y-4 ${ENTRANCE_ANIMATION}`}>
             <p className="text-sm text-foreground-muted">
               Is this file from a debit/checking account or a credit card account? We
               use this to tell expenses, refunds, and payments apart correctly.
@@ -217,7 +218,7 @@ export function ImportWizard({ initialFile = null }: { initialFile?: File | null
                   setAccountType("checking");
                   setStep("mapping");
                 }}
-                className="min-h-11 rounded-xl border border-card-border px-4 py-3 text-left text-sm font-medium text-foreground hover:bg-foreground/5"
+                className={`min-h-11 rounded-xl border border-card-border px-4 py-3 text-left text-sm font-medium text-foreground hover:bg-foreground/5 ${TAP_FEEDBACK}`}
               >
                 Debit / Checking account
               </button>
@@ -226,7 +227,7 @@ export function ImportWizard({ initialFile = null }: { initialFile?: File | null
                   setAccountType("credit");
                   setStep("mapping");
                 }}
-                className="min-h-11 rounded-xl border border-card-border px-4 py-3 text-left text-sm font-medium text-foreground hover:bg-foreground/5"
+                className={`min-h-11 rounded-xl border border-card-border px-4 py-3 text-left text-sm font-medium text-foreground hover:bg-foreground/5 ${TAP_FEEDBACK}`}
               >
                 Credit card account
               </button>
@@ -234,7 +235,7 @@ export function ImportWizard({ initialFile = null }: { initialFile?: File | null
             <button
               type="button"
               onClick={() => setStep("upload")}
-              className="-my-2 -mx-1 px-1 py-2 text-sm text-foreground-muted hover:text-foreground"
+              className={`-my-2 -mx-1 px-1 py-2 text-sm text-foreground-muted hover:text-foreground ${TAP_FEEDBACK}`}
             >
               ← Back
             </button>
@@ -242,7 +243,7 @@ export function ImportWizard({ initialFile = null }: { initialFile?: File | null
         )}
 
         {step === "mapping" && parsed && (
-          <div className="space-y-4">
+          <div className={`space-y-4 ${ENTRANCE_ANIMATION}`}>
             <p className="text-sm text-foreground-muted">
               We guessed which columns hold what — check each one and fix it if we got
               it wrong.
@@ -298,7 +299,7 @@ export function ImportWizard({ initialFile = null }: { initialFile?: File | null
               <button
                 onClick={handleConfirmMapping}
                 disabled={isPending}
-                className="flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50"
+                className={`flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50 ${TAP_FEEDBACK}`}
               >
                 {isPending ? "Categorizing…" : "Confirm & import"}
               </button>
@@ -309,7 +310,7 @@ export function ImportWizard({ initialFile = null }: { initialFile?: File | null
                   setStep("upload");
                 }}
                 disabled={isPending}
-                className="flex min-h-11 items-center justify-center rounded-xl border border-card-border px-4 py-2 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
+                className={`flex min-h-11 items-center justify-center rounded-xl border border-card-border px-4 py-2 text-sm font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground ${TAP_FEEDBACK}`}
               >
                 Start over
               </button>
@@ -318,7 +319,7 @@ export function ImportWizard({ initialFile = null }: { initialFile?: File | null
         )}
   
         {step === "transfers" && (
-          <div className="space-y-4">
+          <div className={`space-y-4 ${ENTRANCE_ANIMATION}`}>
             <p className="text-sm text-foreground-muted">
               We flagged {suspectedTransfers.length} transaction
               {suspectedTransfers.length === 1 ? "" : "s"} that look like transfers
@@ -348,7 +349,7 @@ export function ImportWizard({ initialFile = null }: { initialFile?: File | null
                       <button
                         onClick={() => setTransferDecision(c.index, "transfer")}
                         aria-pressed={decision === "transfer"}
-                        className={`flex min-h-11 items-center justify-center rounded-xl px-3 py-1.5 text-sm font-medium ${
+                        className={`flex min-h-11 items-center justify-center rounded-xl px-3 py-1.5 text-sm font-medium ${TAP_FEEDBACK} ${
                           decision === "transfer"
                             ? "bg-accent text-accent-foreground"
                             : "border border-card-border text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
@@ -359,7 +360,7 @@ export function ImportWizard({ initialFile = null }: { initialFile?: File | null
                       <button
                         onClick={() => setTransferDecision(c.index, "keep")}
                         aria-pressed={decision === "keep"}
-                        className={`flex min-h-11 items-center justify-center rounded-xl px-3 py-1.5 text-sm font-medium ${
+                        className={`flex min-h-11 items-center justify-center rounded-xl px-3 py-1.5 text-sm font-medium ${TAP_FEEDBACK} ${
                           decision === "keep"
                             ? "bg-accent text-accent-foreground"
                             : "border border-card-border text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
@@ -376,7 +377,7 @@ export function ImportWizard({ initialFile = null }: { initialFile?: File | null
             <button
               onClick={handleContinueAfterTransfers}
               disabled={!allTransfersDecided || isPending}
-              className="flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-40"
+              className={`flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-40 ${TAP_FEEDBACK}`}
             >
               {isPending ? "Importing…" : "Continue"}
             </button>
@@ -389,7 +390,7 @@ export function ImportWizard({ initialFile = null }: { initialFile?: File | null
         )}
   
         {step === "done" && result && (
-          <div className="space-y-3">
+          <div className={`space-y-3 ${ENTRANCE_ANIMATION}`}>
             <p className="text-sm text-foreground">
               {`Imported ${result.imported} ${
                 result.imported === 1 ? "transaction" : "transactions"
@@ -401,7 +402,7 @@ export function ImportWizard({ initialFile = null }: { initialFile?: File | null
             </p>
             <a
               href="/transactions"
-              className="inline-flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover"
+              className={`inline-flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover ${TAP_FEEDBACK}`}
             >
               Go to Transactions
             </a>

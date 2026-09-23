@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { logout } from "../actions";
 import { LogOutIcon, PersonIcon } from "./icons";
+import { TAP_FEEDBACK } from "@/lib/motion";
 
 export function PageHeader({
   title,
@@ -26,7 +27,7 @@ export function PageHeader({
           href="/profile"
           aria-label="Profile"
           title="Profile"
-          className="flex h-11 w-11 items-center justify-center rounded-full bg-card text-foreground-muted hover:text-foreground"
+          className={`flex h-11 w-11 items-center justify-center rounded-full bg-card text-foreground-muted hover:text-foreground ${TAP_FEEDBACK}`}
         >
           <PersonIcon className="h-5 w-5" />
         </Link>
@@ -34,7 +35,7 @@ export function PageHeader({
           <button
             aria-label="Log out"
             title="Log out"
-            className="flex h-11 w-11 items-center justify-center text-foreground-muted hover:text-foreground"
+            className={`flex h-11 w-11 items-center justify-center text-foreground-muted hover:text-foreground ${TAP_FEEDBACK}`}
           >
             <LogOutIcon className="h-5 w-5" />
           </button>

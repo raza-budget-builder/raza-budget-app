@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { Modal } from "./Modal";
+import { TAP_FEEDBACK } from "@/lib/motion";
 
 export function RecurringScopeModal({
   open,
@@ -31,14 +32,14 @@ export function RecurringScopeModal({
           <button
             onClick={() => choose("this")}
             disabled={isPending}
-            className="flex min-h-11 items-center justify-center rounded-xl border border-card-border px-4 py-2 text-sm font-medium text-foreground hover:bg-foreground/5 disabled:opacity-50"
+            className={`flex min-h-11 items-center justify-center rounded-xl border border-card-border px-4 py-2 text-sm font-medium text-foreground hover:bg-foreground/5 disabled:opacity-50 ${TAP_FEEDBACK}`}
           >
             Apply to this transaction only
           </button>
           <button
             onClick={() => choose("future")}
             disabled={isPending}
-            className="flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50"
+            className={`flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50 ${TAP_FEEDBACK}`}
           >
             Apply to this and all future transactions
           </button>

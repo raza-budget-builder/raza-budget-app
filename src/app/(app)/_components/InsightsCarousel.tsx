@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type TouchEvent } from "react";
 import Link from "next/link";
 import type { InsightSlide } from "@/lib/dashboard-insights";
 import { AiInsightIcon, ChevronDownIcon } from "./icons";
+import { TAP_FEEDBACK } from "@/lib/motion";
 
 const AUTO_ROTATE_MS = 7000;
 // Generous enough for the icon row + a wrapped 3-line sentence + a button,
@@ -65,7 +66,7 @@ export function InsightsCarousel({ slides }: { slides: InsightSlide[] }) {
           <span className="sr-only">AI insight, rotating</span>
           <div
             aria-live="polite"
-            className="transition-transform duration-700 ease-in-out"
+            className="transition-transform duration-300 ease-out motion-reduce:transition-none"
             style={{ transform: `translateY(-${index * SLIDE_HEIGHT}px)` }}
           >
             {slides.map((slide, i) => (
@@ -81,7 +82,7 @@ export function InsightsCarousel({ slides }: { slides: InsightSlide[] }) {
                 {slide.action && (
                   <Link
                     href={slide.action.href}
-                    className="mt-2 inline-flex min-h-11 w-fit items-center gap-1 rounded-full border border-card-border px-3 py-1.5 text-xs font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
+                    className={`mt-2 inline-flex min-h-11 w-fit items-center gap-1 rounded-full border border-card-border px-3 py-1.5 text-xs font-medium text-foreground-muted hover:bg-foreground/5 hover:text-foreground ${TAP_FEEDBACK}`}
                   >
                     {slide.action.label} →
                   </Link>
@@ -103,7 +104,7 @@ export function InsightsCarousel({ slides }: { slides: InsightSlide[] }) {
               onClick={goPrev}
               aria-label="Previous insight"
               title="Previous"
-              className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
+              className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-foreground-muted hover:bg-foreground/10 hover:text-foreground ${TAP_FEEDBACK}`}
             >
               <ChevronDownIcon className="h-3 w-3" style={{ transform: "rotate(180deg)" }} />
             </button>
@@ -114,7 +115,7 @@ export function InsightsCarousel({ slides }: { slides: InsightSlide[] }) {
                   key={slide.id}
                   onClick={() => setIndex(i)}
                   aria-label={`Go to insight ${i + 1} of ${slides.length}`}
-                  className="flex h-4 w-6 shrink-0 items-center justify-center"
+                  className={`flex h-4 w-6 shrink-0 items-center justify-center ${TAP_FEEDBACK}`}
                 >
                   <span
                     className={`w-1 rounded-full transition-all duration-[250ms] ease-in-out ${
@@ -129,7 +130,7 @@ export function InsightsCarousel({ slides }: { slides: InsightSlide[] }) {
               onClick={goNext}
               aria-label="Next insight"
               title="Next"
-              className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-foreground-muted hover:bg-foreground/10 hover:text-foreground"
+              className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-foreground-muted hover:bg-foreground/10 hover:text-foreground ${TAP_FEEDBACK}`}
             >
               <ChevronDownIcon className="h-3 w-3" />
             </button>

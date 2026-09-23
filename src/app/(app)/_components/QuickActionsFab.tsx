@@ -7,6 +7,7 @@ import { ImportWizard } from "./ImportWizard";
 import { ScreenshotImportWizard } from "./ScreenshotImportWizard";
 import { PlusIcon, ImportIcon, ReceiptIcon } from "./icons";
 import { useToast } from "./ToastProvider";
+import { TAP_FEEDBACK } from "@/lib/motion";
 
 function isCsvFile(file: File): boolean {
   return file.name.toLowerCase().endsWith(".csv") || file.type === "text/csv";
@@ -153,7 +154,7 @@ export function QuickActionsFab({
           onClick={() => setExpanded((e) => !e)}
           aria-label={expanded ? "Close quick actions" : "Quick actions"}
           aria-expanded={expanded}
-          className={`relative z-40 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-card-border bg-card text-accent shadow-lg transition-transform duration-150 hover:bg-foreground/5 md:h-16 md:w-16 ${
+          className={`relative z-40 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-card-border bg-card text-accent shadow-lg transition-transform duration-150 hover:bg-foreground/5 active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100 md:h-16 md:w-16 ${
             isDragOver ? "scale-110 ring-4 ring-accent/40" : ""
           }`}
         >
@@ -189,14 +190,14 @@ export function QuickActionsFab({
             >
               <button
                 onClick={() => openAction("add")}
-                className="flex min-h-11 items-center gap-2 rounded-full border border-card-border bg-card px-4 py-2 text-sm font-medium text-foreground shadow-lg hover:bg-foreground/5"
+                className={`flex min-h-11 items-center gap-2 rounded-full border border-card-border bg-card px-4 py-2 text-sm font-medium text-foreground shadow-lg hover:bg-foreground/5 ${TAP_FEEDBACK}`}
               >
                 <PlusIcon className="h-4 w-4" />
                 <span className="text-sm font-medium">Add manually</span>
               </button>
               <button
                 onClick={() => openAction("upload")}
-                className={`relative flex min-h-11 items-center gap-2 rounded-full border bg-card px-4 py-2 text-sm font-medium text-foreground shadow-lg hover:bg-foreground/5 ${
+                className={`relative flex min-h-11 items-center gap-2 rounded-full border bg-card px-4 py-2 text-sm font-medium text-foreground shadow-lg hover:bg-foreground/5 ${TAP_FEEDBACK} ${
                   isDragOver ? "border-dashed border-accent" : "border-card-border"
                 }`}
               >
@@ -215,7 +216,7 @@ export function QuickActionsFab({
               </button>
               <button
                 onClick={() => openAction("screenshot")}
-                className={`flex min-h-11 items-center gap-2 rounded-full border bg-card px-4 py-2 text-sm font-medium text-foreground shadow-lg hover:bg-foreground/5 ${
+                className={`flex min-h-11 items-center gap-2 rounded-full border bg-card px-4 py-2 text-sm font-medium text-foreground shadow-lg hover:bg-foreground/5 ${TAP_FEEDBACK} ${
                   isDragOver ? "border-dashed border-accent" : "border-card-border"
                 }`}
               >

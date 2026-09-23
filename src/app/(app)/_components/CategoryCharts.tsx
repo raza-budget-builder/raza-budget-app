@@ -10,6 +10,7 @@ import {
 } from "@/lib/date-ranges";
 import { CategoryChart, type ChartType, type ValueMode } from "./CategoryChart";
 import { ColumnChartIcon, PieChartIcon } from "./icons";
+import { TAP_FEEDBACK } from "@/lib/motion";
 
 type Transaction = {
   date: string;
@@ -44,7 +45,7 @@ export function CategoryCharts({ transactions }: { transactions: Transaction[] }
             aria-label="Pie chart"
             aria-pressed={chartType === "pie"}
             title="Pie chart"
-            className={`flex h-11 w-11 items-center justify-center ${
+            className={`flex h-11 w-11 items-center justify-center ${TAP_FEEDBACK} ${
               chartType === "pie" ? activeClass : inactiveClass
             }`}
           >
@@ -55,7 +56,7 @@ export function CategoryCharts({ transactions }: { transactions: Transaction[] }
             aria-label="Column chart"
             aria-pressed={chartType === "column"}
             title="Column chart"
-            className={`flex h-11 w-11 items-center justify-center border-l border-card-border ${
+            className={`flex h-11 w-11 items-center justify-center border-l border-card-border ${TAP_FEEDBACK} ${
               chartType === "column" ? activeClass : inactiveClass
             }`}
           >
@@ -69,7 +70,7 @@ export function CategoryCharts({ transactions }: { transactions: Transaction[] }
             aria-label="Show dollar amounts"
             aria-pressed={valueMode === "dollar"}
             title="Dollar amounts"
-            className={`flex h-11 w-11 items-center justify-center text-sm font-medium ${
+            className={`flex h-11 w-11 items-center justify-center text-sm font-medium ${TAP_FEEDBACK} ${
               valueMode === "dollar" ? activeClass : inactiveClass
             }`}
           >
@@ -80,7 +81,7 @@ export function CategoryCharts({ transactions }: { transactions: Transaction[] }
             aria-label="Show percentages"
             aria-pressed={valueMode === "percent"}
             title="Percentages"
-            className={`flex h-11 w-11 items-center justify-center border-l border-card-border text-sm font-medium ${
+            className={`flex h-11 w-11 items-center justify-center border-l border-card-border text-sm font-medium ${TAP_FEEDBACK} ${
               valueMode === "percent" ? activeClass : inactiveClass
             }`}
           >

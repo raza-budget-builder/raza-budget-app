@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { AMOUNT_TEXT_CLASS, formatDollarSigned, formatSignedAmount } from "@/lib/format";
 import { getPeriodRange } from "@/lib/date-ranges";
+import { TAP_FEEDBACK } from "@/lib/motion";
 
 type Transaction = {
   date: string;
@@ -62,7 +63,7 @@ export function SummaryCard({
           <button
             onClick={() => setSummaryPeriod("monthly")}
             aria-pressed={summaryPeriod === "monthly"}
-            className={`flex min-h-11 items-center rounded-full px-2.5 py-1 text-xs font-medium ${
+            className={`flex min-h-11 items-center rounded-full px-2.5 py-1 text-xs font-medium ${TAP_FEEDBACK} ${
               summaryPeriod === "monthly" ? activeClass : inactiveClass
             }`}
           >
@@ -71,7 +72,7 @@ export function SummaryCard({
           <button
             onClick={() => setSummaryPeriod("this-year")}
             aria-pressed={summaryPeriod === "this-year"}
-            className={`flex min-h-11 items-center rounded-full px-2.5 py-1 text-xs font-medium ${
+            className={`flex min-h-11 items-center rounded-full px-2.5 py-1 text-xs font-medium ${TAP_FEEDBACK} ${
               summaryPeriod === "this-year" ? activeClass : inactiveClass
             }`}
           >
@@ -80,7 +81,7 @@ export function SummaryCard({
           <button
             onClick={() => setSummaryPeriod("all-time")}
             aria-pressed={summaryPeriod === "all-time"}
-            className={`flex min-h-11 items-center rounded-full px-2.5 py-1 text-xs font-medium ${
+            className={`flex min-h-11 items-center rounded-full px-2.5 py-1 text-xs font-medium ${TAP_FEEDBACK} ${
               summaryPeriod === "all-time" ? activeClass : inactiveClass
             }`}
           >

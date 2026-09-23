@@ -6,6 +6,7 @@ import { RecurringConfirmModal } from "./RecurringConfirmModal";
 import { DuplicateConfirmModal } from "./DuplicateConfirmModal";
 import { RecurringToggleFields } from "./RecurringToggleFields";
 import { useToast } from "./ToastProvider";
+import { TAP_FEEDBACK } from "@/lib/motion";
 import type { PendingRecurringCandidate } from "@/lib/recurring";
 import type { DuplicateCandidate } from "@/lib/duplicate-detection";
 
@@ -154,7 +155,9 @@ export function AddTransactionForm({ categories }: { categories: Category[] }) {
         </div>
         <RecurringToggleFields />
         <div className="col-span-2">
-          <button className="flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover">
+          <button
+            className={`flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover ${TAP_FEEDBACK}`}
+          >
             Add transaction
           </button>
         </div>

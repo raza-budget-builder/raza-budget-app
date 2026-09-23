@@ -10,6 +10,7 @@ import {
 import { AMOUNT_TEXT_CLASS, formatSignedAmount } from "@/lib/format";
 import { RecurringConfirmModal } from "./RecurringConfirmModal";
 import type { PendingRecurringCandidate } from "@/lib/recurring";
+import { ENTRANCE_ANIMATION, TAP_FEEDBACK } from "@/lib/motion";
 
 type Step = "upload" | "transfers" | "done";
 type TransferDecision = "transfer" | "keep";
@@ -118,7 +119,7 @@ export function ScreenshotImportWizard({ initialFile = null }: { initialFile?: F
         )}
 
         {step === "upload" && (
-          <div className="space-y-4">
+          <div className={`space-y-4 ${ENTRANCE_ANIMATION}`}>
             {capturingDroppedFile ? (
               <p className="rounded-xl border border-card-border bg-input-bg px-3 py-2 text-sm text-foreground-muted">
                 Reading {initialFile!.name}…
@@ -139,7 +140,7 @@ export function ScreenshotImportWizard({ initialFile = null }: { initialFile?: F
                 </div>
                 <button
                   disabled={isPending}
-                  className="flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50"
+                  className={`flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:opacity-50 ${TAP_FEEDBACK}`}
                 >
                   {isPending ? "Reading image…" : "Upload & continue"}
                 </button>
@@ -165,7 +166,7 @@ export function ScreenshotImportWizard({ initialFile = null }: { initialFile?: F
         )}
 
         {step === "transfers" && (
-          <div className="space-y-4">
+          <div className={`space-y-4 ${ENTRANCE_ANIMATION}`}>
             <p className="text-sm text-foreground-muted">
               We flagged {suspectedTransfers.length} transaction
               {suspectedTransfers.length === 1 ? "" : "s"} that look like transfers
@@ -195,7 +196,7 @@ export function ScreenshotImportWizard({ initialFile = null }: { initialFile?: F
                       <button
                         onClick={() => setTransferDecision(c.index, "transfer")}
                         aria-pressed={decision === "transfer"}
-                        className={`flex min-h-11 items-center justify-center rounded-xl px-3 py-1.5 text-sm font-medium ${
+                        className={`flex min-h-11 items-center justify-center rounded-xl px-3 py-1.5 text-sm font-medium ${TAP_FEEDBACK} ${
                           decision === "transfer"
                             ? "bg-accent text-accent-foreground"
                             : "border border-card-border text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
@@ -206,7 +207,7 @@ export function ScreenshotImportWizard({ initialFile = null }: { initialFile?: F
                       <button
                         onClick={() => setTransferDecision(c.index, "keep")}
                         aria-pressed={decision === "keep"}
-                        className={`flex min-h-11 items-center justify-center rounded-xl px-3 py-1.5 text-sm font-medium ${
+                        className={`flex min-h-11 items-center justify-center rounded-xl px-3 py-1.5 text-sm font-medium ${TAP_FEEDBACK} ${
                           decision === "keep"
                             ? "bg-accent text-accent-foreground"
                             : "border border-card-border text-foreground-muted hover:bg-foreground/5 hover:text-foreground"
@@ -223,7 +224,7 @@ export function ScreenshotImportWizard({ initialFile = null }: { initialFile?: F
             <button
               onClick={handleContinueAfterTransfers}
               disabled={!allTransfersDecided || isPending}
-              className="flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-40"
+              className={`flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-40 ${TAP_FEEDBACK}`}
             >
               {isPending ? "Importing…" : "Continue"}
             </button>
@@ -236,7 +237,7 @@ export function ScreenshotImportWizard({ initialFile = null }: { initialFile?: F
         )}
 
         {step === "done" && result && (
-          <div className="space-y-3">
+          <div className={`space-y-3 ${ENTRANCE_ANIMATION}`}>
             <p className="text-sm text-foreground">
               {`Imported ${result.imported} ${
                 result.imported === 1 ? "transaction" : "transactions"
@@ -248,7 +249,7 @@ export function ScreenshotImportWizard({ initialFile = null }: { initialFile?: F
             </p>
             <a
               href="/transactions"
-              className="inline-flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover"
+              className={`inline-flex min-h-11 items-center justify-center rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent-hover ${TAP_FEEDBACK}`}
             >
               Go to Transactions
             </a>
